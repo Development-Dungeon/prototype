@@ -330,6 +330,11 @@ public class FirstPersonController : MonoBehaviour
         {
             Jump();
         }
+        
+         if(enableJump && Input.GetKeyDown(jumpKey) && isGrounded)
+        {
+            Jump();
+        }
 
         #endregion
 
