@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 83ad0c6bd1dc9a840b17effa7e24c8b3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 240323
+  packageName: 25+ Free Realistic Textures - Nature, City, Home, Construction & More
+  packageVersion: 1.2.0
+  assetPath: Assets/Game Buffs/Free Realistic Textures/Scripts/GameBuffsInitializer.cs
+  uploadId: 586441
