@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.46169513, g: 0.5124164, b: 0.58993304, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -145,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4459864850019384738, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 151
       objectReference: {fileID: 0}
     - target: {fileID: 4459864850019384738, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: m_LocalPosition.z
@@ -240,6 +240,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4459864851310106426, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      propertyPath: field of view
+      value: 60.000004
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459864851310106426, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      propertyPath: m_FocalLength
+      value: 20.78461
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459864851310106426, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: m_BackGroundColor.a
       value: 1
       objectReference: {fileID: 0}
@@ -255,6 +263,14 @@ PrefabInstance:
       propertyPath: m_BackGroundColor.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4459864851310106426, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      propertyPath: m_projectionMatrixMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459864851310106426, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -262,6 +278,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4459864851310106424, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1199994517}
+    - targetCorrespondingSourceObject: {fileID: 4459864851310106424, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1199994521}
   m_SourcePrefab: {fileID: 100100000, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
 --- !u!1 &150515950
 GameObject:
@@ -493,7 +512,7 @@ MonoBehaviour:
   TimeSliderGameObject: {fileID: 0}
   WeatherDropdown: {fileID: 0}
   UseUniStormMenu: 0
-  UniStormMenuKey: 27
+  UniStormMenuKey: 116
   UniStormCanvas: {fileID: 0}
   m_MenuToggle: 0
   TabNumber: 2
@@ -593,7 +612,7 @@ MonoBehaviour:
   WeatherGenerationMethod: 1
   WeatherForecast: []
   ForceLowClouds: 0
-  LowCloudHeight: 500
+  LowCloudHeight: 217
   CloudDomeTrisCountX: 100
   CloudDomeTrisCountY: 50
   IgnoreConditions: 0
@@ -2234,7 +2253,7 @@ MonoBehaviour:
   - MoonPhaseTexture: {fileID: 2800000, guid: b9173d3e7f0a8a648a3a80ed799e7b8e, type: 3}
     MoonPhaseIntensity: 1.32
   m_AuroraParent: {fileID: 0}
-  StarmapType: 2
+  StarmapType: 1
   CloudRenderType: 1
   SunLightShaftIntensity:
     serializedVersion: 2
@@ -2896,7 +2915,7 @@ MonoBehaviour:
     key3: {r: 3.5629578, g: 1.6602263, b: 0, a: 0}
     key4: {r: 3.5629578, g: 0.9327114, b: 0, a: 0}
     key5: {r: 3.5629578, g: 0.9327114, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 3.5629578, g: 0, b: 2.0483193, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 15521
     ctime1: 18396
@@ -2904,7 +2923,7 @@ MonoBehaviour:
     ctime3: 45223
     ctime4: 49630
     ctime5: 53654
-    ctime6: 0
+    ctime6: 54548
     ctime7: 0
     atime0: 0
     atime1: 65535
@@ -2915,7 +2934,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: -1
+    m_ColorSpace: 0
     m_NumColorKeys: 6
     m_NumAlphaKeys: 2
   FogLightColor:
@@ -3407,7 +3426,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f5f96d10b07d82e468b4cde118cd3464, type: 2}
+  - {fileID: 2100000, guid: 0300912898323f7418f3f41d9d1ae9c0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3446,7 +3465,7 @@ Transform:
   m_GameObject: {fileID: 1181955514}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 150, z: 0}
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3501,6 +3520,18 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &1199994521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199994513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07c8b350d4ad1347b2fa6a9316eb014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1418284955
 GameObject:
   m_ObjectHideFlags: 0
@@ -3611,7 +3642,7 @@ Transform:
   m_GameObject: {fileID: 1639398751}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 26, y: -95.14903, z: 119}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 800, y: 800, z: 800}
   m_ConstrainProportionsScale: 0
   m_Children:
