@@ -19,13 +19,13 @@ namespace UniStorm.CharacterController
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                GetComponent<UniStormMouseLook>().enabled = false;
+                //GetComponent<UniStormMouseLook>().enabled = false;
             }
             else
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                GetComponent<UniStormMouseLook>().enabled = true;
+                //GetComponent<UniStormMouseLook>().enabled = true;
             }
         }
     }
