@@ -7,7 +7,7 @@ public class UnderWaterDepth : MonoBehaviour
 {
     [Header("Depth Parameters")]
     [SerializeField] private Transform mainCamera;
-    [SerializeField] private int depth = 6;
+    [SerializeField] public int depth = 6;
 
     [Header("Post Processing Volume")]
     [SerializeField] private Volume postProcessingVolume;
