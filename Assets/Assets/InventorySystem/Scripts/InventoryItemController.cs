@@ -18,7 +18,6 @@ public class InventoryItemController : MonoBehaviour
 
     public void AddItem(Item newItem)
     {
-
         item = newItem;
     }
 

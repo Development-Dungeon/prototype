@@ -7,6 +7,7 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance;
     public List<Item> Items = new List<Item>();
+    public int MaxInventorySize = 5;
 
     public Transform ItemContent;
     public GameObject InventoryItem;
@@ -19,10 +20,20 @@ public class InventoryManager : MonoBehaviour
 
     }
 
-    public void Add(Item item)
+    public bool Add(Item item)
     {
-        Items.Add(item);
-        RefreshOpenInventory();
+        if (IsInventoryFull())
+            return false;
+
+		Items.Add(item);
+		RefreshOpenInventory();
+
+	    return true;
+    }
+
+    public bool IsInventoryFull()
+    {
+        return Items.Count >= MaxInventorySize;
     }
 
     public void RefreshOpenInventory()
