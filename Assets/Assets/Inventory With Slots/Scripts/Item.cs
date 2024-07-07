@@ -14,7 +14,6 @@ public class ItemNew: ScriptableObject
     public TileBase tile;
     public ItemType type;
     public ActionType actionType;
-    public Vector2Int range = new Vector2Int(5,4);
     public GameObject inWorldPrefab;
 
     [Header("Only UI")]

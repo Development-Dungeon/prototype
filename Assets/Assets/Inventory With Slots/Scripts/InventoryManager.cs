@@ -63,8 +63,6 @@ public class InventoryManagerNew : MonoBehaviour
 
         selectedSlot = newValue;
         inventorSlots[selectedSlot].Select();
-
-
     }
 
     public void Awake()
@@ -155,7 +153,6 @@ public class InventoryManagerNew : MonoBehaviour
         if (item == null)
             return new InventorySlotNew[0];
 
-        // find all slots with a matching item in it
         var foundSlots = new List<InventorySlotNew>();
 
         for (int i = 0; i < inventorSlots.Length; i++)
