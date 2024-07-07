@@ -21,12 +21,40 @@ public class InventoryManagerNew : MonoBehaviour
             if(isNumber && number > 0 && number < 8) { 
                 ChangedSelectedSlot(number - 1);
 		    }
-            else if (Input.inputString.Equals("Q")) {
+            else if (Input.inputString.Equals("q")) {
                 RemoveSelectedItem();
+		    }
+            else if (Input.inputString.Equals("l")) {
+                DropItemInWorld();
 		    }
         }
     }
 
+    private void DropItemInWorld()
+    {
+        // get the currently selected item
+        var currentlySelectedItem = GetSelectedItem();
+        if (currentlySelectedItem == null)
+            return;
+
+        // spawn its 3d prefab at the players current reach distance 
+        var prefab = currentlySelectedItem.inWorldPrefab;
+
+        var playerLocation = Camera.main.transform;
+		var playerReachScript = Camera.main.gameObject.GetComponentInChildren<PlayerReach>();
+
+        if(playerReachScript == null)
+            return;
+
+        var reachDistance = playerReachScript.reachDistance;
+        var inFrontOfPlayer = playerLocation.position + (playerLocation.transform.forward * reachDistance);
+
+        Instantiate(prefab, inFrontOfPlayer, playerLocation.rotation);
+
+        // remove the object from the inventory
+        RemoveSelectedItem();
+
+    }
 
     void ChangedSelectedSlot(int newValue)
     {

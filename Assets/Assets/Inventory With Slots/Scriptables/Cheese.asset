@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c6e61394c3a74edeb9212bdbffad07b, type: 3}
-  m_Name: NewCheese
+  m_Name: Cheese
   m_EditorClassIdentifier: 
   id: 0
-  itemName: Banana
+  itemName: Cheese
   tile: {fileID: 0}
   type: 0
   actionType: 0
   range: {x: 5, y: 4}
+  inWorldPrefab: {fileID: 6347644288375727933, guid: 79260e4617fa5427882a7d9c2ccfb387, type: 3}
   stackable: 1
   maxStackable: 8
   image: {fileID: 21300000, guid: 97362c8821fe2f7449927570ad6d4d6a, type: 3}
