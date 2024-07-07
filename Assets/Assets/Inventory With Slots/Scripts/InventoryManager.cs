@@ -24,7 +24,7 @@ public class InventoryManagerNew : MonoBehaviour
             else if (Input.inputString.Equals("q")) {
                 RemoveSelectedItem();
 		    }
-            else if (Input.inputString.Equals("l")) {
+            else if (Input.inputString.Equals("g")) {
                 DropItemInWorld();
 		    }
         }

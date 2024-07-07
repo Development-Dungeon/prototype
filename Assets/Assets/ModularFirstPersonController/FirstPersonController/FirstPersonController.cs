@@ -10,8 +10,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 #if UNITY_EDITOR
-    using UnityEditor;
-    using System.Net;
+using UnityEditor;
+using System.Net;
 #endif
 
 public class FirstPersonController : MonoBehaviour
@@ -58,9 +58,17 @@ public class FirstPersonController : MonoBehaviour
     public bool playerCanMove = true;
     public float walkSpeed = 5f;
     public float maxVelocityChange = 10f;
+    public float swimSpeed = 1f; // Speed of swimming
+    public float rotationSpeed = 2f; // Speed of rotation
+    public float moveSpeed = 5f; // Movement speed in all directions
+    public float boostSpeed = 4f; // Speed when boosting
+    public float swimUpSpeed = 10f; // Speed when swimming up or down
+    public float smoothTime = 0.3f; // Smoothing time for movement
 
     // Internal Variables
     private bool isWalking = false;
+    private bool isBoosting = false;
+    private Vector3 currentVelocity = Vector3.zero;
 
     #region Sprint
 
@@ -153,6 +161,7 @@ public class FirstPersonController : MonoBehaviour
 
     void Start()
     {
+
         if (lockCursor)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -204,7 +213,26 @@ public class FirstPersonController : MonoBehaviour
 
     private void Update()
     {
+        if (isUnderWater == true)
+        {
+            Swim();
+            HandleRotation();
+            HandleBoost();
+            rb.drag = 5;
+            enableSprint = false;
+            enableHeadBob = false;
 
+        }
+        else
+        {
+            rb.drag = 1;
+            isUnderWater = false;
+            rb.useGravity = true;
+            enableSprint = true;
+            enableHeadBob = true;
+
+
+        }
         if (rb.transform.position.y <= 107)
         {
             isUnderWater = true;
@@ -292,6 +320,7 @@ public class FirstPersonController : MonoBehaviour
         {
             if (isSprinting)
             {
+                isCrouched = false;
                 isZoomed = false;
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, sprintFOV, sprintFOVStepTime * Time.deltaTime);
 
@@ -310,6 +339,7 @@ public class FirstPersonController : MonoBehaviour
             {
                 // Regain sprint while not sprinting
                 sprintRemaining = Mathf.Clamp(sprintRemaining += 1 * Time.deltaTime, 0, sprintDuration);
+
             }
 
             // Handles sprint cooldown 
@@ -350,11 +380,7 @@ public class FirstPersonController : MonoBehaviour
             Jump();
         }
 
-        if (enableJump && Input.GetKeyDown(jumpKey) && isUnderWater)
-        {
-
-            Swim();
-        }
+        
 
         #endregion
 
@@ -508,9 +534,46 @@ public class FirstPersonController : MonoBehaviour
 
     private void Swim()
     {
-        rb.AddForce(0f, swimPower, 0f, ForceMode.Impulse);   
 
+        
+        // Basic movement
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
 
+        Vector3 forwardMovement = playerCamera.transform.forward * vertical;
+        Vector3 strafeMovement = playerCamera.transform.right * horizontal;
+
+        Vector3 targetMovement = (forwardMovement + strafeMovement).normalized * swimSpeed;
+
+        // Swimming up and down based on camera's up direction
+        if (Input.GetKey(KeyCode.Space))
+        {
+            targetMovement += playerCamera.transform.up * swimUpSpeed;
+        }
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            targetMovement -= playerCamera.transform.up * swimUpSpeed;
+        }
+
+        // Apply smooth movement to the Rigidbody
+        rb.velocity = Vector3.SmoothDamp(rb.velocity, targetMovement * (isBoosting ? boostSpeed : swimSpeed), ref currentVelocity, smoothTime);
+    }
+    void HandleRotation()
+    {
+        //used to calculate the player's rotation - already done in the momvment method.
+    }
+    void HandleBoost()
+    {
+        //if (Input.GetKeyDown(KeyCode.LeftShift))
+       // {
+            //isBoosting = true;
+       // }
+       // if (Input.GetKeyUp(KeyCode.LeftShift))
+       // {
+           // isBoosting = false;
+        //}
+
+        //Here we can maybe add a power up/ item that can increase the boosting cababilites of the player in the water.
     }
 
     private void Crouch()
