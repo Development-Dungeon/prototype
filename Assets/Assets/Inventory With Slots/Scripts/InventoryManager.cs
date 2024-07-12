@@ -8,6 +8,10 @@ public class InventoryManagerNew : MonoBehaviour
     public GameObject inventoryObjectPrefab;
     public static InventoryManagerNew Instance;
     public int selectedSlot = -1;
+    public GameObject mainInventory;
+
+    [HideInInspector]
+    public bool IsInventoryOpen = false;
 
 
     public void Start()
@@ -21,13 +25,32 @@ public class InventoryManagerNew : MonoBehaviour
             if(isNumber && number > 0 && number < 8) { 
                 ChangedSelectedSlot(number - 1);
 		    }
-            else if (Input.inputString.Equals("q")) {
+            else if (Input.GetKeyDown(KeyCode.Q)){
                 RemoveSelectedItem();
 		    }
-            else if (Input.inputString.Equals("g")) {
+            else if (Input.GetKeyDown(KeyCode.G)) {
                 DropItemInWorld();
+		    } 
+            else if (Input.GetKeyDown(KeyCode.Tab)) {
+                ToggleInventory();
 		    }
         }
+    }
+
+    private void ToggleInventory()
+    {
+        IsInventoryOpen = !IsInventoryOpen;
+        mainInventory.SetActive(IsInventoryOpen);
+
+        if (IsInventoryOpen)
+        {  
+		    Cursor.lockState = CursorLockMode.None;
+		    Cursor.visible = true;
+		}
+        else {  
+		    Cursor.lockState = CursorLockMode.Locked;
+		    Cursor.visible = false;
+		}
     }
 
     private void DropItemInWorld()
