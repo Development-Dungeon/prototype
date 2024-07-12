@@ -29,7 +29,11 @@ public class ItemNew: ScriptableObject
 
 public enum ItemType { 
     BuildingBlock,
-    Tool
+    Tool,
+    Head,
+    Chest,
+    Suit,
+    Tank
 }
 
 public enum ActionType {  
