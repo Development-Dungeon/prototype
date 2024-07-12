@@ -86,15 +86,15 @@ Material:
     - _VisibleDistance: -39.6
     - _WetnessStrength: 0
     - _WorldPosGlobal: 0
-    - _uAttenuation: 0.81124157
+    - _uAttenuation: 0.52499634
     - _uCloudAlpha: 1
     - _uCloudHeight: 1
     - _uCloudsBackwardScatteringG: -0.2
-    - _uCloudsBaseEdgeSoftness: 0.032066546
+    - _uCloudsBaseEdgeSoftness: 0.035
     - _uCloudsBaseScale: 1.72
     - _uCloudsBottom: 500
-    - _uCloudsBottomSoftness: 0.5766636
-    - _uCloudsCoverage: 0.53015935
+    - _uCloudsBottomSoftness: 0.65
+    - _uCloudsCoverage: 0.541
     - _uCloudsCoverageBias: 0.02
     - _uCloudsDensity: 1
     - _uCloudsDetailScale: 1000
@@ -139,16 +139,16 @@ Material:
     - _SunDir: {r: 0.2784009, g: 0.9581905, b: 0.0660601, a: 0}
     - _SunVector: {r: 0.34202018, g: 0.9396217, b: -0.0115510225, a: 0}
     - _uCloudColor: {r: 1, g: 1, b: 1, a: 1}
-    - _uCloudsAmbientColorBottom: {r: 0.4684033, g: 0.49951774, b: 0.5415985, a: 1}
-    - _uCloudsAmbientColorTop: {r: 0.7907537, g: 0.8172095, b: 0.8398855, a: 1}
+    - _uCloudsAmbientColorBottom: {r: 0.32974517, g: 0.33693188, b: 0.35849205, a: 1}
+    - _uCloudsAmbientColorTop: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
     - _uCloudsColor: {r: 0.84313726, g: 0.84313726, b: 0.84313726, a: 1}
     - _uCloudsHorizonColor: {r: 0, g: 0, b: 0, a: 1}
-    - _uFogColor: {r: 0.414269, g: 0.4581548, b: 0.5232045, a: 0.01}
+    - _uFogColor: {r: 0.32115054, g: 0.35488755, b: 0.39705884, a: 0.01}
     - _uHorizonColor: {r: 1, g: 1, b: 1, a: 1}
     - _uLightningColor: {r: 0.7647059, g: 0.8352941, b: 0.8862745, a: 1}
     - _uMoonColor: {r: 0.33023313, g: 0.36793935, b: 0.38679242, a: 1}
-    - _uMoonDir: {r: 0.57357645, g: 0.77137226, b: 0.27567184, a: 0}
-    - _uSunColor: {r: 0.5581689, g: 0.55481094, b: 0.54066944, a: 1}
-    - _uSunDir: {r: -0.34202018, g: -0.88488203, b: -0.31623763, a: 0}
+    - _uMoonDir: {r: 0.5735764, g: 0.8187884, b: 0.024404142, a: 0}
+    - _uSunColor: {r: 0.6529459, g: 0.66882735, b: 0.6886792, a: 1}
+    - _uSunDir: {r: -0.34202024, g: -0.9392757, b: -0.027995575, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
