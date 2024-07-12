@@ -86,7 +86,7 @@ Material:
     - _VisibleDistance: -39.6
     - _WetnessStrength: 0
     - _WorldPosGlobal: 0
-    - _uAttenuation: 0.525057
+    - _uAttenuation: 0.5249817
     - _uCloudAlpha: 1
     - _uCloudHeight: 1
     - _uCloudsBackwardScatteringG: -0.2
@@ -94,7 +94,7 @@ Material:
     - _uCloudsBaseScale: 1.72
     - _uCloudsBottom: 500
     - _uCloudsBottomSoftness: 0.65
-    - _uCloudsCoverage: 0.536
+    - _uCloudsCoverage: 0.534
     - _uCloudsCoverageBias: 0.02
     - _uCloudsDensity: 1
     - _uCloudsDetailScale: 1000
@@ -147,8 +147,8 @@ Material:
     - _uHorizonColor: {r: 1, g: 1, b: 1, a: 1}
     - _uLightningColor: {r: 0.7647059, g: 0.8352941, b: 0.8862745, a: 1}
     - _uMoonColor: {r: 0.33023313, g: 0.36793935, b: 0.38679242, a: 1}
-    - _uMoonDir: {r: 0.57357645, g: 0.8186148, b: -0.029663917, a: 0}
+    - _uMoonDir: {r: 0.57357645, g: 0.8177211, b: 0.048396587, a: 0}
     - _uSunColor: {r: 0.6529459, g: 0.66882735, b: 0.6886792, a: 1}
-    - _uSunDir: {r: -0.3420202, g: -0.9390765, b: 0.034028634, a: 0}
+    - _uSunDir: {r: -0.34202024, g: -0.9380514, b: -0.055518415, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

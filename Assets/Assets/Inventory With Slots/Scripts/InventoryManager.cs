@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InventoryManagerNew : MonoBehaviour
 {
-    public InventorySlotNew[] inventorSlots;
+    public InventorySlot[] inventorSlots;
     public GameObject inventoryObjectPrefab;
     public static InventoryManagerNew Instance;
     public int selectedSlot = -1;
@@ -130,9 +130,9 @@ public class InventoryManagerNew : MonoBehaviour
         return false;
     }
 
-    private InventorySlotNew[] FindAllEmptySlots()
+    private InventorySlot[] FindAllEmptySlots()
     {
-        var emptySlots = new List<InventorySlotNew>();
+        var emptySlots = new List<InventorySlot>();
 
         for (int i = 0; i < inventorSlots.Length; i++)
         {
@@ -148,12 +148,12 @@ public class InventoryManagerNew : MonoBehaviour
         return emptySlots.ToArray();
     }
 
-    private InventorySlotNew[] FindAllSlotsWith(ItemNew item)
+    private InventorySlot[] FindAllSlotsWith(ItemNew item)
     {
         if (item == null)
-            return new InventorySlotNew[0];
+            return new InventorySlot[0];
 
-        var foundSlots = new List<InventorySlotNew>();
+        var foundSlots = new List<InventorySlot>();
 
         for (int i = 0; i < inventorSlots.Length; i++)
         {
@@ -170,7 +170,7 @@ public class InventoryManagerNew : MonoBehaviour
     }
 
 
-    void SpawnNewItem(ItemNew item, InventorySlotNew slot)
+    void SpawnNewItem(ItemNew item, InventorySlot slot)
     {
         GameObject newItemGameObject = Instantiate(inventoryObjectPrefab, slot.transform);
         var inventoryItem = newItemGameObject.GetComponent<InventoryItem>();

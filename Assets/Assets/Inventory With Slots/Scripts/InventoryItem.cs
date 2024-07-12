@@ -59,6 +59,13 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        // get the parent OverlayController and set the overlay to true
+        var itemOverlayController = transform.parent.GetComponentInChildren<ItemOverlayController>();
+        if(itemOverlayController != null)
+        {
+            itemOverlayController.EnableOverlay();
+		}
+
         image.raycastTarget = false;
         parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);
@@ -74,5 +81,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         image.raycastTarget = true;
         transform.SetParent(parentAfterDrag);
+
+		var itemOverlayController = transform.parent.GetComponentInChildren<ItemOverlayController>();
+        if(itemOverlayController != null)
+        {
+            itemOverlayController.DisableOverlay();
+		}
     }
 }
