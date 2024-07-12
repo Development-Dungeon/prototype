@@ -8,25 +8,36 @@ namespace UniStorm.CharacterController
     {
         bool Paused = false;
 
+        private void Start()
+        {
+            UpdateCusor(Paused);
+        }
+
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Paused = !Paused;
-            }
+                UpdateCusor(Paused);
 
-            if (Paused)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                //GetComponent<UniStormMouseLook>().enabled = false;
             }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                //GetComponent<UniStormMouseLook>().enabled = true;
-            }
+        }
+
+        private void UpdateCusor(bool pause)
+        {
+			if (Paused)
+			{
+			    Cursor.lockState = CursorLockMode.None;
+			    Cursor.visible = true;
+			    //GetComponent<UniStormMouseLook>().enabled = false;
+			}
+			else
+			{
+			    Cursor.lockState = CursorLockMode.Locked;
+			    Cursor.visible = true;
+			    //GetComponent<UniStormMouseLook>().enabled = true;
+			}
+            
         }
     }
 }
