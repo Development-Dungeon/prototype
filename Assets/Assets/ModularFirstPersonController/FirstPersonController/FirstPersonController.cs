@@ -233,13 +233,13 @@ public class FirstPersonController : MonoBehaviour
 
 
         }
-        if (rb.transform.position.y <= 107)
+        if (rb.transform.position.y <= 553)
         {
             isUnderWater = true;
             isGrounded = false;
 
         }
-        else if (rb.transform.position.y > 107)
+        else if (rb.transform.position.y > 553)
         {
             isUnderWater = false;
 
