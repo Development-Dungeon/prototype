@@ -93,7 +93,7 @@ public class InventoryManagerNew : MonoBehaviour
         Instance = this;
     }
 
-    public bool AddItem(ItemNew item)
+    public bool AddItem(Item item)
     {
         
 	    var hasAddedItemToStack = AddStackableItem(item);
@@ -108,23 +108,26 @@ public class InventoryManagerNew : MonoBehaviour
 
     }
 
-    private bool AddItemToEmptySlot(ItemNew item)
+    private bool AddItemToEmptySlot(Item item)
     {  
         var emptySlots = FindAllEmptySlots();
 
         for(int i = 0; i < emptySlots.Length; i++) {
 
             var slot = emptySlots[i];
-			SpawnNewItem(item, slot);
 
-			return true;
+            if (slot.ItemAllowedInSlot(item.type)) 
+		    { 
+				SpawnNewItem(item, slot);
+				return true;
+		    }
 		}
 
         return false;
 
     }
 
-    private bool AddStackableItem(ItemNew item)
+    private bool AddStackableItem(Item item)
     {
 		// search for the item to see if there exists an entry inside the inventory which contains the item already
         // if the item is found then check if the max stackable amount is reached
@@ -159,7 +162,6 @@ public class InventoryManagerNew : MonoBehaviour
 
         for (int i = 0; i < inventorSlots.Length; i++)
         {
-
             var slot = inventorSlots[i];
             var itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             if (itemInSlot == null)
@@ -171,7 +173,7 @@ public class InventoryManagerNew : MonoBehaviour
         return emptySlots.ToArray();
     }
 
-    private InventorySlot[] FindAllSlotsWith(ItemNew item)
+    private InventorySlot[] FindAllSlotsWith(Item item)
     {
         if (item == null)
             return new InventorySlot[0];
@@ -193,14 +195,14 @@ public class InventoryManagerNew : MonoBehaviour
     }
 
 
-    void SpawnNewItem(ItemNew item, InventorySlot slot)
+    void SpawnNewItem(Item item, InventorySlot slot)
     {
         GameObject newItemGameObject = Instantiate(inventoryObjectPrefab, slot.transform);
         var inventoryItem = newItemGameObject.GetComponent<InventoryItem>();
         inventoryItem.InitialiseItem(item);
     }
 
-    public ItemNew GetSelectedItem()
+    public Item GetSelectedItem()
     {
         var slot = inventorSlots[selectedSlot];
         var itemInSlot = slot.GetComponentInChildren<InventoryItem>();

@@ -5,7 +5,7 @@ using UnityEngine;
 public class DemoButtonController : MonoBehaviour
 {
 
-    public ItemNew itemToCreate;
+    public Item itemToCreate;
 
     public void addItem()
     {  
