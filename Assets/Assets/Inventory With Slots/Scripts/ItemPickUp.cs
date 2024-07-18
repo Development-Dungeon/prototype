@@ -16,19 +16,29 @@ public class ItemPickUp : MonoBehaviour
 		}
     }
 
-    private void OnMouseDown()
+    public void Update()
     {
-        // get the player reach
-        var playerReachScript = Camera.main.gameObject.GetComponentInChildren<PlayerReach>();
-        if(playerReachScript == null)
+		if(Input.inputString != null) {
+            if (Input.GetKeyDown(KeyCode.E)){
+                AttemptPickup();
+		    }
+        }
+    }
+
+    private void AttemptPickup()
+    {
+       var playerReachScript = Camera.main.gameObject.GetComponentInChildren<PlayerReach>();
+        if (playerReachScript == null || !playerReachScript.IsRaycastHit())
             return;
 
-        var reachDistance = playerReachScript.reachDistance;
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
 
-        if (Math.Abs(Vector3.Distance(this.transform.position, Camera.main.transform.position)) < reachDistance)
-        {
-			Pickup();
-        }
+		if (Physics.Raycast(ray, out hit)) 
+		{ 
+            if(hit.collider.gameObject.Equals(gameObject))
+			    Pickup();
+		}
     }
 
 }

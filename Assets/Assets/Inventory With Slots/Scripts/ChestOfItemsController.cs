@@ -45,19 +45,32 @@ public class ChestOfItemsController : MonoBehaviour
 
     }
 
-    private void OnMouseDown()
+    public void Update()
     {
-        // get the player reach
+		if(Input.inputString != null) {
+            if (Input.GetKeyDown(KeyCode.E)){
+                AttemptPickup();
+		    }
+        }
+    }
+
+    private void AttemptPickup()
+    {
+
         var playerReachScript = Camera.main.gameObject.GetComponentInChildren<PlayerReach>();
-        if (playerReachScript == null)
+        if (playerReachScript == null || !playerReachScript.IsRaycastHit())
             return;
 
-        var reachDistance = playerReachScript.reachDistance;
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
 
-        if (Math.Abs(Vector3.Distance(this.transform.position, Camera.main.transform.position)) < reachDistance)
-        {
-            Pickup();
-        }
+		if (Physics.Raycast(ray, out hit)) 
+		{ 
+            // check if this object is the one that i am pointing at
+            if(hit.collider.gameObject.Equals(gameObject))
+			    Pickup();
+		}
+
     }
 
 
