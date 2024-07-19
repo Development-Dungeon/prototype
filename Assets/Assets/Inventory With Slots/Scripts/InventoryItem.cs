@@ -40,6 +40,24 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         return true;
     }
 
+    public void AddToExistingItemQuantity(int numberOfItemsToAdd)
+    {  
+        itemCount += numberOfItemsToAdd;
+        if (itemCount <= 0)
+            Destroy(this.gameObject);
+        else
+            RefreshCount();
+    }
+
+    public void RemoveItem(int numberOfItemsToRemove)
+    {
+        itemCount -= numberOfItemsToRemove;
+        if (itemCount <= 0)
+            Destroy(this.gameObject);
+        else
+            RefreshCount();
+    }
+
     public void RemoveItem()
     {
         itemCount--;

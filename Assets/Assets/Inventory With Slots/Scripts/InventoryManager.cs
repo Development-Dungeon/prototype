@@ -9,10 +9,57 @@ public class InventoryManagerNew : MonoBehaviour
     public static InventoryManagerNew Instance;
     public int selectedSlot = -1;
     public GameObject mainInventory;
+    public Item money;
 
     [HideInInspector]
     public bool IsInventoryOpen = false;
 
+    public int GetMoney()
+    {
+        // search for the inventory slot and return the amount
+        var slotsWithMoney = FindAllSlotsWith(money);
+
+        int totalMoney = 0;
+
+        if (slotsWithMoney == null)
+            return totalMoney;
+
+
+        foreach(var slot in slotsWithMoney)
+	    {
+
+            var inventoryItem = slot.GetComponentInChildren<InventoryItem>();
+
+            if (inventoryItem == null) continue;
+
+            totalMoney += inventoryItem.itemCount;
+		}
+
+
+        return totalMoney;
+    }
+
+    internal void AddMoney(int moneyToAdd)
+    {
+        var totalMoney = GetMoney();
+        var remaningMoney = totalMoney + moneyToAdd;
+
+        // make sure that the player has money
+        // if the player does not have enough money then throw an error
+        if(remaningMoney < 0)
+            throw new System.Exception("Trying to subtract more money then the palyer has");
+
+        if(remaningMoney > money.maxStackable)
+            throw new System.Exception("Trying to add more money then is allowed to be stacked");
+
+        // if the player does have enough money then subtract the count from the money slot
+        // get the money slot and subtract
+        var moneySlots = FindAllSlotsWith(money);
+        var playerMoneyItem = moneySlots[0].GetComponentInChildren<InventoryItem>();
+
+        playerMoneyItem.AddToExistingItemQuantity(moneyToAdd);
+
+    }
 
     public void Start()
     {
