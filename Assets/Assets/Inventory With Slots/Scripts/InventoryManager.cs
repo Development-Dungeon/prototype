@@ -14,6 +14,9 @@ public class InventoryManagerNew : MonoBehaviour
     [HideInInspector]
     public bool IsInventoryOpen = false;
 
+    public List<InventorySlot> GetInventorySlots() { return new List<InventorySlot>(inventorSlots); }
+    
+
     public int GetMoney()
     {
         // search for the inventory slot and return the amount
@@ -65,6 +68,7 @@ public class InventoryManagerNew : MonoBehaviour
     {
         ChangedSelectedSlot(0);
     }
+
     private void Update()
     {
         if(Input.inputString != null) {
@@ -82,6 +86,26 @@ public class InventoryManagerNew : MonoBehaviour
                 ToggleInventory();
 		    }
         }
+    }
+
+    public bool RemoveItem(Item item)
+    {
+        var slots = FindAllSlotsWith(item);
+
+        if (slots == null || slots.Length == 0)
+            return false;
+
+        var slot = slots[0];
+        var itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+
+        if (itemInSlot == null)
+            throw new System.Exception("attempting to remove item but cannot find the inventory item component in childreen of slot");
+
+        // if the item is a single then delete the inventory item
+	    itemInSlot.RemoveItem();
+
+        return true;
+
     }
 
     private void ToggleInventory()
