@@ -101,7 +101,6 @@ public class InventoryManagerNew : MonoBehaviour
         if (itemInSlot == null)
             throw new System.Exception("attempting to remove item but cannot find the inventory item component in childreen of slot");
 
-        // if the item is a single then delete the inventory item
 	    itemInSlot.RemoveItem();
 
         return true;

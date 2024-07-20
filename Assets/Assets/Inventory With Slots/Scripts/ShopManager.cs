@@ -41,7 +41,6 @@ public class ShopManager : MonoBehaviour
 
     public void AddItemToShop()
     {
-        // get a prefab for the ship inventory slot
 
         foreach(ShopItemMetadata itemMetadata in itemsInBuyShop)
         {  
