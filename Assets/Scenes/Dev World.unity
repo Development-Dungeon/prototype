@@ -8158,7 +8158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &742468676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8944,7 +8944,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!154 &858486806
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -10525,7 +10525,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e063402485c86457db9b2ee795784aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShopUI: {fileID: 742468675}
+  shopBuySellConfig:
+  - item: {fileID: 11400000, guid: 00760b455bbf6470789036b510d3fe56, type: 2}
+    isBuyable: 1
+    buyPrice: 150
+    buyQuantity: 1
+    isSellable: 1
+    sellPrice: 50
+  - item: {fileID: 11400000, guid: 8a82c04d892e74b0587e36bb3fc6abd7, type: 2}
+    isBuyable: 0
+    buyPrice: 150
+    buyQuantity: 0
+    isSellable: 1
+    sellPrice: 25
+  - item: {fileID: 11400000, guid: 9f7c25ef03c914e6db7308dd1a4a77ef, type: 2}
+    isBuyable: 1
+    buyPrice: 1000
+    buyQuantity: 1
+    isSellable: 0
+    sellPrice: 25
 --- !u!1 &1017313959
 GameObject:
   m_ObjectHideFlags: 0
@@ -12724,19 +12742,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopInventorySlotPrefab: {fileID: 4155434187069165506, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
   ShopSellInventorySlotPrefab: {fileID: 6888662775002792836, guid: 2107379ac67fa468b87147d6caa534f0, type: 3}
-  itemsInBuyShop:
-  - item: {fileID: 11400000, guid: 00760b455bbf6470789036b510d3fe56, type: 2}
-    buyPrice: 200
-    sellPrice: 100
-  sellableItemsList:
-  - item: {fileID: 11400000, guid: 00760b455bbf6470789036b510d3fe56, type: 2}
-    buyPrice: 0
-    sellPrice: 100
-  itemsInSellShop: []
+  _shopBuySellConfig: []
   ShopContent: {fileID: 1722873511}
   SellShopContent: {fileID: 439395656}
   SellShopCointText: {fileID: 714047909}
   money: {fileID: 11400000, guid: e011b7ca03e59404590a14a593798465, type: 2}
+  ShopUI: {fileID: 742468675}
 --- !u!4 &1295487329
 Transform:
   m_ObjectHideFlags: 0
@@ -18423,7 +18434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2061308697690279892, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2061308697690279892, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
       propertyPath: m_AnchorMin.x
@@ -18431,15 +18442,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2061308697690279892, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2061308697690279892, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2061308697690279892, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2061308697690279892, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18471,11 +18482,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2061308697690279892, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 70
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2061308697690279892, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -70
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2061308697690279892, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -18496,6 +18507,14 @@ PrefabInstance:
     - target: {fileID: 4155434187069165506, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704495127921310427, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
+      propertyPath: enabledColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704495127921310427, guid: 78fd505065f124e97ab1690c4d00ce80, type: 3}
+      propertyPath: disabledColor.a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

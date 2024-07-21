@@ -29,7 +29,7 @@ public class ShopSellInventoryController : MonoBehaviour
 
     public void RefreshQuantity()
     {
-        quantityText.text = "X" + quantity;
+        quantityText.text = "x" + quantity;
     }
 
     public void SellItem()

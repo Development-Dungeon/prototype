@@ -3,59 +3,72 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ShopManager : MonoBehaviour
+public partial class ShopManager : MonoBehaviour
 {
 
     public static ShopManager Instance;
     public GameObject ShopInventorySlotPrefab;
     public GameObject ShopSellInventorySlotPrefab;
-    [HideInInspector] List<ShopInventorySlotController> slots = new List<ShopInventorySlotController>();
-    public List<ShopItemMetadata> itemsInBuyShop;
-    public List<ShopItemMetadata> sellableItemsList;
-    public List<ShopSellInventoryController> itemsInSellShop;
+    [HideInInspector] List<ShopBuyInventorySlotController> slots = new List<ShopBuyInventorySlotController>();
+    [HideInInspector] public List<ShopItemMetadata> _shopBuySellConfig;
+    [HideInInspector] List<ShopSellInventoryController> itemsInSellShop = new List<ShopSellInventoryController>();
     public GameObject ShopContent;
     public GameObject SellShopContent;
     public TMP_Text SellShopCointText;
     public Item money;
-
-
-    [System.Serializable]
-    public class ShopItemMetadata
-    {
-        [Header("both shops")]
-        public Item item;
-
-        [Header("buy shop only")]
-        public int buyPrice;
-
-        [Header("sell shop only")]
-        public int sellPrice;
-    }
+    public GameObject ShopUI;
 
     public void Awake()
     {
         Instance = this;
-        AddItemToShop();
     }
 
 
-    public void AddItemToShop()
+    public void PopulateBuyShop(List<ShopItemMetadata> shopBuySellConfig)
     {
+        // clear out the current buy shop
+        foreach(var buySlot in slots)
+        {
+            if (buySlot == null) continue;
+            Destroy(buySlot.gameObject);
+		}
+        slots = new List<ShopBuyInventorySlotController>();
+
         // get a prefab for the ship inventory slot
+        foreach(ShopItemMetadata itemMetadata in shopBuySellConfig)
+        {
+            if (!itemMetadata.isBuyable)
+                continue;
 
-        foreach(ShopItemMetadata itemMetadata in itemsInBuyShop)
-        {  
 			GameObject newItemGameObject = Instantiate(ShopInventorySlotPrefab, ShopContent.transform);
-			var shopInventoryController = newItemGameObject.GetComponent<ShopInventorySlotController>();
+			var shopInventoryController = newItemGameObject.GetComponent<ShopBuyInventorySlotController>();
 
-            shopInventoryController.InitializeItem(itemMetadata.item, itemMetadata.buyPrice);
+            shopInventoryController.InitializeItem(itemMetadata.item, itemMetadata.buyPrice, itemMetadata.buyQuantity);
 
             slots.Add(shopInventoryController);
-
-		} 
+		}
+        EnableBuyTextForAffordableItems();
     }
 
-    public void RefreshCoinTest()
+    public void EnableBuyTextForAffordableItems()
+    {
+        var totalPlayerMoney = InventoryManagerNew.Instance.GetMoney();
+        // iterate through each item in buys lot and enable/disable based on the amount of money the player has
+        foreach(var buySlot in slots)
+        {  
+            if(totalPlayerMoney >= buySlot.priceOfItem)
+            {
+                buySlot.EnableBuyImageIcon();
+		    }
+            else 
+		    {
+                buySlot.DisableBuyImageIcon();
+		    }
+		}
+
+    }
+
+    public void RefreshCoinDisplay()
     {
         var playerMoneyAmount = InventoryManagerNew.Instance.GetMoney();
         SellShopCointText.text = "x" + playerMoneyAmount;
@@ -70,21 +83,54 @@ public class ShopManager : MonoBehaviour
 
         // subtract the money 
         // add the item to the inventory
-        var itemAdded = InventoryManagerNew.Instance.AddItem(itemToPurchase);
+        var itemAddedToInventory = InventoryManagerNew.Instance.AddItem(itemToPurchase);
 
-        if(itemAdded)
+        if(itemAddedToInventory)
         { 
 			InventoryManagerNew.Instance.AddMoney(-price);
 
-			PopulateSellShop();
-            RefreshCoinTest();
+			PopulateSellShop(_shopBuySellConfig);
+            EnableBuyTextForAffordableItems();
+            RefreshCoinDisplay();
+            RemoveItemFromConfig(itemToPurchase, 1);
+
 
             return true;
 		}
 
-
         return false;
 
+    }
+
+    private void RemoveItemFromConfig(Item itemToRemove, int quantity)
+    {
+        // search for the item inside the config
+        if (_shopBuySellConfig == null || _shopBuySellConfig.Count <= 0)
+            return;
+
+        ShopItemMetadata entryToRemove = null;
+
+        foreach(var entry in _shopBuySellConfig)
+        {  
+            if(entry.item == itemToRemove)
+            {
+                if(entry.buyQuantity == -1)
+                {  
+                    // this item can be purchased infinitly so we don't have to do anything to the config
+				}
+                else
+                {  
+					entry.buyQuantity--;
+                    if(entry.buyQuantity == 0)
+                    {
+                        entryToRemove = entry;
+                    }
+				}
+		    } 
+		}
+
+        if (entryToRemove != null)
+            _shopBuySellConfig.Remove(entryToRemove);
     }
 
 
@@ -105,13 +151,13 @@ public class ShopManager : MonoBehaviour
 		}
 
         InventoryManagerNew.Instance.AddMoney(priceOfItem);
-	    RefreshCoinTest();
+	    RefreshCoinDisplay();
 
         return true;
     }
 
 
-    public void PopulateSellShop()
+    public void PopulateSellShop(List<ShopItemMetadata> shopBuySellConfig)
     {
         // clear the previous sell shop
         foreach(var sellSlot in itemsInSellShop)
@@ -124,7 +170,7 @@ public class ShopManager : MonoBehaviour
         // get every item and quantity from the inventory
         var slots = InventoryManagerNew.Instance.GetInventorySlots();
         if (slots == null) return;
-        // remove money slot from list
+        // remove money and empty slots from list
         var tempSlots = new List<InventorySlot>();
 
         foreach(var slot in slots)
@@ -145,7 +191,7 @@ public class ShopManager : MonoBehaviour
         {  
             var inventoryItem = slot.GetComponentInChildren<InventoryItem>();
 
-            int? sellPrice = FindSellPriceForItem(inventoryItem.item);
+            int? sellPrice = FindSellPriceForItem(inventoryItem.item, shopBuySellConfig);
 
             if (sellPrice == null)
                 continue;
@@ -153,25 +199,41 @@ public class ShopManager : MonoBehaviour
 			GameObject newItemGameObject = Instantiate(ShopSellInventorySlotPrefab, SellShopContent.transform);
 			var sellController = newItemGameObject.GetComponent<ShopSellInventoryController>();
 
-            sellController.InitializeItem(inventoryItem.item, sellPrice.Value, 1); 
+            sellController.InitializeItem(inventoryItem.item, sellPrice.Value, inventoryItem.itemCount); 
 
 		    itemsInSellShop.Add(sellController);
 		}
     }
 
-    private int? FindSellPriceForItem(Item item)
+    private int? FindSellPriceForItem(Item item, List<ShopItemMetadata> shopBuySellConfig)
     {
 
-        if (sellableItemsList == null || sellableItemsList.Count <=0) return null;
+        if (shopBuySellConfig == null || shopBuySellConfig.Count <=0) return null;
         if (item == null) return null;
 
         // search inside the list for a reference to that item
-        var itemMetadata = sellableItemsList.Find(entry => entry.item.Equals(item));
+        var itemMetadata = shopBuySellConfig.Find(entry => entry.item.Equals(item));
 
-        if(itemMetadata == null) return null;
+        if(itemMetadata == null || !itemMetadata.isSellable) return null;
 
         return itemMetadata.sellPrice;
 
+    }
+
+    public void OpenShop(List<ShopItemMetadata> shopBuySellConfig)
+    {
+        _shopBuySellConfig = shopBuySellConfig;
+        ShopUI.SetActive(true);
+        PopulateBuyShop(shopBuySellConfig);
+
+        // saving list here so that when buying an item you can see it populate inside the sell list window. 
+        // saving the variable here is a little odd. Leveraging events could resolve this concern. Until then saving a copy of the list 
+        PopulateSellShop(shopBuySellConfig);
+    }
+
+    public void CloseShop()
+    {  
+        ShopUI.SetActive(false);
     }
 
 }

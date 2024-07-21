@@ -5,19 +5,16 @@ using UnityEngine;
 public class ShopPlatformScript : MonoBehaviour
 {
 
-    public GameObject ShopUI;
+    public List<ShopItemMetadata> shopBuySellConfig;
+
 
     void OnTriggerEnter(Collider otherObject)
     {
-        // open shop inventory
-        ShopUI.SetActive(true);
-        ShopManager.Instance.PopulateSellShop();
+        ShopManager.Instance.OpenShop(shopBuySellConfig);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // close shop inventory
-        ShopUI.SetActive(false);
-
+        ShopManager.Instance.CloseShop();
     }
 }
