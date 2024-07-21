@@ -32,7 +32,6 @@ public class ChestOfItemsController : MonoBehaviour
                     break; 
 		    }
 
-            // if quantity is 0 then remove it from the list of items
 		}
 
         items = items.FindAll(item => item.quantity > 0);
