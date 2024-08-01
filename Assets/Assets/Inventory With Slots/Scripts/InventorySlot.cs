@@ -9,6 +9,7 @@ public class InventorySlot: MonoBehaviour, IDropHandler
     public Image image;
     public Color selectedColor, notSelectedColor;
     public List<ItemType> onlyAllowTypes;
+    public List<ItemType> notAllowTypes;
 
     private void Awake()
     {
@@ -33,21 +34,30 @@ public class InventorySlot: MonoBehaviour, IDropHandler
         if (itemInSlot != null)
             return;
 
-
 		GameObject dropped = eventData.pointerDrag;
 		var dragableItem = dropped.GetComponent<InventoryItem>();
 
+        if (dragableItem == null)
+            return;
 
         // make sure that the inventory to drop to supports the type
-        if(onlyAllowTypes != null && onlyAllowTypes.Count > 0) 
-		{  
-			if(!onlyAllowTypes.Contains(dragableItem.item.type)) 
-			{
-                return;
+        if (ItemAllowedInSlot(dragableItem.item.type))
+			dragableItem.parentAfterDrag = transform;
+    }
 
-			}
+    public bool ItemAllowedInSlot(ItemType itemType)
+    {  
+        // if the only list is configured then ignore the disallow
+        if(onlyAllowTypes != null && onlyAllowTypes.Count > 0) 
+		{
+            return onlyAllowTypes.Contains(itemType);
 		}
 
-		dragableItem.parentAfterDrag = transform;
+        if(notAllowTypes != null && notAllowTypes.Count > 0)
+        {
+            return !notAllowTypes.Contains(itemType);
+		}
+
+        return true;
     }
 }

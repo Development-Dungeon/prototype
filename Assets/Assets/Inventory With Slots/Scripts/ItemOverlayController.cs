@@ -12,16 +12,26 @@ public class ItemOverlayController : MonoBehaviour
     [HideInInspector]
     public GameObject createdOverlayObject;
 
-    public void Start()
+    public void Awake()
     {
         createdOverlayObject = Instantiate(overlayImagePrefab, transform);
         var imageComponent = createdOverlayObject.GetComponent<Image>();
         imageComponent.sprite = overlayImage;
+
+
+        var itemInSlot = transform.parent.GetComponentInChildren<InventoryItem>();
+
+        if (itemInSlot == null)
+            EnableOverlay();
+        else
+            DisableOverlay();
     }
 
     public void EnableOverlay()
     {
         if (overlayImage == null)
+            return;
+        if (createdOverlayObject == null)
             return;
 
         createdOverlayObject.SetActive(true);
@@ -30,6 +40,8 @@ public class ItemOverlayController : MonoBehaviour
     public void DisableOverlay()
     {
         if (overlayImage == null)
+            return;
+        if (createdOverlayObject == null)
             return;
 
         createdOverlayObject.SetActive(false);

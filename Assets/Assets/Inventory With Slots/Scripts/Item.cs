@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName = "New Scriptable Item", menuName = "Item new/Create new Item")]
-public class ItemNew: ScriptableObject
+public class Item: ScriptableObject
 {
 
     public int id;
@@ -20,10 +20,8 @@ public class ItemNew: ScriptableObject
     public bool stackable = true;
     public int maxStackable = 10;
 
-
     [Header("Both")]
     public Sprite image;
-
 
 }
 
@@ -33,7 +31,8 @@ public enum ItemType {
     Head,
     Chest,
     Suit,
-    Tank
+    Tank,
+    Money
 }
 
 public enum ActionType {  

@@ -9,15 +9,66 @@ public class InventoryManagerNew : MonoBehaviour
     public static InventoryManagerNew Instance;
     public int selectedSlot = -1;
     public GameObject mainInventory;
+    public Item money;
 
     [HideInInspector]
     public bool IsInventoryOpen = false;
 
+    public List<InventorySlot> GetInventorySlots() { return new List<InventorySlot>(inventorSlots); }
+    
+
+    public int GetMoney()
+    {
+        // search for the inventory slot and return the amount
+        var slotsWithMoney = FindAllSlotsWith(money);
+
+        int totalMoney = 0;
+
+        if (slotsWithMoney == null)
+            return totalMoney;
+
+
+        foreach(var slot in slotsWithMoney)
+	    {
+
+            var inventoryItem = slot.GetComponentInChildren<InventoryItem>();
+
+            if (inventoryItem == null) continue;
+
+            totalMoney += inventoryItem.itemCount;
+		}
+
+
+        return totalMoney;
+    }
+
+    internal void AddMoney(int moneyToAdd)
+    {
+        var totalMoney = GetMoney();
+        var remaningMoney = totalMoney + moneyToAdd;
+
+        // make sure that the player has money
+        // if the player does not have enough money then throw an error
+        if(remaningMoney < 0)
+            throw new System.Exception("Trying to subtract more money then the palyer has");
+
+        if(remaningMoney > money.maxStackable)
+            throw new System.Exception("Trying to add more money then is allowed to be stacked");
+
+        // if the player does have enough money then subtract the count from the money slot
+        // get the money slot and subtract
+        var moneySlots = FindAllSlotsWith(money);
+        var playerMoneyItem = moneySlots[0].GetComponentInChildren<InventoryItem>();
+
+        playerMoneyItem.AddToExistingItemQuantity(moneyToAdd);
+
+    }
 
     public void Start()
     {
         ChangedSelectedSlot(0);
     }
+
     private void Update()
     {
         if(Input.inputString != null) {
@@ -35,6 +86,25 @@ public class InventoryManagerNew : MonoBehaviour
                 ToggleInventory();
 		    }
         }
+    }
+
+    public bool RemoveItem(Item item)
+    {
+        var slots = FindAllSlotsWith(item);
+
+        if (slots == null || slots.Length == 0)
+            return false;
+
+        var slot = slots[0];
+        var itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+
+        if (itemInSlot == null)
+            throw new System.Exception("attempting to remove item but cannot find the inventory item component in childreen of slot");
+
+	    itemInSlot.RemoveItem();
+
+        return true;
+
     }
 
     private void ToggleInventory()
@@ -93,7 +163,7 @@ public class InventoryManagerNew : MonoBehaviour
         Instance = this;
     }
 
-    public bool AddItem(ItemNew item)
+    public bool AddItem(Item item)
     {
         
 	    var hasAddedItemToStack = AddStackableItem(item);
@@ -108,23 +178,26 @@ public class InventoryManagerNew : MonoBehaviour
 
     }
 
-    private bool AddItemToEmptySlot(ItemNew item)
+    private bool AddItemToEmptySlot(Item item)
     {  
         var emptySlots = FindAllEmptySlots();
 
         for(int i = 0; i < emptySlots.Length; i++) {
 
             var slot = emptySlots[i];
-			SpawnNewItem(item, slot);
 
-			return true;
+            if (slot.ItemAllowedInSlot(item.type)) 
+		    { 
+				SpawnNewItem(item, slot);
+				return true;
+		    }
 		}
 
         return false;
 
     }
 
-    private bool AddStackableItem(ItemNew item)
+    private bool AddStackableItem(Item item)
     {
 		// search for the item to see if there exists an entry inside the inventory which contains the item already
         // if the item is found then check if the max stackable amount is reached
@@ -159,7 +232,6 @@ public class InventoryManagerNew : MonoBehaviour
 
         for (int i = 0; i < inventorSlots.Length; i++)
         {
-
             var slot = inventorSlots[i];
             var itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             if (itemInSlot == null)
@@ -171,7 +243,7 @@ public class InventoryManagerNew : MonoBehaviour
         return emptySlots.ToArray();
     }
 
-    private InventorySlot[] FindAllSlotsWith(ItemNew item)
+    private InventorySlot[] FindAllSlotsWith(Item item)
     {
         if (item == null)
             return new InventorySlot[0];
@@ -193,14 +265,14 @@ public class InventoryManagerNew : MonoBehaviour
     }
 
 
-    void SpawnNewItem(ItemNew item, InventorySlot slot)
+    void SpawnNewItem(Item item, InventorySlot slot)
     {
         GameObject newItemGameObject = Instantiate(inventoryObjectPrefab, slot.transform);
         var inventoryItem = newItemGameObject.GetComponent<InventoryItem>();
         inventoryItem.InitialiseItem(item);
     }
 
-    public ItemNew GetSelectedItem()
+    public Item GetSelectedItem()
     {
         var slot = inventorSlots[selectedSlot];
         var itemInSlot = slot.GetComponentInChildren<InventoryItem>();
