@@ -37,7 +37,7 @@ public partial class ShopManager : MonoBehaviour
         // get a prefab for the ship inventory slot
         foreach(ShopItemMetadata itemMetadata in shopBuySellConfig)
         {
-            if (!itemMetadata.isBuyable)
+            if (!itemMetadata.isBuyable || itemMetadata.buyQuantity <= 0)
                 continue;
 
 			GameObject newItemGameObject = Instantiate(ShopInventorySlotPrefab, ShopContent.transform);
@@ -118,13 +118,16 @@ public partial class ShopManager : MonoBehaviour
                 {  
                     // this item can be purchased infinitly so we don't have to do anything to the config
 				}
-                else
+                else if(entry.buyQuantity >= quantity)
                 {  
-					entry.buyQuantity--;
-                    if(entry.buyQuantity == 0)
+					entry.buyQuantity -= quantity;
+                    if(entry.buyQuantity == 0 && !entry.isSellable)
                     {
                         entryToRemove = entry;
                     }
+				}
+                else {
+                    throw new System.Exception("Logical error : trying to remove a quantity from the buysellconfig greater then the quantity in the config. item (" + itemToRemove.itemName + ") quantity (" + quantity + ")");
 				}
 		    } 
 		}
