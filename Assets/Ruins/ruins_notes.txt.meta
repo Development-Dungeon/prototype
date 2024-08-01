@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2f11f8dc19013944ea59f2e0c45c22fd
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 2137
+  packageName: Ancient Ruins
+  packageVersion: 1.1
+  assetPath: Assets/Ruins/ruins_notes.txt
+  uploadId: 25635

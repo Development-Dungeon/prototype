@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2025378261652f844b092c2b464cfa67
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 168553
+  packageName: Fantasy plants 4
+  packageVersion: 1.0
+  assetPath: Assets/_FantasyPlants4/__CubemapsShaders/ASE_StandartPlants.shader
+  uploadId: 367492

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 64e22165f15883d4c9bf56b78c0ebabd
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 168553
+  packageName: Fantasy plants 4
+  packageVersion: 1.0
+  assetPath: Assets/_FantasyPlants4/__CubemapsShaders/ASE_StandartInnerGlow.shader
+  uploadId: 367492
