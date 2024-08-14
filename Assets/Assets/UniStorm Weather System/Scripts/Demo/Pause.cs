@@ -19,6 +19,7 @@ namespace UniStorm.CharacterController
             {
                 Paused = !Paused;
                 UpdateCusor(Paused);
+                
 
             }
         }
@@ -29,14 +30,16 @@ namespace UniStorm.CharacterController
 			{
 			    Cursor.lockState = CursorLockMode.None;
 			    Cursor.visible = true;
-			    //GetComponent<UniStormMouseLook>().enabled = false;
-			}
+                //GetComponent<UniStormMouseLook>().enabled = false;
+                FirstPersonController.cameraCanMove = false;
+            }
 			else
 			{
 			    Cursor.lockState = CursorLockMode.Locked;
 			    Cursor.visible = true;
-			    //GetComponent<UniStormMouseLook>().enabled = true;
-			}
+                //GetComponent<UniStormMouseLook>().enabled = true;
+                FirstPersonController.cameraCanMove = true;
+            }
             
         }
     }

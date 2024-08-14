@@ -11,10 +11,12 @@ public class ShopPlatformScript : MonoBehaviour
     void OnTriggerEnter(Collider otherObject)
     {
         ShopManager.Instance.OpenShop(shopBuySellConfig);
+        
     }
 
     private void OnTriggerExit(Collider other)
     {
         ShopManager.Instance.CloseShop();
+        
     }
 }

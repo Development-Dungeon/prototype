@@ -22,8 +22,8 @@ namespace UniStorm
 
         //Fog
         public int MinimumFogLevel = 300;
-        public int MaximumFogLevel = 600;
-        public float FogDensity = 0.0015f;
+        public int MaximumFogLevel = 1600;
+        public float FogDensity = 1;
         public float FogLightFalloff = 0.65f;
         public float FogHeight = 0.73f;
         public float CameraFogHeight = 0.85f;

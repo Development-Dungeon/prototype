@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class UnderWaterDepth : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class UnderWaterDepth : MonoBehaviour
     [SerializeField] public int depth = 6;
 
     [Header("Post Processing Volume")]
-    [SerializeField] private Volume postProcessingVolume;
+    //[SerializeField] private Volume postProcessingVolume;
 
     [Header("Post Processing Profiles")]
     [SerializeField] private VolumeProfile surfacePostProcessing;
@@ -23,6 +24,15 @@ public class UnderWaterDepth : MonoBehaviour
     [SerializeField] private float fogStartDensity;
     [SerializeField] private float fogEndDensity;
 
+
+    private void Start()
+    {
+        RenderSettings.fog = true;
+        RenderSettings.fogMode = FogMode.Linear;
+        RenderSettings.fogStartDistance = fogStartDensity;
+        RenderSettings.fogEndDistance = fogEndDensity;
+        RenderSettings.fogColor = fogColor;
+    }
 
     private void Update()
     {
@@ -41,19 +51,21 @@ public class UnderWaterDepth : MonoBehaviour
     {
         if (active)
         {
-            
+        
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Linear;
             RenderSettings.fogStartDistance = fogStartDensity;
             RenderSettings.fogEndDistance = fogEndDensity;
             RenderSettings.fogColor = fogColor;
-            postProcessingVolume.profile = underwaterPostProcessing;
+
+            //postProcessingVolume.profile = underwaterPostProcessing;
             
         }
         else 
         {
             RenderSettings.fog = false;
-            postProcessingVolume.profile = surfacePostProcessing;
+
+            //postProcessingVolume.profile = surfacePostProcessing;
            
         }
     
