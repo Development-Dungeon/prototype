@@ -54,4 +54,16 @@ public class WaitState : State
 
         return false;
     }
+
+    void OnDrawGizmos()
+    {
+        var target = transform.position + transform.forward * sightRange;
+
+        if (target != null)
+        {
+            // Draws a blue line from this transform to the target
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(transform.position, target);
+        }
+    }
 }

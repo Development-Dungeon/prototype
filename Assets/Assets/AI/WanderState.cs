@@ -7,6 +7,7 @@ public class WanderState : State
 {
     Vector3 wanderDesintation = Vector3.zero;
     float m_speed = 2;
+    float rotationSpeed = 1;
     public WaitState waitState;
 
 
@@ -42,7 +43,9 @@ public class WanderState : State
 
         // walk towards the new location given delta time
         var step = m_speed * Time.deltaTime;
+        var rotationStep = rotationSpeed * Time.deltaTime;
         bot.transform.position = Vector3.MoveTowards(bot.transform.position, wanderDesintation, step);
+        bot.transform.rotation = Quaternion.LookRotation( Vector3.RotateTowards(bot.transform.position, wanderDesintation, rotationStep, 0.0f));
 
         // if I am within a certain distance to the destination, consider it arrived and set the destination to null 
         if (Vector3.Distance(bot.transform.position, wanderDesintation) < .1f)

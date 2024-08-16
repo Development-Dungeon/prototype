@@ -5,8 +5,9 @@ using UnityEngine;
 public class ChaseState : State
 {
     public AttackState attackState;
-    public float attackRange = 2;
-    public float speed = 5;
+    public float attackRange = 2f;
+    public float speed = 5f;
+    public float rotationSpeed = 1f;
 
     public override State RunCurrentState(MonoBehaviour bot)
     {
@@ -24,8 +25,10 @@ public class ChaseState : State
 		}
 
         var step = speed * Time.deltaTime;
+        var rotationStep = rotationSpeed * Time.deltaTime;
 
         Vector3 nextStep = Vector3.MoveTowards(bot.transform.position, target, step);
+        Vector3 nextRotation = Vector3.RotateTowards(bot.transform.position, target, rotationStep, 0.0f);
 
         // if next step is within the bounds of the container then take the step, otherwise do wait
 
@@ -35,6 +38,7 @@ public class ChaseState : State
         if(volumneCollider.bounds.Contains(nextStep))
         {
             bot.transform.position = nextStep;
+            bot.transform.rotation = Quaternion.LookRotation(nextRotation);
 		}
         else
         {
