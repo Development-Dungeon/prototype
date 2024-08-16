@@ -5,24 +5,30 @@ using UnityEngine;
 public class ChaseState : State
 {
     public AttackState attackState;
-    public float attackRange = 2f;
-    public float speed = 5f;
-    public float rotationSpeed = 1f;
 
     public override State RunCurrentState(MonoBehaviour bot)
     {
         // find the target and follow 
         // look for the player tag? 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //GameObject player = GameObject.FindGameObjectWithTag("Player");
+        var attackRange = ((StateManager)bot).enemyAttributes.attackRange;
+        var detectionRange = ((StateManager)bot).enemyAttributes.enemyDetectionRange;
+
+        GameObject player = DetectClosest(bot.transform.position, detectionRange, "Player", LayerMask.NameToLayer("Player") );
+
         if (player == null)
             throw new System.Exception("could not find Player tag for Chase State calculations");
 
         Vector3 target = player.transform.position;
 
+
         if(Vector3.Distance(bot.transform.position, target) <= attackRange)
         {
             return attackState;
 		}
+
+        var speed = ((StateManager)bot).enemyAttributes.moveSpeed;
+        var rotationSpeed = ((StateManager)bot).enemyAttributes.rotationSpeed;
 
         var step = speed * Time.deltaTime;
         var rotationStep = rotationSpeed * Time.deltaTime;

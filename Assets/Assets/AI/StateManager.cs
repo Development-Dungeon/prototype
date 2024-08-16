@@ -7,6 +7,7 @@ public class StateManager : MonoBehaviour
 
     public event Action<State> StatusChangeEvent;
     public State currentState;
+    public EnemyAttributes enemyAttributes;
 
     // Update is called once per frame
     void Update()

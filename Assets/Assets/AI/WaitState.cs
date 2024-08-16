@@ -7,11 +7,9 @@ public class WaitState : State
     public WanderState wanderState;
     public ChaseState chaseState;
 
-    public float waitForSeconds = 1;
-    public float sightRange = 5;
     public GameObject humanPlayer;
 
-    private float waitRemaining = 5;
+    private float waitRemaining = 0;
 
     public override State RunCurrentState(MonoBehaviour bot)
     {
@@ -28,6 +26,7 @@ public class WaitState : State
         }
         else
         {
+            var waitForSeconds = ((StateManager)bot).enemyAttributes.pauseAfterMovementTime;
             waitRemaining = waitForSeconds;
             return wanderState;
 
@@ -38,32 +37,27 @@ public class WaitState : State
     private bool IsEnemyInRange(MonoBehaviour bot)
     {
 
-        if(Vector3.Distance(bot.transform.position, humanPlayer.gameObject.transform.position) <= sightRange)
-        {
-            // check if there is a direct line of sight by shooting a raycast
-            RaycastHit rayCastInfo;
-            //Vector3 rayToTarget = bot.transform.position - humanPlayer.gameObject.transform.position;
-            Vector3 rayToTarget = humanPlayer.gameObject.transform.position - bot.transform.position ;
+        var detectionRange = ((StateManager)bot).enemyAttributes.enemyDetectionRange;
 
-            if (Physics.Raycast(bot.transform.position, rayToTarget, out rayCastInfo))
-            {
-                if (humanPlayer.transform.CompareTag(rayCastInfo.transform.tag))
-                    return true;
-		    }
-		}
+        var player = DetectClosest(bot.transform.position, detectionRange, "Player", LayerMask.NameToLayer("Player"));
 
-        return false;
+        return player != null;
+
+  //      if(Vector3.Distance(bot.transform.position, humanPlayer.gameObject.transform.position) <= detectionRange)
+  //      {
+  //          // check if there is a direct line of sight by shooting a raycast
+  //          RaycastHit rayCastInfo;
+  //          //Vector3 rayToTarget = bot.transform.position - humanPlayer.gameObject.transform.position;
+  //          Vector3 rayToTarget = humanPlayer.gameObject.transform.position - bot.transform.position ;
+
+  //          if (Physics.Raycast(bot.transform.position, rayToTarget, out rayCastInfo))
+  //          {
+  //              if (humanPlayer.transform.CompareTag(rayCastInfo.transform.tag))
+  //                  return true;
+		//    }
+		//}
+
+        //return false;
     }
 
-    void OnDrawGizmos()
-    {
-        var target = transform.position + transform.forward * sightRange;
-
-        if (target != null)
-        {
-            // Draws a blue line from this transform to the target
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(transform.position, target);
-        }
-    }
 }
