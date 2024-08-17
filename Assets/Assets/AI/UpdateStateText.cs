@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class UpdateStateText : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class UpdateStateText : MonoBehaviour
 
         // subscribe to event
         stateManager.StatusChangeEvent += UpdateTextForStateChange;
+        var statemachineV2 = this.GetComponent<FishStateMachine>();
+
+        statemachineV2.stateTransition += UpdateTextForStateChange;
 
         
     }
@@ -26,6 +30,13 @@ public class UpdateStateText : MonoBehaviour
 
         textGO.text = newState.GetType().Name;
 
+    }
+
+    public void UpdateTextForStateChange<StateEnum> (GameObject go, StateEnum newstate ) where StateEnum : Enum
+    {  
+        var textGO = transform.Find("canvasGO")?.GetComponent<TextMeshPro>();
+
+        textGO.text = newstate.ToString();
     }
 
     // Update is called once per frame
