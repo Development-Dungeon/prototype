@@ -14,15 +14,15 @@ public abstract class StateMachine<EState> : MonoBehaviour where EState : Enum
 
     private void Start()
     {
-        CurrentState?.EnterState(this);
+        CurrentState?.EnterState(gameObject);
     }
 
     private void Update()
     {
-        EState nextStateKey = CurrentState.GetNextState();
+        EState nextStateKey = CurrentState.GetNextState(gameObject);
 
         if (nextStateKey.Equals(CurrentState.StateKey))
-            CurrentState?.UpdateState();
+            CurrentState?.UpdateState(gameObject);
         else
             TransitionToState(nextStateKey);
     }
@@ -30,9 +30,9 @@ public abstract class StateMachine<EState> : MonoBehaviour where EState : Enum
 
     private void TransitionToState(EState stateKey)
     {
-        CurrentState.ExistState();
+        CurrentState.ExistState(gameObject);
         CurrentState = States[stateKey];
-        CurrentState.EnterState();
+        CurrentState.EnterState(gameObject);
 
         stateTransition?.Invoke(gameObject, stateKey);
 
@@ -40,16 +40,16 @@ public abstract class StateMachine<EState> : MonoBehaviour where EState : Enum
 
     private void OnTriggerEnter(Collider other)
     {
-        CurrentState?.OnTriggerEnter(other);
+        CurrentState?.OnTriggerEnter(gameObject, other);
     }
 
     private void OnTriggerStay(Collider other)
     {
-        CurrentState?.OnTriggerStay(other);
+        CurrentState?.OnTriggerStay(gameObject, other);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        CurrentState?.OnTriggerExit(other);
+        CurrentState?.OnTriggerExit(gameObject, other);
     }
 }

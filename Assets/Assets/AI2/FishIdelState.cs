@@ -14,24 +14,24 @@ public class FishIdelState : BaseState<FishStateMachine.FishState>
 
     }
 
-    public override void EnterState()
+    public override void EnterState(GameObject go)
     {
         doneIdel = false;
         waitRemaining = waitTime;
     }
 
-    public override void ExistState()
+    public override void ExistState(GameObject go)
     {
     }
 
-    public override void UpdateState()
+    public override void UpdateState(GameObject go)
     {
         waitRemaining -= Time.deltaTime;
         if (waitRemaining <= 0)
             doneIdel = true;
     }
 
-    public override FishStateMachine.FishState GetNextState()
+    public override FishStateMachine.FishState GetNextState(GameObject go)
     {
 
         if (doneIdel)
@@ -39,15 +39,15 @@ public class FishIdelState : BaseState<FishStateMachine.FishState>
         return StateKey;
     }
 
-    public override void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(GameObject go,Collider other)
     {
     }
 
-    public override void OnTriggerExit(Collider other)
+    public override void OnTriggerExit(GameObject go,Collider other)
     {
     }
 
-    public override void OnTriggerStay(Collider other)
+    public override void OnTriggerStay(GameObject go,Collider other)
     {
     }
 

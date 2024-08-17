@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class DrawEnemyFields : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class DrawEnemyFields : MonoBehaviour
     {
         attributes = GetComponent<StateManager>().enemyAttributes;
         GetComponent<StateManager>().StatusChangeEvent += UpdateDetectionSphere;
+        GetComponent<FishStateMachine>().stateTransition += UpdateDetectionSphere;
     }
 
     void Update()
@@ -62,6 +64,22 @@ public class DrawEnemyFields : MonoBehaviour
         }
     }
 
+    private void UpdateDetectionSphere<EState>(GameObject go, EState newState) where EState : Enum 
+    {  
+
+        if (newState.ToString() == "Chase")
+        {
+            isDetected = true;
+        }
+        else if (newState.ToString() == "Attack")
+        {
+            isDetected = true;
+        }
+        else
+        {
+            isDetected = false;
+        }
+    }
 
 
     private void DrawDetectionRange()

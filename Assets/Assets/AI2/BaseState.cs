@@ -10,13 +10,43 @@ public abstract class BaseState<EState> where EState : Enum
         StateKey = key;
     }
 
-    public abstract void EnterState();
+    public abstract void EnterState(GameObject go);
     public EState StateKey { get; private set; }
-    public abstract void ExistState();
-    public abstract void UpdateState();
-    public abstract EState GetNextState();
-    public abstract void OnTriggerEnter(Collider other);
-    public abstract void OnTriggerStay(Collider other);
-    public abstract void OnTriggerExit(Collider other);
+    public abstract void ExistState(GameObject g);
+    public abstract void UpdateState(GameObject g);
+    public abstract EState GetNextState(GameObject g);
+    public abstract void OnTriggerEnter(GameObject go, Collider other);
+    public abstract void OnTriggerStay(GameObject go, Collider other);
+    public abstract void OnTriggerExit(GameObject go, Collider other);
+
+
+    public GameObject DetectClosest(Vector3 center, float radius, string tag, int layer)
+    {
+
+        Collider[] results = Physics.OverlapSphere(center, radius, layer);
+
+        if (results == null)
+            return null;
+
+        float closestDistance = Mathf.Infinity;
+        GameObject closestGO = null;
+
+        foreach (var possibleMatch in results)
+        {
+            if (possibleMatch.tag == tag)
+            {
+                var distanceFromCenter = Vector3.Distance(center, possibleMatch.transform.position);
+                if (distanceFromCenter < closestDistance)
+                {
+                    closestGO = possibleMatch.gameObject;
+                    closestDistance = distanceFromCenter;
+                }
+                // TODO add line of sight
+            }
+        }
+
+        return closestGO;
+
+    }
 
 }
