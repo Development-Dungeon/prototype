@@ -8,7 +8,7 @@ public class FishIdelState : BaseState<FishStateMachine.FishState>
     private bool doneIdel;
 
     private float waitRemaining ;
-    public float waitTime = 1;
+    public float waitTime = 0;
 
     public FishIdelState() : base(FishStateMachine.FishState.Idle) { 
 

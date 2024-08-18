@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyDetectionRange: 5
   attackRange: 2
-  wanderDistanceRange: 5
-  moveSpeed: 6
+  wanderDistanceRange: 10
+  moveSpeed: 2
   rotationSpeed: 1
   pauseAfterMovementTime: 1

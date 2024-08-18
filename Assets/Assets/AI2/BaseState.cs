@@ -12,9 +12,9 @@ public abstract class BaseState<EState> where EState : Enum
 
     public abstract void EnterState(GameObject go);
     public EState StateKey { get; private set; }
-    public abstract void ExistState(GameObject g);
-    public abstract void UpdateState(GameObject g);
-    public abstract EState GetNextState(GameObject g);
+    public abstract void ExistState(GameObject go);
+    public abstract void UpdateState(GameObject go);
+    public abstract EState GetNextState(GameObject go);
     public abstract void OnTriggerEnter(GameObject go, Collider other);
     public abstract void OnTriggerStay(GameObject go, Collider other);
     public abstract void OnTriggerExit(GameObject go, Collider other);
