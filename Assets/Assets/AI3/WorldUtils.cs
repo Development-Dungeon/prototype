@@ -1,27 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-[Serializable]
-public abstract class BaseState<EState> where EState : Enum
+public class WorldUtils 
 {
-
-    public BaseState(EState key) {
-        StateKey = key;
-    }
-
-    public abstract void EnterState(GameObject go);
-    public EState StateKey { get; private set; }
-    public abstract void ExistState(GameObject go);
-    public abstract void UpdateState(GameObject go);
-    public abstract EState GetNextState(GameObject go);
-    public abstract void OnTriggerEnter(GameObject go, Collider other);
-    public abstract void OnTriggerStay(GameObject go, Collider other);
-    public abstract void OnTriggerExit(GameObject go, Collider other);
-
-
-    public GameObject DetectClosest(Vector3 center, float radius, string tag, int layer)
+    public static GameObject DetectClosest(Vector3 center, float radius, string tag, int layer)
     {
 
         Collider[] results = Physics.OverlapSphere(center, radius, layer);
@@ -47,6 +30,15 @@ public abstract class BaseState<EState> where EState : Enum
         }
 
         return closestGO;
+
+    }
+    public static Quaternion LookAt1(Transform transform,Vector3 startingPos, Vector3 target, float rotationSpeed)
+    {
+        var direction = startingPos - target;
+
+        var rotation = Quaternion.LookRotation(direction);
+
+        return Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
 
     }
 

@@ -83,6 +83,7 @@ public class FishWanderState : BaseState<FishStateMachine.FishState>
         }
 
     }
+
     public override FishStateMachine.FishState GetNextState(GameObject go)
     {
         var detectionRadius = go.GetComponent<StateManager>().enemyAttributes.enemyDetectionRange;
