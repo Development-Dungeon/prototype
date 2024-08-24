@@ -16,5 +16,5 @@ MonoBehaviour:
   attackRange: 2
   wanderDistanceRange: 10
   moveSpeed: 2
-  rotationSpeed: 1
+  rotationSpeed: 1000
   pauseAfterMovementTime: 1

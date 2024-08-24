@@ -19,10 +19,10 @@ public class EnemyAIController : MonoBehaviour
 
 
         // lets make the real states and see how that goes
-        var idleState = new IdleStateNew(gameObject, null, 1f);
-        var wanderState = new WanderStateNew(gameObject, null);
-        var chaseState = new ChaseStateNew(gameObject, null);
-        var attackState = new AttackStateNew(gameObject, null);
+        var idleState = new IdleState(gameObject, null, 1f);
+        var wanderState = new WanderState(gameObject, null);
+        var chaseState = new ChaseState(gameObject, null);
+        var attackState = new AttackState(gameObject, null);
 
 
         // how to get a time to check if its not running
@@ -42,26 +42,26 @@ public class EnemyAIController : MonoBehaviour
 
     public void FindTargetWithinRange()
     {
-
-        // if there is already a target, regardless if there is another one which is closer, stay locked onto target 
-        if (targetGO!= null && targetGO.activeSelf)
+        // if i have a target but hes dead, then remove him from being a target
+        if (targetGO == null || !targetGO.activeSelf)
         {
+            targetGO = WorldUtils.DetectClosest(transform.position, enemyAttributes.enemyDetectionRange, "Player", 3);
+
+            targetWithinDetectionRange = targetGO != null;
+            targetWithinAttackRange = targetWithinDetectionRange && IsWithinRange(transform.position, targetGO.transform.position, enemyAttributes.attackRange);
+
+        }
+        else if (targetGO != null && targetGO.activeSelf)
+        {
+
+            // if i have a target, remain on the target while he is in range
             targetWithinDetectionRange = IsWithinRange(transform.position, targetGO.transform.position, enemyAttributes.enemyDetectionRange);
             targetWithinAttackRange = IsWithinRange(transform.position, targetGO.transform.position, enemyAttributes.attackRange);
-            targetGO = targetWithinDetectionRange ? targetGO: null;
 
-            if (targetWithinDetectionRange) return; // stay locked on to the current target
-        }
-        else
-        {
-
-            // find a new target if there is no target
-            var detectedGO = WorldUtils.DetectClosest(transform.position, enemyAttributes.enemyDetectionRange, "Player", 3);
-
-            targetWithinDetectionRange = detectedGO != null;
-            targetWithinAttackRange = targetWithinDetectionRange && IsWithinRange(transform.position, detectedGO.transform.position, enemyAttributes.attackRange);
-
-            targetGO = detectedGO;
+            if (!targetWithinDetectionRange)
+            {
+                targetGO = null;
+            }
         }
 
     }

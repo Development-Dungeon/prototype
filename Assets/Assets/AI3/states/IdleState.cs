@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-public class IdleStateNew : BaseState
+public class IdleState : BaseState
 {
     public bool running;
 
     private float waitTime;
     private float remainingTime;
 
-    public IdleStateNew(GameObject player, Animator animator, float waitTime) : base(player, animator)
+    public IdleState(GameObject player, Animator animator, float waitTime) : base(player, animator)
     {
         this.waitTime = waitTime;
     }

@@ -20,6 +20,9 @@ public class WorldUtils
             if (possibleMatch.tag == tag)
             {
                 var distanceFromCenter = Vector3.Distance(center, possibleMatch.transform.position);
+                if (distanceFromCenter > radius)
+                    continue;
+
                 if (distanceFromCenter < closestDistance)
                 {
                     closestGO = possibleMatch.gameObject;
@@ -50,5 +53,30 @@ public class WorldUtils
 
         //go.transform.rotation = Quaternion.Slerp(go.transform.rotation, rotation, Time.deltaTime * rotationSpeed);
         return Quaternion.Slerp(go.transform.rotation, rotation, rotationSpeed);
+    }
+
+    public static void Move(GameObject go, Vector3 target, float m_speed, float r_speed, Collider volumeCollider)
+    {
+        var walkStep = m_speed * Time.deltaTime;
+        var rotationStep = r_speed * Time.deltaTime;
+
+        var nextStep = Vector3.MoveTowards(go.transform.position, target, walkStep);
+        var nextRotation = WorldUtils.LookAt1(go.transform, go.transform.position, target, rotationStep);
+
+        // verify that the next step is within the bounds
+        if (volumeCollider == null || PointWithin(nextStep, volumeCollider))
+        {
+            go.transform.SetPositionAndRotation(nextStep, nextRotation);
+        }
+        else
+        {
+            Debug.Log("in chase, next step is not within the volumne");
+        }
+
+    }
+
+    public static bool PointWithin(Vector3 point, Collider volumeCollider)
+    {  
+        return volumeCollider.bounds.Contains(point);
     }
 }

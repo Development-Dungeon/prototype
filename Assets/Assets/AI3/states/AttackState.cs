@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class AttackStateNew : BaseState
+public class AttackState : BaseState
 {
-    public AttackStateNew(GameObject player, Animator animator) : base(player, animator)
+    public AttackState(GameObject player, Animator animator) : base(player, animator)
     {
     }
 
