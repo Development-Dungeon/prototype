@@ -9,8 +9,8 @@ public class ChaseStateNew : BaseState
     public override void Update()
     {
         // move toward the target
-        var speed = player.GetComponent<StateManager>().enemyAttributes.moveSpeed;
-        var rotationSpeed = player.GetComponent<StateManager>().enemyAttributes.rotationSpeed;
+        var speed = player.GetComponent<EnemyAIController>().enemyAttributes.moveSpeed;
+        var rotationSpeed = player.GetComponent<EnemyAIController>().enemyAttributes.rotationSpeed;
 
         var step = speed * Time.deltaTime;
         var rotationStep = rotationSpeed * Time.deltaTime;
@@ -32,7 +32,7 @@ public class ChaseStateNew : BaseState
 
         // if next step is within the bounds of the container then take the step, otherwise do wait
 
-        VolumeAttributes volumeAttributes = player.GetComponent<VolumeAttributes>();
+        var volumeAttributes = player.GetComponent<EnemyAIController>();
         Collider volumneCollider = volumeAttributes.container.GetComponent<Collider>();
 
         if (volumneCollider.bounds.Contains(nextStep))

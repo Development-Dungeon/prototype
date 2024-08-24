@@ -11,15 +11,16 @@ public class DrawEnemyFields : MonoBehaviour
 
     void Start()
     {
-        attributes = GetComponent<StateManager>().enemyAttributes;
-        GetComponent<StateManager>().StatusChangeEvent += UpdateDetectionSphere;
-        GetComponent<FishStateMachine>().stateTransition += UpdateDetectionSphere;
+        EnemyAIController aiController = GetComponent<EnemyAIController>();
+
+        attributes = aiController.enemyAttributes;
+
+        // i need to subcribe on state updates
+
+        StateMachine.StateMachineNewStateEvent += UpdateDetectionSphere;
+
     }
 
-    void Update()
-    {
-
-    }
 
     void OnDrawGizmos()
     {
@@ -33,8 +34,7 @@ public class DrawEnemyFields : MonoBehaviour
 
     private void DrawContainer()
     {
-        // get the volum on the enemny
-        VolumeAttributes va = GetComponent<VolumeAttributes>();
+        EnemyAIController va = GetComponent<EnemyAIController>();
 
         if (va == null) return;
 
@@ -47,31 +47,14 @@ public class DrawEnemyFields : MonoBehaviour
         Gizmos.DrawWireCube(container.transform.position, container.transform.lossyScale);
     }
 
-    private void UpdateDetectionSphere(State currentState)
+    private void UpdateDetectionSphere(Type currentState)
     {
 
-        if (currentState.GetType().Name == "ChaseState")
+        if (currentState.Name.Contains("Chase"))
         {
             isDetected = true;
         }
-        else if (currentState.GetType().Name == "AttackState")
-        {
-            isDetected = true;
-        }
-        else
-        {
-            isDetected = false;
-        }
-    }
-
-    private void UpdateDetectionSphere<EState>(GameObject go, EState newState) where EState : Enum 
-    {  
-
-        if (newState.ToString() == "Chase")
-        {
-            isDetected = true;
-        }
-        else if (newState.ToString() == "Attack")
+        else if (currentState.Name.Contains("Attack"))
         {
             isDetected = true;
         }

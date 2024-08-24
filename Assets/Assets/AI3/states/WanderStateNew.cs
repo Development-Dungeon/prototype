@@ -34,7 +34,7 @@ public class WanderStateNew : BaseState
     {
 
         // pic a random spot 3 units around the player
-        var wr = go.GetComponent<StateManager>().enemyAttributes.wanderDistanceRange;
+        var wr = go.GetComponent<EnemyAIController>().enemyAttributes.wanderDistanceRange;
 
         Vector3 randomUnitsToMove = new Vector3(Random.Range(-wr, wr), Random.Range(-wr, wr), Random.Range(-wr, wr));
 
@@ -43,7 +43,7 @@ public class WanderStateNew : BaseState
 
 
         // if it is, set that location as the destination and start walking to it
-        VolumeAttributes volumeAttributes = go.GetComponent<VolumeAttributes>();
+        var volumeAttributes = go.GetComponent<EnemyAIController>();
         Collider volumneCollider = volumeAttributes.container.GetComponent<Collider>();
 
         if (volumneCollider.bounds.Contains(newPosition))
@@ -61,8 +61,8 @@ public class WanderStateNew : BaseState
     public void Move(GameObject go)
     {
 
-        var m_speed = go.GetComponent<StateManager>().enemyAttributes.moveSpeed;
-        var rotationSpeed = go.GetComponent<StateManager>().enemyAttributes.rotationSpeed;
+        var m_speed = go.GetComponent<EnemyAIController>().enemyAttributes.moveSpeed;
+        var rotationSpeed = go.GetComponent<EnemyAIController>().enemyAttributes.rotationSpeed;
 
         // walk towards the new location given delta time
         var step = m_speed * Time.deltaTime;

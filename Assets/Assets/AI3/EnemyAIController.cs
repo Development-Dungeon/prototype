@@ -9,6 +9,9 @@ public class EnemyAIController : MonoBehaviour
     bool targetWithinDetectionRange;
     public GameObject targetGO;
     bool targetWithinAttackRange;
+    public GameObject container; // the enemy cannot go outside this containers bounds
+    public EnemyAttributes enemyAttributes;
+
 
     void Awake()
     {
@@ -43,35 +46,26 @@ public class EnemyAIController : MonoBehaviour
         // if there is already a target, regardless if there is another one which is closer, stay locked onto target 
         if (targetGO!= null && targetGO.activeSelf)
         {
-            targetWithinDetectionRange = IsWithinRange(transform.position, targetGO.transform.position, 10);
-            targetWithinAttackRange = IsWithinRange(transform.position, targetGO.transform.position, 2);
+            targetWithinDetectionRange = IsWithinRange(transform.position, targetGO.transform.position, enemyAttributes.enemyDetectionRange);
+            targetWithinAttackRange = IsWithinRange(transform.position, targetGO.transform.position, enemyAttributes.attackRange);
             targetGO = targetWithinDetectionRange ? targetGO: null;
 
             if (targetWithinDetectionRange) return; // stay locked on to the current target
         }
         else
         {
+
             // find a new target if there is no target
-            var detectedGO = WorldUtils.DetectClosest(transform.position, 10, "Player", 3);
+            var detectedGO = WorldUtils.DetectClosest(transform.position, enemyAttributes.enemyDetectionRange, "Player", 3);
 
             targetWithinDetectionRange = detectedGO != null;
-            targetWithinAttackRange = targetWithinDetectionRange && IsWithinRange(transform.position, detectedGO.transform.position, 2);
+            targetWithinAttackRange = targetWithinDetectionRange && IsWithinRange(transform.position, detectedGO.transform.position, enemyAttributes.attackRange);
 
             targetGO = detectedGO;
         }
 
     }
 
-    public bool EnemyWithinAttackRange()
-    {
-        var detectedGO = WorldUtils.DetectClosest(transform.position, 10, "Player", 3);
-
-        if (detectedGO == null)
-            return false;
-
-        return IsWithinRange(transform.position, detectedGO.transform.position, 2);
-
-    }
 
     private bool IsWithinRange(Vector3 focus, Vector3 other, float range)
     {
