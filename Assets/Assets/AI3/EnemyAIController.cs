@@ -3,183 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class IdleStateNew : BaseState
-{
-    public bool running;
-
-    private float waitTime;
-    private float remainingTime;
-
-    public IdleStateNew(GameObject player, Animator animator, float waitTime) : base(player, animator)
-    {
-        this.waitTime = waitTime;
-    }
-
-
-    public override void OnEnter()
-    {
-        running = true;
-        remainingTime = waitTime;
-    }
-
-    public override void Update()
-    {
-        if (remainingTime <= 0)
-            running = false;
-        else
-            remainingTime -= Time.deltaTime;
-    }
-
-    public override void OnExit()
-    {
-        running = false;
-    }
-
-}
-
-public class WanderStateNew : BaseState
-{
-    public bool reachedDestination;
-    private Vector3 wanderTarget;
-
-    public WanderStateNew(GameObject player, Animator animator) : base(player, animator)
-    {
-    }
-
-    public override void OnEnter()
-    {
-        wanderTarget = Vector3.zero;
-        reachedDestination = false;
-    }
-
-    public override void OnExit()
-    {
-        wanderTarget = Vector3.zero;
-        reachedDestination = false;
-    }
-    public override void Update()
-    {
-        // pick a destination and travel to it
-        if (wanderTarget == Vector3.zero)
-            ChooseDestination(player);
-        else
-            Move(player);
-    }
-
-
-    public void ChooseDestination(GameObject go)
-    {
-
-        // pic a random spot 3 units around the player
-        var wr = go.GetComponent<StateManager>().enemyAttributes.wanderDistanceRange;
-
-        Vector3 randomUnitsToMove = new Vector3(Random.Range(-wr, wr), Random.Range(-wr, wr), Random.Range(-wr, wr));
-
-        // check if that spot is within the range
-        Vector3 newPosition = go.transform.position + randomUnitsToMove;
-
-
-        // if it is, set that location as the destination and start walking to it
-        VolumeAttributes volumeAttributes = go.GetComponent<VolumeAttributes>();
-        Collider volumneCollider = volumeAttributes.container.GetComponent<Collider>();
-
-        if (volumneCollider.bounds.Contains(newPosition))
-        {
-            wanderTarget = newPosition;
-        }
-        else
-        {
-            Debug.Log("did not find a point within the volume. ");
-        }
-
-    }
-
-
-    public void Move(GameObject go)
-    {
-
-        var m_speed = go.GetComponent<StateManager>().enemyAttributes.moveSpeed;
-        var rotationSpeed = go.GetComponent<StateManager>().enemyAttributes.rotationSpeed;
-
-        // walk towards the new location given delta time
-        var step = m_speed * Time.deltaTime;
-
-        go.transform.position = Vector3.MoveTowards(go.transform.position, wanderTarget, step);
-
-        WorldUtils.LookAt1(go.transform, go.transform.position , wanderTarget, rotationSpeed);
-
-        //bot.transform.rotation = Quaternion.LookRotation( Vector3.RotateTowards(bot.transform.position, wanderDesintation, rotationStep, 1f));
-        //var target = wanderDesintation - bot.transform.position;
-        //bot.transform.rotation = new Quaternion(90,90,90,0);
-
-        // if I am within a certain distance to the destination, consider it arrived and set the destination to null 
-        if (Vector3.Distance(go.transform.position, wanderTarget) < .1f)
-        {
-            wanderTarget = Vector3.zero;
-            reachedDestination = true;
-        }
-    }
-
-}
-
-public class ChaseStateNew : BaseState
-{
-    public ChaseStateNew(GameObject player, Animator animator) : base(player, animator)
-    {
-    }
-
-    public override void Update()
-    {
-        // move toward the target
-        var speed = player.GetComponent<StateManager>().enemyAttributes.moveSpeed;
-        var rotationSpeed = player.GetComponent<StateManager>().enemyAttributes.rotationSpeed;
-
-        var step = speed * Time.deltaTime;
-        var rotationStep = rotationSpeed * Time.deltaTime;
-
-
-        Vector3 target = player.transform.position;
-
-
-        Vector3 nextStep = Vector3.MoveTowards(player.transform.position, target, step);
-        Quaternion nextRotation = WorldUtils.LookAt1(player.transform, nextStep, target, 1f);
-
-        // if next step is within the bounds of the container then take the step, otherwise do wait
-
-        VolumeAttributes volumeAttributes = player.GetComponent<VolumeAttributes>();
-        Collider volumneCollider = volumeAttributes.container.GetComponent<Collider>();
-
-        if (volumneCollider.bounds.Contains(nextStep))
-        {
-            player.transform.position = nextStep;
-            player.transform.rotation = nextRotation;
-        }
-        else
-        {
-            Debug.Log("in chase, next step is not within the volumne");
-        }
-
-    }
-}
-
-public class AttackStateNew : BaseState
-{
-    public AttackStateNew(GameObject player, Animator animator) : base(player, animator)
-    {
-    }
-
-    public override void Update()
-    {
-        Debug.Log("Inside Attack state");
-    }
-}
-
-
 public class EnemyAIController : MonoBehaviour
 {
     StateMachine stateMachine;
     bool targetWithinDetectionRange;
-    Transform target;
+    public GameObject targetGO;
     bool targetWithinAttackRange;
 
     void Awake()
@@ -211,12 +39,13 @@ public class EnemyAIController : MonoBehaviour
 
     public void FindTargetWithinRange()
     {
+
         // if there is already a target, regardless if there is another one which is closer, stay locked onto target 
-        if (target != null)
+        if (targetGO!= null && targetGO.activeSelf)
         {
-            targetWithinDetectionRange = IsWithinRange(transform.position, target.position, 10);
-            targetWithinAttackRange = IsWithinRange(transform.position, target.position, 2);
-            target = targetWithinDetectionRange ? target : null;
+            targetWithinDetectionRange = IsWithinRange(transform.position, targetGO.transform.position, 10);
+            targetWithinAttackRange = IsWithinRange(transform.position, targetGO.transform.position, 2);
+            targetGO = targetWithinDetectionRange ? targetGO: null;
 
             if (targetWithinDetectionRange) return; // stay locked on to the current target
         }
@@ -226,9 +55,9 @@ public class EnemyAIController : MonoBehaviour
             var detectedGO = WorldUtils.DetectClosest(transform.position, 10, "Player", 3);
 
             targetWithinDetectionRange = detectedGO != null;
-            targetWithinAttackRange = targetWithinDetectionRange && IsWithinRange(transform.position, target.position, 2);
+            targetWithinAttackRange = targetWithinDetectionRange && IsWithinRange(transform.position, detectedGO.transform.position, 2);
 
-            target = detectedGO != null ? detectedGO.transform : null;
+            targetGO = detectedGO;
         }
 
     }

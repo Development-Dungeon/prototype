@@ -7,6 +7,7 @@ public class StateMachine
     Dictionary<Type, StateNode> nodes = new();
     HashSet<ITransition> anyTransition = new();
 
+    public static event Action<Type> StateMachineNewStateEvent; 
 
     public void Update()
     {
@@ -38,6 +39,10 @@ public class StateMachine
         previousState?.OnExit();
         nextState?.OnEnter();
         current = nodes[state.GetType()];
+
+        // publish an event to the next state
+        StateMachineNewStateEvent?.Invoke(current.State.GetType());
+
     }
 
     ITransition GetTransition()

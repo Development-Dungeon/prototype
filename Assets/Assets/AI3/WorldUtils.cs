@@ -32,9 +32,9 @@ public class WorldUtils
         return closestGO;
 
     }
-    public static Quaternion LookAt1(Transform transform,Vector3 startingPos, Vector3 target, float rotationSpeed)
+    public static Quaternion LookAt1(Transform transform, Vector3 startingPos, Vector3 target, float rotationSpeed)
     {
-        var direction = startingPos - target;
+        var direction = target - startingPos;
 
         var rotation = Quaternion.LookRotation(direction);
 
@@ -42,4 +42,13 @@ public class WorldUtils
 
     }
 
+    public Quaternion LookAt2(Vector3 target, GameObject go, float rotationSpeed)
+    {
+        var direction = target - go.transform.position;
+
+        var rotation = Quaternion.LookRotation(target);
+
+        //go.transform.rotation = Quaternion.Slerp(go.transform.rotation, rotation, Time.deltaTime * rotationSpeed);
+        return Quaternion.Slerp(go.transform.rotation, rotation, rotationSpeed);
+    }
 }

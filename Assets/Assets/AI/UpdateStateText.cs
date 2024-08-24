@@ -20,7 +20,19 @@ public class UpdateStateText : MonoBehaviour
 
         statemachineV2.stateTransition += UpdateTextForStateChange;
 
+
+        StateMachine.StateMachineNewStateEvent += UpdateTextForStateMachine;
+
         
+    }
+
+    private void UpdateTextForStateMachine(Type newState)
+    {
+
+        var textGO = transform.Find("canvasGO")?.GetComponent<TextMeshPro>();
+
+        textGO.text = newState.Name;
+
     }
 
     public void UpdateTextForStateChange(State newState)
