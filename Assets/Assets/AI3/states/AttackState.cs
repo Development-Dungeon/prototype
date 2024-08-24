@@ -2,25 +2,21 @@
 
 public class AttackState : BaseState
 {
+    private EnemyAIController aiController;
+
     public AttackState(GameObject player, Animator animator) : base(player, animator)
     {
+        aiController = player.GetComponent<EnemyAIController>();
     }
 
     public override void Update()
     {
 
-        // if the target is within range
-        // set the active to false
-
-        var aiController = player.GetComponent<EnemyAIController>();
-
         if (aiController == null) return;
 
         var target = aiController.targetGO;
 
-        var attackRange = 2f;
-
-        if(Vector3.Distance(player.transform.position, target.transform.position) <= attackRange)
+        if(Vector3.Distance(player.transform.position, target.transform.position) <= aiController.enemyAttributes.attackRange)
         {
             aiController.targetGO.SetActive(false);
 		}
