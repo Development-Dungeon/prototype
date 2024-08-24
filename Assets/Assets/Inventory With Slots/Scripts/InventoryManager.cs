@@ -116,11 +116,13 @@ public class InventoryManagerNew : MonoBehaviour
         {  
 		    Cursor.lockState = CursorLockMode.None;
 		    Cursor.visible = true;
+            FirstPersonController.cameraCanMove = false;
 		}
         else {  
 		    Cursor.lockState = CursorLockMode.Locked;
-		    Cursor.visible = false;
-		}
+            Cursor.visible = false;
+            FirstPersonController.cameraCanMove = true;
+        }
     }
 
     private void DropItemInWorld()

@@ -13,22 +13,21 @@ MonoBehaviour:
   m_Name: Foggy
   m_EditorClassIdentifier: 
   WeatherTypeName: Foggy
-  CloudProfileComponent: {fileID: 11400000, guid: 8af8e06821542df46bd3ee0b1093a6ff,
-    type: 2}
-  SunIntensity: 0.6
+  CloudProfileComponent: {fileID: 11400000, guid: 8af8e06821542df46bd3ee0b1093a6ff, type: 2}
+  SunIntensity: 0.457
   CloudShadowIntensity: 0
-  MoonIntensity: 0.5
+  MoonIntensity: 0.595
   UseAuroras: 1
   AuroraIntensity: 0.4
   AuroraOuterColor: {r: 0, g: 1, b: 1, a: 1}
   AuroraInnerColor: {r: 0, g: 1, b: 0, a: 1}
   MinimumFogLevel: 300
   MaximumFogLevel: 600
-  FogDensity: 0.01
-  FogLightFalloff: 0.3
-  FogHeight: 0.95
+  FogDensity: 0.04
+  FogLightFalloff: 0.408
+  FogHeight: 1
   CameraFogHeight: 1
-  OverrideFogColor: 1
+  OverrideFogColor: 0
   OverrideCameraFogHeight: 0
   FogColor:
     serializedVersion: 2
@@ -57,11 +56,12 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
   WindSpeedLevel: 0.85
   WindBendingLevel: 0.2
-  WindIntensity: 0.25
+  WindIntensity: 0.23
   WeatherEffect: {fileID: 0}
   ParticleEffectAmount: 25
   ParticleEffectVector: {x: 0, y: 28, z: 0}
@@ -76,7 +76,7 @@ MonoBehaviour:
   UseAdditionalWeatherEffect: 1
   SpecialWeatherType: 1
   Season: 0
-  CloudHeight: 650
+  CloudHeight: 150
   CloudLevel: 4
   TemperatureType: 2
   ShaderControl: 2
@@ -108,6 +108,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
   UseLightning: 1

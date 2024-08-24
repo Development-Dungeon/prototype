@@ -232,11 +232,17 @@ public partial class ShopManager : MonoBehaviour
         // saving list here so that when buying an item you can see it populate inside the sell list window. 
         // saving the variable here is a little odd. Leveraging events could resolve this concern. Until then saving a copy of the list 
         PopulateSellShop(shopBuySellConfig);
+        FirstPersonController.cameraCanMove = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void CloseShop()
     {  
         ShopUI.SetActive(false);
+        FirstPersonController.cameraCanMove = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
 }
