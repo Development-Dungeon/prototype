@@ -18,14 +18,12 @@ public class EnemyAIController : MonoBehaviour
         stateMachine = new StateMachine();
 
 
-        // lets make the real states and see how that goes
         var idleState = new IdleState(gameObject, null, 1f);
         var wanderState = new WanderState(gameObject, null);
         var chaseState = new ChaseState(gameObject, null);
         var attackState = new AttackState(gameObject, null);
 
 
-        // how to get a time to check if its not running
 
         At(idleState, wanderState, new FuncPredicate(() => !idleState.running));
         At(wanderState, idleState, new FuncPredicate(() => wanderState.reachedDestination));

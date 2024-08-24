@@ -45,15 +45,6 @@ public class WorldUtils
 
     }
 
-    public Quaternion LookAt2(Vector3 target, GameObject go, float rotationSpeed)
-    {
-        var direction = target - go.transform.position;
-
-        var rotation = Quaternion.LookRotation(target);
-
-        //go.transform.rotation = Quaternion.Slerp(go.transform.rotation, rotation, Time.deltaTime * rotationSpeed);
-        return Quaternion.Slerp(go.transform.rotation, rotation, rotationSpeed);
-    }
 
     public static void Move(GameObject go, Vector3 target, float m_speed, float r_speed, Collider volumeCollider)
     {
