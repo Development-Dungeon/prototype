@@ -8,7 +8,7 @@ public class UnderWaterDepth : MonoBehaviour
 {
     [Header("Depth Parameters")]
     [SerializeField] private Transform mainCamera;
-    [SerializeField] public int depth = 6;
+    [SerializeField] public static int depth = 6;
 
     [Header("Post Processing Volume")]
     //[SerializeField] private Volume postProcessingVolume;
@@ -27,11 +27,11 @@ public class UnderWaterDepth : MonoBehaviour
 
     private void Start()
     {
-        RenderSettings.fog = true;
-        RenderSettings.fogMode = FogMode.Linear;
-        RenderSettings.fogStartDistance = fogStartDensity;
-        RenderSettings.fogEndDistance = fogEndDensity;
-        RenderSettings.fogColor = fogColor;
+        //RenderSettings.fog = true;
+        //RenderSettings.fogMode = FogMode.Linear;
+        //RenderSettings.fogStartDistance = fogStartDensity;
+        //RenderSettings.fogEndDistance = fogEndDensity;
+        //RenderSettings.fogColor = fogColor;
     }
 
     private void Update()
