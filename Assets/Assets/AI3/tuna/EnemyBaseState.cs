@@ -5,16 +5,16 @@ using System;
 public abstract class EnemyBaseState : IState
 {
 
-    protected TunaController enemyAIController;
+    protected GameObject enemy;
     protected Animator animator;
 
     protected const float crossFadeDuration = .1f;
 
     protected static int SwimHash = Animator.StringToHash("Swim");
 
-    protected EnemyBaseState(TunaController enemyAIController, Animator animator)
+    protected EnemyBaseState(GameObject enemy, Animator animator)
     {
-        this.enemyAIController = enemyAIController;
+        this.enemy= enemy;
         this.animator = animator;
     }
 

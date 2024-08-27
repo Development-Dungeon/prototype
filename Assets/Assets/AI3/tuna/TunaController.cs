@@ -2,13 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class TunaController : MonoBehaviour
+
+public class EnemyChaseState : EnemyBaseState
+{
+
+    Collider container;
+    float m_speed;
+    float r_speed;
+    EnemyDetection enemyDetection;
+    
+
+    public EnemyChaseState(GameObject enemy, Animator animator, Collider container, float m_speed, float r_speed, EnemyDetection enemyDetection) : base(enemy, animator)
+    {
+        this.container = container;
+        this.m_speed = m_speed;
+        this.r_speed = r_speed;
+        this.enemyDetection = enemyDetection;
+    }
+
+    public override void Update()
+    {
+        if ( enemyDetection == null) return;
+
+        var target = enemyDetection.targetGO;
+
+        if (target == null) return; // target may be null depending on the frame of the state machine
+
+        WorldUtils.Move(enemy, target.transform.position, m_speed, r_speed, container);
+
+    }
+}
+
+public class TunaController : MonoBehaviour
 {
 
     StateMachine stateMachine;
     Animator animator;
-
-    // give the tuna a state machine
+    Collider container;
+    public EnemyAttributes enemyAttributes;
+    public EnemyDetection enemyDetection;
 
 
     void At(IState from, IState to, IPredicate condition) => stateMachine.AddTransition(from, to, condition);
@@ -18,12 +50,13 @@ public partial class TunaController : MonoBehaviour
     void Start()
     {
         stateMachine = new StateMachine();
-        animator = GetComponent<Animator>();
+        animator = gameObject.GetComponent<Animator>();
 
+        var swimState = new EnemySwimState(gameObject, animator);
+        var chaseState = new EnemyChaseState(gameObject, animator, container, enemyAttributes.moveSpeed, enemyAttributes.rotationSpeed, enemyDetection);
 
-        var swimState = new EnemySwimState(this, animator);
-
-        Any(swimState, new FuncPredicate(() => true));
+        At(swimState, chaseState, new FuncPredicate(() => enemyDetection.HasTarget()));
+        At(chaseState, swimState, new FuncPredicate(() => !enemyDetection.HasTarget()));
 
 
         stateMachine.SetState(swimState);

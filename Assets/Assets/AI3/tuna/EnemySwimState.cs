@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemySwimState : EnemyBaseState
 {
-    public EnemySwimState(TunaController enemyAIController, Animator animator) : base(enemyAIController, animator)
+    public EnemySwimState(GameObject enemy, Animator animator) : base(enemy, animator)
     {
     }
 
