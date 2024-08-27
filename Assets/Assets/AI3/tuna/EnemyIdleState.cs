@@ -6,7 +6,7 @@ public class EnemyIdleState : EnemyBaseState
 {
 
     public bool running;
-    private float idleTime = 1;
+    private readonly float idleTime;
     private float remainingTime = 0;
 
     public EnemyIdleState(GameObject enemy, Animator animator, float idleTileToWait) : base(enemy, animator)
@@ -34,7 +34,7 @@ public class EnemyIdleState : EnemyBaseState
 
         remainingTime -= Time.deltaTime;
 
-        running = remainingTime <= 0;
+        running = remainingTime >= 0;
 
 
     }

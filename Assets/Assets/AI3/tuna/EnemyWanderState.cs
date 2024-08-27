@@ -60,7 +60,6 @@ public class EnemyWanderState : EnemyBaseState
         // check if that spot is within the range
         Vector3 newPosition = go.transform.position + randomUnitsToMove;
 
-
         // if it is, set that location as the destination and start walking to it
         if (container.bounds.Contains(newPosition))
         {

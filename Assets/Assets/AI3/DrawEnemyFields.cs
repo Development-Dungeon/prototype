@@ -18,14 +18,12 @@ public class DrawEnemyFields : MonoBehaviour
 
     }
 
-
     void OnDrawGizmos()
     {
 
         DrawForward();
         DrawDetectionRange();
         DrawContainer();
-
 
     }
 
