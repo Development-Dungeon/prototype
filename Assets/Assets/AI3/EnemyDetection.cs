@@ -7,23 +7,9 @@ public class EnemyDetection : MonoBehaviour
 
     public GameObject targetGO;
     public float enemyDetectionRange;
-    [HideInInspector] EnemyAttributes enemyAttributes;
+    public EnemyAttributes enemyAttributes;
     public bool targetWithinDetectionRange;
     public bool targetWithinAttackRange;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        enemyAttributes = gameObject.GetComponent<EnemyAttributes>();
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     private void FixedUpdate()
     {
@@ -42,7 +28,7 @@ public class EnemyDetection : MonoBehaviour
     }
 
 
-    public void FindTargetWithinRange()
+    private void FindTargetWithinRange()
     {
         // if i have a target but hes dead, then remove him from being a target
         if (targetGO == null || !targetGO.activeSelf)

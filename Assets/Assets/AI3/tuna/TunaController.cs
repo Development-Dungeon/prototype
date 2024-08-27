@@ -2,33 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class EnemyChaseState : EnemyBaseState
+public class EnemyAttackState : EnemyBaseState
 {
+    public EnemyDetection enemyDetection;
 
-    Collider container;
-    float m_speed;
-    float r_speed;
-    EnemyDetection enemyDetection;
-    
-
-    public EnemyChaseState(GameObject enemy, Animator animator, Collider container, float m_speed, float r_speed, EnemyDetection enemyDetection) : base(enemy, animator)
+    public EnemyAttackState(GameObject enemy, Animator animator, EnemyDetection enemyDetection) : base(enemy, animator)
     {
-        this.container = container;
-        this.m_speed = m_speed;
-        this.r_speed = r_speed;
         this.enemyDetection = enemyDetection;
     }
 
     public override void Update()
     {
-        if ( enemyDetection == null) return;
-
-        var target = enemyDetection.targetGO;
-
-        if (target == null) return; // target may be null depending on the frame of the state machine
-
-        WorldUtils.Move(enemy, target.transform.position, m_speed, r_speed, container);
+        Debug.Log("attack");
+        if (enemyDetection.targetWithinAttackRange && enemyDetection.targetGO != null)
+        {
+            enemyDetection.targetGO.SetActive(false);
+        }
 
     }
 }
@@ -38,7 +27,7 @@ public class TunaController : MonoBehaviour
 
     StateMachine stateMachine;
     Animator animator;
-    Collider container;
+    public Collider container;
     public EnemyAttributes enemyAttributes;
     public EnemyDetection enemyDetection;
 
@@ -51,15 +40,23 @@ public class TunaController : MonoBehaviour
     {
         stateMachine = new StateMachine();
         animator = gameObject.GetComponent<Animator>();
+        enemyDetection = gameObject.GetComponent<EnemyDetection>();
 
-        var swimState = new EnemySwimState(gameObject, animator);
+        var idleState = new EnemyIdleState(gameObject, animator, enemyAttributes.pauseAfterMovementTime);
+        var wanderState = new EnemyWanderState(gameObject, animator, container, enemyAttributes.moveSpeed, enemyAttributes.rotationSpeed, enemyAttributes.wanderDistanceRange);
         var chaseState = new EnemyChaseState(gameObject, animator, container, enemyAttributes.moveSpeed, enemyAttributes.rotationSpeed, enemyDetection);
+        var attackState = new EnemyAttackState(gameObject, animator, enemyDetection);
 
-        At(swimState, chaseState, new FuncPredicate(() => enemyDetection.HasTarget()));
-        At(chaseState, swimState, new FuncPredicate(() => !enemyDetection.HasTarget()));
+        At(idleState, chaseState, new FuncPredicate(() => enemyDetection.HasTarget()));
+        At(idleState, wanderState, new FuncPredicate(() => !idleState.running));
+        At(wanderState, idleState, new FuncPredicate(() => wanderState.reachedDestination));
+        At(chaseState, idleState, new FuncPredicate(() => !enemyDetection.HasTarget()));
+        At(chaseState, attackState, new FuncPredicate(() => enemyDetection.targetWithinAttackRange));
+        At(attackState, chaseState, new FuncPredicate(() => !enemyDetection.targetWithinAttackRange && enemyDetection.targetWithinDetectionRange));
+        At(attackState, idleState, new FuncPredicate(() => !enemyDetection.targetWithinAttackRange && !enemyDetection.targetWithinDetectionRange));
 
 
-        stateMachine.SetState(swimState);
+        stateMachine.SetState(idleState);
 
     }
 

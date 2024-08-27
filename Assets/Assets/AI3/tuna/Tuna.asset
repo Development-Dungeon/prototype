@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Tuna
   m_EditorClassIdentifier: 
   enemyDetectionRange: 5
-  attackRange: 2
+  attackRange: 3
   wanderDistanceRange: 5
   moveSpeed: 2
-  rotationSpeed: 1000
+  rotationSpeed: 200
   pauseAfterMovementTime: 1
