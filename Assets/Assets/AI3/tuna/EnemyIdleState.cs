@@ -26,7 +26,7 @@ public class EnemyIdleState : EnemyBaseState
 
     public override void Update()
     {
-
+        cooldownTimer.Tick(Time.deltaTime);
     }
 
 }
