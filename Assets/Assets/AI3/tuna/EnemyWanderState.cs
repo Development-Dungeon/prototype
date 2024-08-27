@@ -34,7 +34,6 @@ public class EnemyWanderState : EnemyBaseState
 
     public override void FixeUpdate()
     {
-        Debug.Log("wander");
         // pick a destination and travel to it
         if (wanderTarget == Vector3.zero)
             ChooseDestination(enemy);

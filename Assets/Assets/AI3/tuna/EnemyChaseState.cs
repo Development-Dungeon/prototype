@@ -19,7 +19,6 @@ public class EnemyChaseState : EnemyBaseState
 
     public override void Update()
     {
-        Debug.Log("chase");
         if (enemyDetection == null || enemyDetection.targetGO == null) return;
 
         WorldUtils.Move(enemy, enemyDetection.targetGO.transform.position, m_speed, r_speed, container);
