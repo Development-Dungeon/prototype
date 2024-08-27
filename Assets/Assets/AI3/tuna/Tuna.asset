@@ -17,4 +17,4 @@ MonoBehaviour:
   wanderDistanceRange: 5
   moveSpeed: 2
   rotationSpeed: 200
-  pauseAfterMovementTime: 2
+  pauseAfterMovementTime: 1

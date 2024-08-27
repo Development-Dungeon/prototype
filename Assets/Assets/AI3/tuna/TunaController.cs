@@ -48,7 +48,7 @@ public class TunaController : MonoBehaviour
         var attackState = new EnemyAttackState(gameObject, animator, enemyDetection);
 
         At(idleState, chaseState, new FuncPredicate(() => enemyDetection.HasTarget()));
-        At(idleState, wanderState, new FuncPredicate(() => !idleState.running));
+        At(idleState, wanderState, new FuncPredicate(() => idleState.cooldownTimer.IsFinished));
         At(wanderState, idleState, new FuncPredicate(() => wanderState.reachedDestination));
         At(wanderState, chaseState, new FuncPredicate(() => enemyDetection.targetWithinDetectionRange));
         At(chaseState, idleState, new FuncPredicate(() => !enemyDetection.HasTarget()));
