@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Models.meta
+guid: d3ccd5382b2334b66bf1dcbf7e75652d
+========
 guid: 83d980ec4b3fb47d1a6f7e01d500c258
+>>>>>>>> origin/main:Assets/Assets/AI.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -6,21 +6,17 @@ using System;
 public class DrawEnemyFields : MonoBehaviour
 {
 
-    private EnemyAttributes attributes;
+    public EnemyAttributes attributes;
     private bool isDetected = false;
+    public Collider container;
 
     void Start()
     {
-        EnemyAIController aiController = GetComponent<EnemyAIController>();
-
-        attributes = aiController.enemyAttributes;
-
         // i need to subcribe on state updates
 
         StateMachine.StateMachineNewStateEvent += UpdateDetectionSphere;
 
     }
-
 
     void OnDrawGizmos()
     {
@@ -29,17 +25,10 @@ public class DrawEnemyFields : MonoBehaviour
         DrawDetectionRange();
         DrawContainer();
 
-
     }
 
     private void DrawContainer()
     {
-        EnemyAIController va = GetComponent<EnemyAIController>();
-
-        if (va == null) return;
-
-        GameObject container = va.container;
-
         if (container == null) return;
 
         Gizmos.color = Color.green;
