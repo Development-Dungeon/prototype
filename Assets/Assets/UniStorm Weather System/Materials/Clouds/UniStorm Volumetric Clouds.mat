@@ -86,7 +86,7 @@ Material:
     - _VisibleDistance: -39.6
     - _WetnessStrength: 0
     - _WorldPosGlobal: 0
-    - _uAttenuation: -0.010553657
+    - _uAttenuation: 1.501046
     - _uCloudAlpha: 1
     - _uCloudHeight: 1
     - _uCloudsBackwardScatteringG: -0.2
@@ -94,7 +94,7 @@ Material:
     - _uCloudsBaseScale: 1.72
     - _uCloudsBottom: 500
     - _uCloudsBottomSoftness: 0.4
-    - _uCloudsCoverage: 0.47751147
+    - _uCloudsCoverage: 0.4907164
     - _uCloudsCoverageBias: 0.02
     - _uCloudsDensity: 1
     - _uCloudsDetailScale: 1000
@@ -139,16 +139,16 @@ Material:
     - _SunDir: {r: 0.2784009, g: 0.9581905, b: 0.0660601, a: 0}
     - _SunVector: {r: 0.34202018, g: 0.9344528, b: 0.099098235, a: 0}
     - _uCloudColor: {r: 1, g: 1, b: 1, a: 1}
-    - _uCloudsAmbientColorBottom: {r: 0.14226909, g: 0.18489303, b: 0.22007559, a: 1}
-    - _uCloudsAmbientColorTop: {r: 0.49049348, g: 0.41863823, b: 0.395428, a: 1}
+    - _uCloudsAmbientColorBottom: {r: 0.51548594, g: 0.5547249, b: 0.6037736, a: 1}
+    - _uCloudsAmbientColorTop: {r: 0.7549395, g: 0.79037845, b: 0.8207547, a: 1}
     - _uCloudsColor: {r: 0.84313726, g: 0.84313726, b: 0.84313726, a: 1}
     - _uCloudsHorizonColor: {r: 0, g: 0, b: 0, a: 1}
-    - _uFogColor: {r: 0.15918045, g: 0.19498028, b: 0.23067607, a: 0.0014}
+    - _uFogColor: {r: 0.516087, g: 0.52786887, b: 0.5441423, a: 0.0014}
     - _uHorizonColor: {r: 1, g: 1, b: 1, a: 1}
     - _uLightningColor: {r: 0.7647059, g: 0.8352941, b: 0.8862745, a: 1}
     - _uMoonColor: {r: 0.33023313, g: 0.36793935, b: 0.38679242, a: 1}
-    - _uMoonDir: {r: 0.57357645, g: -0.06083259, b: 0.8168901, a: 0}
-    - _uSunColor: {r: 0.42815655, g: 0.21294051, b: 0.09662081, a: 1}
-    - _uSunDir: {r: -0.3420202, g: 0.06978416, b: -0.9370982, a: 0}
+    - _uMoonDir: {r: 0.57357645, g: 0.7533727, b: 0.32162017, a: 0}
+    - _uSunColor: {r: 0.5566038, g: 0.5529281, b: 0.53822535, a: 1}
+    - _uSunDir: {r: -0.34202018, g: -0.864234, b: -0.3689475, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
