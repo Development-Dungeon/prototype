@@ -23,7 +23,7 @@ public class EnemyWanderState : EnemyBaseState
     {
         wanderTarget = Vector3.zero;
         reachedDestination = false;
-        animator.CrossFade(SwimHash, crossFadeDuration);
+        animator?.CrossFade(SwimHash, crossFadeDuration);
     }
     public override void OnExit()
     {

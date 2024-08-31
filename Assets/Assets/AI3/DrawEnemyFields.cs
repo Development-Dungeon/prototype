@@ -47,6 +47,10 @@ public class DrawEnemyFields : MonoBehaviour
         {
             isDetected = true;
         }
+        else if (currentState.Name.Contains("Flee"))
+        {
+            isDetected = true;
+        }
         else
         {
             isDetected = false;
