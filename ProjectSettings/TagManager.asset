@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Fire
   - Water
+  - Biome1
   layers:
   - Default
   - TransparentFX
