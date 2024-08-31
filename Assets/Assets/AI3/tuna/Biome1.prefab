@@ -1827,7 +1827,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931691d94db6041fbbdc7e68f9c380ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 4314561964807196991, guid: 90bfc444d37be41309b9328f32a52354, type: 3}
+  spawnMetadata:
+  - prefab: {fileID: 4314561964807196991, guid: 90bfc444d37be41309b9328f32a52354, type: 3}
+    MaxSpawn: 15
+    spawns: []
   spawnLocations:
   - {fileID: 7910290738616282013}
   - {fileID: 635549858557403004}
@@ -1845,7 +1848,6 @@ MonoBehaviour:
   - {fileID: 4324800269101147171}
   - {fileID: 8441056300662114197}
   - {fileID: 7404801878135178047}
-  MaxSpawn: 30
   SpawnCoolDownInSeconds: 1
   parent: {fileID: 325054951765233635}
 --- !u!114 &2579685804885004390

@@ -18451,6 +18451,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4769323926740982880, guid: b7dbe3a4a601841aebccc2913653655c, type: 3}
+      propertyPath: spawnMetadata.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769323926740982880, guid: b7dbe3a4a601841aebccc2913653655c, type: 3}
+      propertyPath: spawnMetadata.Array.data[0].prefab
+      value: 
+      objectReference: {fileID: 4314561964807196991, guid: 90bfc444d37be41309b9328f32a52354, type: 3}
+    - target: {fileID: 4769323926740982880, guid: b7dbe3a4a601841aebccc2913653655c, type: 3}
+      propertyPath: spawnMetadata.Array.data[0].MaxSpawn
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

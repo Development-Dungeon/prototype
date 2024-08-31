@@ -5,11 +5,8 @@ using UnityEngine;
 public class DrawBoarder : MonoBehaviour
 {
     // Start is called before the first frame update
-    //private Collider container;
     private void Awake()
     {
-        
-        //container = gameObject;
     }
     void Start()
     {
@@ -17,11 +14,11 @@ public class DrawBoarder : MonoBehaviour
     }
     void OnDrawGizmos()
     {
+        Gizmos.matrix = transform.localToWorldMatrix; // this will allow for roation
 
         Gizmos.color = Color.green;
 
-        //Gizmos.DrawWireCube(container.transform.position, container.transform.lossyScale);
-        Gizmos.DrawWireCube(gameObject.transform.position, gameObject.transform.lossyScale);
+        Gizmos.DrawWireCube(Vector3.zero, Vector3.one); // this is required if using locat to world matrix
     }
 
     void Update()
