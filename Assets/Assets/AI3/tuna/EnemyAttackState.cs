@@ -11,7 +11,6 @@ public class EnemyAttackState : EnemyBaseState
 
     public override void Update()
     {
-        Debug.Log("attack");
         if (enemyDetection.targetWithinAttackRange && enemyDetection.targetGO != null)
         {
             enemyDetection.targetGO.SetActive(false);

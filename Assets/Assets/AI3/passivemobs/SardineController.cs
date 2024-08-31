@@ -13,7 +13,6 @@ public class SardineController : MonoBehaviour
     void At(IState from, IState to, IPredicate condition) => stateMachine.AddTransition(from, to, condition);
     void Any(IState to, IPredicate condition) => stateMachine.AddAnyTransition(to, condition);
 
-    // create a mob that just floats around and runs from the player if i get close
     void Start()
     {
         stateMachine = new StateMachine();
