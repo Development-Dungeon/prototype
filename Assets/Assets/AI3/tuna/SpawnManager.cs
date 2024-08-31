@@ -19,6 +19,7 @@ public class SpawnManager : MonoBehaviour
     public int SpawnCoolDownInSeconds = 10;
     public GameObject parent;
     private Utilities.CountdownTimer SpawnCooldownTimer;
+    private int lastSpawnIndex = 0;
 
     void Start()
     {
@@ -32,20 +33,32 @@ public class SpawnManager : MonoBehaviour
         SpawnCooldownTimer.Reset(SpawnCoolDownInSeconds);
         SpawnCooldownTimer.Start();
 
-        if (spawnMetadata == null)
+        if (this.spawnMetadata == null)
             return;
-        // go down the list and spawn the next item in the area 
+
         // find first entry that is not at the limit
-        var prefabLimit = spawnMetadata.Find((metadata) => !metadata.IsMaxedSpawned());
+        var foundNewIndex = false;
+        for (int i = 1; i < this.spawnMetadata.Count; ++i)
+        {
+            // check every index and see if it has an available max
+            var indexMod = (lastSpawnIndex + i) % this.spawnMetadata.Count;
+            if (!this.spawnMetadata[indexMod].IsMaxedSpawned())
+            {
+                lastSpawnIndex = indexMod;
+                foundNewIndex = true;
+		    }
+        }
 
-        if (prefabLimit == null)
-            return;
+        if (!foundNewIndex) return;
 
-	    var randomLocationIndex = UnityEngine.Random.Range(0, spawnLocations.Count);
-	    var spawnTransform = spawnLocations[randomLocationIndex].transform;
-	    var newCreature = Instantiate(prefabLimit.prefab, spawnTransform.position, spawnTransform.rotation, parent.transform);
-	    prefabLimit.spawns.Add(newCreature);
+        var prefabLimit = this.spawnMetadata[lastSpawnIndex];
 
+        if (prefabLimit == null) return;
+
+        var randomLocationIndex = UnityEngine.Random.Range(0, spawnLocations.Count);
+        var spawnTransform = spawnLocations[randomLocationIndex].transform;
+        var newCreature = Instantiate(prefabLimit.prefab, spawnTransform.position, spawnTransform.rotation, parent.transform);
+        prefabLimit.spawns.Add(newCreature);
 
     }
 

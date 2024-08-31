@@ -24,8 +24,8 @@ public class EnemyFleeState : EnemyBaseState
 
         // calculate awway location
         // i want to find the angle that the player is coming towards me and then go in the opposite direction?
-        var direction = enemyDetection.targetGO.transform.position - enemy.transform.position; // this is the direction to the player.. i need just the negative of this? Add this to my current transform
-        var fleeLocation = enemy.transform.position - direction;
+        var direction = enemy.transform.position - enemyDetection.targetGO.transform.position; // this is the direction to the player.. i need just the negative of this? Add this to my current transform
+        var fleeLocation = enemy.transform.position + direction.normalized * m_speed;
         WorldUtils.Move(enemy, fleeLocation, m_speed, r_speed, container);
 
     }
