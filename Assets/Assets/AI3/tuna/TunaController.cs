@@ -2,26 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAttackState : EnemyBaseState
-{
-    public EnemyDetection enemyDetection;
-
-    public EnemyAttackState(GameObject enemy, Animator animator, EnemyDetection enemyDetection) : base(enemy, animator)
-    {
-        this.enemyDetection = enemyDetection;
-    }
-
-    public override void Update()
-    {
-        Debug.Log("attack");
-        if (enemyDetection.targetWithinAttackRange && enemyDetection.targetGO != null)
-        {
-            enemyDetection.targetGO.SetActive(false);
-        }
-
-    }
-}
-
 public class TunaController : MonoBehaviour
 {
 
@@ -41,6 +21,8 @@ public class TunaController : MonoBehaviour
         stateMachine = new StateMachine();
         animator = gameObject.GetComponent<Animator>();
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
+        container = gameObject.transform.parent.gameObject.transform.Find("Container").GetComponent<Collider>();
+
 
         var idleState = new EnemyIdleState(gameObject, animator, enemyAttributes.pauseAfterMovementTime);
         var wanderState = new EnemyWanderState(gameObject, animator, container, enemyAttributes.moveSpeed, enemyAttributes.rotationSpeed, enemyAttributes.wanderDistanceRange);

@@ -16,7 +16,7 @@ public class EnemyIdleState : EnemyBaseState
     public override void OnEnter()
     {
         cooldownTimer.Start();
-        animator.CrossFade(SwimHash, crossFadeDuration);
+        animator?.CrossFade(SwimHash, crossFadeDuration);
     }
 
     public override void OnExit()
