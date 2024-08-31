@@ -2,35 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class EnemyFleeState : EnemyBaseState
-{
-    Collider container;
-    float m_speed;
-    float r_speed;
-    EnemyDetection enemyDetection;
-
-    public EnemyFleeState(GameObject enemy, Animator animator, Collider container, float m_speed, float r_speed, EnemyDetection enemyDetection) : base(enemy, animator)
-    {
-        this.container = container;
-        this.m_speed = m_speed;
-        this.r_speed = r_speed;
-        this.enemyDetection = enemyDetection;
-    }
-
-    public override void Update()
-    {
-        if (enemyDetection == null || enemyDetection.targetGO == null) return;
-
-        // calculate awway location
-        // i want to find the angle that the player is coming towards me and then go in the opposite direction?
-        var direction = enemy.transform.position - enemyDetection.targetGO.transform.position; // this is the direction to the player.. i need just the negative of this? Add this to my current transform
-        var fleeLocation = enemy.transform.position + direction.normalized * m_speed;
-        WorldUtils.Move(enemy, fleeLocation, m_speed, r_speed, container);
-
-    }
-}
-
 public class SardineController : MonoBehaviour
 {
 
