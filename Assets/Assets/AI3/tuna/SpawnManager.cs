@@ -38,7 +38,7 @@ public class SpawnManager : MonoBehaviour
 
         // find first entry that is not at the limit
         var foundNewIndex = false;
-        for (int i = 1; i < this.spawnMetadata.Count; ++i)
+        for (int i = 1; i <= this.spawnMetadata.Count; ++i)
         {
             // check every index and see if it has an available max
             var indexMod = (lastSpawnIndex + i) % this.spawnMetadata.Count;
