@@ -141,6 +141,20 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
 
+    #region Oxygen Variables
+
+    private Oxygen oxygen;
+    public float usedOxygenPerSecond = 5;
+
+    #endregion
+
+
+    #region Health Variables
+
+    private Health health;
+
+    #endregion
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -157,6 +171,9 @@ public class FirstPersonController : MonoBehaviour
             sprintRemaining = sprintDuration;
             sprintCooldownReset = sprintCooldown;
         }
+
+        oxygen = GetComponent<Oxygen>();
+        health = GetComponent<Health>();
 
     }
 
@@ -211,8 +228,6 @@ public class FirstPersonController : MonoBehaviour
         #endregion
     }
 
-    float camRotation;
-
     private void Update()
     {
         if (isUnderWater == true)
@@ -223,7 +238,6 @@ public class FirstPersonController : MonoBehaviour
             rb.drag = 5;
             enableSprint = false;
             enableHeadBob = false;
-
         }
         else
         {
@@ -232,19 +246,19 @@ public class FirstPersonController : MonoBehaviour
             rb.useGravity = true;
             enableSprint = true;
             enableHeadBob = true;
-
-
         }
         if (rb.transform.position.y <= 553)
         {
             isUnderWater = true;
             isGrounded = false;
-
+            if(oxygen != null)
+			    oxygen.On();
         }
         else if (rb.transform.position.y > 553)
         {
             isUnderWater = false;
-
+            if(oxygen != null)
+			    oxygen.Off();
         }
         #region Camera
 
@@ -536,8 +550,6 @@ public class FirstPersonController : MonoBehaviour
 
     private void Swim()
     {
-
-        
         // Basic movement
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -560,6 +572,11 @@ public class FirstPersonController : MonoBehaviour
         // Apply smooth movement to the Rigidbody
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetMovement * (isBoosting ? boostSpeed : swimSpeed), ref currentVelocity, smoothTime);
     }
+
+    private void UseOxygen(float deltaTime) => oxygen.UseOxygen(usedOxygenPerSecond * deltaTime);
+
+    private void AddOxygen(float deltaTime) => oxygen.AddOxygen(usedOxygenPerSecond * deltaTime);
+
     void HandleRotation()
     {
         //used to calculate the player's rotation - already done in the momvment method.

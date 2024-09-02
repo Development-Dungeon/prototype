@@ -6,14 +6,17 @@ using System;
 // This class is used for any object which may have health
 public class Health : MonoBehaviour
 {
-
-    public float _maxHealth = 100;
+    public float _maxHealth;
     public float _currentHealth;
-    public event Action<float> PlayerHealthPercentEvent;
+    public static event Action<float> HealthPercentChangeEvent;
 
     private void Awake()
     {
         _currentHealth = _maxHealth;
+    }
+    private void Start()
+    {
+        TriggerEvent();
     }
 
     public void SetMaxHealth(float maxHealth)
@@ -26,8 +29,10 @@ public class Health : MonoBehaviour
         _currentHealth = currentHealth;
     }
 
-    void Start()
-    {
+    private void TriggerEvent()
+    {  
+        if(_maxHealth != 0 && HealthPercentChangeEvent != null)
+			HealthPercentChangeEvent.Invoke(_currentHealth / _maxHealth);
     }
 
     public void TakeDamage(float damage)
@@ -36,7 +41,7 @@ public class Health : MonoBehaviour
 
         if (_currentHealth < 0) _currentHealth = 0;
 
-        PlayerHealthPercentEvent?.Invoke(_currentHealth / _maxHealth);
+        TriggerEvent();
     }
 
 
