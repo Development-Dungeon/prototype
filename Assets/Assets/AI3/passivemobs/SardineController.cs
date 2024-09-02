@@ -23,8 +23,8 @@ public class SardineController : MonoBehaviour
         var wanderState = new EnemyWanderState(gameObject, null, container, attributes.moveSpeed, attributes.rotationSpeed, attributes.wanderDistanceRange);
         var fleeState = new EnemyFleeState(gameObject, null, container, attributes.moveSpeed, attributes.rotationSpeed, enemyDetection);
 
-        //At(idleState, wanderState, new FuncPredicate(() => idleState.cooldownTimer.IsFinished));
-        //At(wanderState, idleState, new FuncPredicate(() => wanderState.reachedDestination));
+        At(idleState, wanderState, new FuncPredicate(() => idleState.cooldownTimer.IsFinished));
+        At(wanderState, idleState, new FuncPredicate(() => wanderState.reachedDestination));
         At(fleeState, idleState, new FuncPredicate(() => !enemyDetection.targetWithinDetectionRange));
         Any(fleeState, new FuncPredicate(() => enemyDetection.targetWithinDetectionRange));
 

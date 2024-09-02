@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c82bb15e03649ba9280b1bd4157124, type: 3}
   m_Name: Tuna
   m_EditorClassIdentifier: 
-  enemyDetectionRange: 6
-  attackRange: 2
+  enemyDetectionRange: 15
+  attackRange: 6
   wanderDistanceRange: 15
-  moveSpeed: 5
+  moveSpeed: 10
   rotationSpeed: 200
   pauseAfterMovementTime: 1
+  attackDamage: 10
+  cooldown: 3

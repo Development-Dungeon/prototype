@@ -271,6 +271,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TunaFish
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: af09bd041a4d14f58b17f07adec8f9df, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -342,7 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 0}
-  enemyAttributes: {fileID: 11400000, guid: b7663ac306b9a41339392ab6ed791532, type: 2}
+  attributes: {fileID: 11400000, guid: b7663ac306b9a41339392ab6ed791532, type: 2}
   enemyDetection: {fileID: 0}
 --- !u!65 &8195398084380835286
 BoxCollider:
