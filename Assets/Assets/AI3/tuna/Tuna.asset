@@ -16,7 +16,7 @@ MonoBehaviour:
   attackRange: 6
   wanderDistanceRange: 15
   moveSpeed: 10
-  rotationSpeed: 200
+  rotationSpeed: 500
   pauseAfterMovementTime: 1
   attackDamage: 10
   cooldown: 3
