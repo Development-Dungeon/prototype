@@ -7,7 +7,7 @@ public class StateMachine
     Dictionary<Type, StateNode> nodes = new();
     HashSet<ITransition> anyTransition = new();
 
-    public static event Action<Type> StateMachineNewStateEvent; 
+    public event Action<Type> StateMachineNewStateEvent; 
 
     public void Update()
     {

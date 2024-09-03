@@ -3,20 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class DrawEnemyFields : MonoBehaviour
+public abstract class IDrawEnemyFields : MonoBehaviour
 {
 
     public EnemyAttributes attributes;
     private bool isDetected = false;
     public Collider container;
 
-    void Start()
-    {
-        // i need to subcribe on state updates
 
-        StateMachine.StateMachineNewStateEvent += UpdateDetectionSphere;
-
-    }
 
     void OnDrawGizmos()
     {
@@ -24,6 +18,7 @@ public class DrawEnemyFields : MonoBehaviour
         DrawForward();
         DrawDetectionRange();
         DrawContainer();
+
 
     }
 
@@ -36,7 +31,7 @@ public class DrawEnemyFields : MonoBehaviour
         Gizmos.DrawWireCube(container.transform.position, container.transform.lossyScale);
     }
 
-    private void UpdateDetectionSphere(Type currentState)
+    protected void UpdateDetectionSphere(Type currentState)
     {
 
         if (currentState.Name.Contains("Chase"))
