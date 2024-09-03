@@ -29,6 +29,16 @@ public class Oxygen : MonoBehaviour
 
     public void SetCurrent(float current)
     {
+        // if i am already at 0 and the new current is less then return and do nothing. do not send another even 
+        if (_current == 0 && current <= 0) return;
+
+        // if i am already maxed and the new current will put me further, return and do nothing
+        if (_current >= _max && current >= _max) return;
+
+        // else, the new current is adding o2
+        // else, the new current is substracting o2
+        // in either case there is going to be a change in 02
+
         _current = current;
         if (_current < 0) _current = 0;
         if (_current > _max) _current = _max;
