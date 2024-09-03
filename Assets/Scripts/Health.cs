@@ -8,7 +8,7 @@ public class Health : MonoBehaviour
 {
     public float _maxHealth;
     public float _currentHealth;
-    public static event Action<float> HealthPercentChangeEvent;
+    public event Action<float> HealthPercentChangeEvent;
 
     private void Awake() => _currentHealth = _maxHealth;
     private void Start() => TriggerEvent();

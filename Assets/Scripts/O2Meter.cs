@@ -7,19 +7,15 @@ using UnityEngine.UI;
 public class O2MeterBar : MonoBehaviour
 {
     public Image _o2Meter;
+    Oxygen oxygen;
 
     private void Awake()
     {
-        Oxygen.OxygenPercentChangeEvent += UpdateFillAmount;
+        var player = GameObject.FindWithTag("Player");
+        oxygen = player.GetComponent<Oxygen>();
+        oxygen.OxygenPercentChangeEvent += UpdateFillAmount;
     }
 
-    public void UpdateFillAmount(float percent)
-    {
-        _o2Meter.fillAmount = percent;
-    }
-
-    private void OnDestroy()
-    {
-        Oxygen.OxygenPercentChangeEvent -= UpdateFillAmount;
-    }
+    public void UpdateFillAmount(float percent) => _o2Meter.fillAmount = percent;
+    private void OnDestroy() => oxygen.OxygenPercentChangeEvent -= UpdateFillAmount;
 }

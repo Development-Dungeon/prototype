@@ -11,7 +11,7 @@ public class Oxygen : MonoBehaviour
     public float _restorePerSecond;
     public float _current;
     public bool on;
-    public static event Action<float> OxygenPercentChangeEvent;
+    public event Action<float> OxygenPercentChangeEvent;
 
     private void Awake()
     {
