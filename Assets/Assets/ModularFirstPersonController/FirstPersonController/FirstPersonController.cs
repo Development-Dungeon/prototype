@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -145,6 +146,10 @@ public class FirstPersonController : MonoBehaviour
 
     private Oxygen oxygen;
     public float usedOxygenPerSecond = 5;
+    private bool isOutOfOxygen;
+    public float outOfOxygenDamage;
+    public float outOfOxygenDamangePeriod;
+    private Utilities.CountdownTimer outOfOxygenTimer;
 
     #endregion
 
@@ -174,9 +179,38 @@ public class FirstPersonController : MonoBehaviour
 
         oxygen = GetComponent<Oxygen>();
         health = GetComponent<Health>();
+        oxygen.OxygenPercentChangeEvent += Oxygen_OxygenPercentChangeEvent;
+        outOfOxygenTimer = new Utilities.CountdownTimer(outOfOxygenDamangePeriod);
+        outOfOxygenTimer.OnTimerStop += OutOfOxygenTimer_OnTimerStop;
 
     }
 
+    private void OutOfOxygenTimer_OnTimerStop()
+    {
+        health.TakeDamage(outOfOxygenDamage);
+        outOfOxygenTimer.Reset(outOfOxygenDamangePeriod);
+        outOfOxygenTimer.Start();
+    }
+
+    private void Oxygen_OxygenPercentChangeEvent(float o2PercentRemaining)
+    {
+        var oxygenWasOut = isOutOfOxygen;
+
+        isOutOfOxygen = o2PercentRemaining <= 0;
+
+        if(isOutOfOxygen)
+        {  
+			outOfOxygenTimer.Reset(outOfOxygenDamangePeriod);
+			outOfOxygenTimer.Start();
+		}
+
+
+        if (!isOutOfOxygen && outOfOxygenTimer.IsRunning)
+        {  
+            outOfOxygenTimer.Reset();
+            outOfOxygenTimer.Pause();
+		}
+    }
 
     void Start()
     {
@@ -430,6 +464,8 @@ public class FirstPersonController : MonoBehaviour
             HeadBob();
         }
 
+
+        outOfOxygenTimer.Tick(Time.deltaTime);
 
     }
 
@@ -841,6 +877,15 @@ public class FirstPersonController : MonoBehaviour
             GUI.enabled = true;
 
             #endregion
+
+            // oxygen fields
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            GUILayout.Label("Oxygen Settings", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
+            EditorGUILayout.Space();
+
+            fpc.outOfOxygenDamage= EditorGUILayout.FloatField(new GUIContent("No Breath Damange", "Damage taken per unit of time when out of breath"), fpc.outOfOxygenDamage);
+            fpc.outOfOxygenDamangePeriod = EditorGUILayout.FloatField(new GUIContent("No Breath Damage Period", "Number of seconds the player will take damage when out of breath"), fpc.outOfOxygenDamangePeriod );
 
             //Sets any changes from the prefab
             if (GUI.changed)
