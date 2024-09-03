@@ -194,7 +194,6 @@ public class FirstPersonController : MonoBehaviour
 
     private void Oxygen_OxygenPercentChangeEvent(float o2PercentRemaining)
     {
-        var oxygenWasOut = isOutOfOxygen;
 
         isOutOfOxygen = o2PercentRemaining <= 0;
 
