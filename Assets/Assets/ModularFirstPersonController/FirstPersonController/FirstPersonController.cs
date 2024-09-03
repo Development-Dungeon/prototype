@@ -573,9 +573,6 @@ public class FirstPersonController : MonoBehaviour
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetMovement * (isBoosting ? boostSpeed : swimSpeed), ref currentVelocity, smoothTime);
     }
 
-    private void UseOxygen(float deltaTime) => oxygen.UseOxygen(usedOxygenPerSecond * deltaTime);
-
-    private void AddOxygen(float deltaTime) => oxygen.AddOxygen(usedOxygenPerSecond * deltaTime);
 
     void HandleRotation()
     {
