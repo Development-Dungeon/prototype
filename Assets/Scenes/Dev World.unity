@@ -3166,7 +3166,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attributes: {fileID: 0}
+  isDetected: 0
   container: {fileID: 0}
+  controller: {fileID: 0}
 --- !u!114 &248317554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3179,6 +3181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e67ed1bfec38488b8b9bc821a12fd66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tunaController: {fileID: 0}
 --- !u!1001 &257929398
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18798,16 +18801,20 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4769323926740982880, guid: b7dbe3a4a601841aebccc2913653655c, type: 3}
+      propertyPath: spawnMetadata.Array.data[0].prefab
+      value: 
+      objectReference: {fileID: 4314561964807196991, guid: 90bfc444d37be41309b9328f32a52354, type: 3}
+    - target: {fileID: 4769323926740982880, guid: b7dbe3a4a601841aebccc2913653655c, type: 3}
       propertyPath: spawnMetadata.Array.data[1].prefab
       value: 
       objectReference: {fileID: 221772083891737623, guid: 4c1fcf688aedb4affafd8efd23c4c2b2, type: 3}
     - target: {fileID: 4769323926740982880, guid: b7dbe3a4a601841aebccc2913653655c, type: 3}
       propertyPath: spawnMetadata.Array.data[0].MaxSpawn
-      value: 15
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4769323926740982880, guid: b7dbe3a4a601841aebccc2913653655c, type: 3}
       propertyPath: spawnMetadata.Array.data[1].MaxSpawn
-      value: 30
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4769323926740982880, guid: b7dbe3a4a601841aebccc2913653655c, type: 3}
       propertyPath: spawnMetadata.Array.data[0].spawns.Array.size
@@ -25243,22 +25250,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3620634268119127046, guid: 90bfc444d37be41309b9328f32a52354, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 642332229}
     - target: {fileID: 4314561964807196991, guid: 90bfc444d37be41309b9328f32a52354, type: 3}
       propertyPath: m_Name
       value: TunaFish
       objectReference: {fileID: 0}
-    - target: {fileID: 4314561964807196991, guid: 90bfc444d37be41309b9328f32a52354, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5677510521545715950, guid: 90bfc444d37be41309b9328f32a52354, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 90bfc444d37be41309b9328f32a52354, type: 3}
 --- !u!1001 &6462803911672295008
 PrefabInstance:

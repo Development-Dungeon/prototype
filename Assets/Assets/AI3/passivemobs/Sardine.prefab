@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4454530601338361915}
   - component: {fileID: 5251067151615212039}
   - component: {fileID: 8575380875875606819}
-  - component: {fileID: 6637008896823788267}
+  - component: {fileID: 821603542790570299}
   m_Layer: 0
   m_Name: Sardine
   m_TagString: Untagged
@@ -142,7 +142,7 @@ MonoBehaviour:
   enemyAttributes: {fileID: 11400000, guid: 1200d1316d6f940bab2ac2916a5a4723, type: 2}
   targetWithinDetectionRange: 0
   targetWithinAttackRange: 0
---- !u!114 &6637008896823788267
+--- !u!114 &821603542790570299
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 221772083891737623}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5d3f7564849e459d87d8178eb8fdc2a, type: 3}
+  m_Script: {fileID: 11500000, guid: 6fc513b4aa665459c82a7b7fac843256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attributes: {fileID: 11400000, guid: 1200d1316d6f940bab2ac2916a5a4723, type: 2}

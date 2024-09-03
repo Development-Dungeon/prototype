@@ -1,11 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TunaController : MonoBehaviour
 {
 
-    StateMachine stateMachine;
+    public StateMachine stateMachine;
     Animator animator;
     public Collider container;
     public EnemyAttributes attributes;
@@ -21,6 +23,7 @@ public class TunaController : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
         container = gameObject.transform.parent.gameObject.transform.Find("Container").GetComponent<Collider>();
+        stateMachine.StateMachineNewStateEvent += UpdateTextForStateMachine;
 
         var idleState = new EnemyIdleState(gameObject, animator, attributes.pauseAfterMovementTime);
         var wanderState = new EnemyWanderState(gameObject, animator, container, attributes.moveSpeed, attributes.rotationSpeed, attributes.wanderDistanceRange);
@@ -39,6 +42,14 @@ public class TunaController : MonoBehaviour
         stateMachine.SetState(idleState);
 
     }
+
+    private void UpdateTextForStateMachine(Type newState)
+    {
+        var textGO = transform.Find("canvasGO")?.GetComponent<TextMeshPro>();
+        textGO.text = newState.Name;
+    }
+
+    private void OnDestroy() => stateMachine.StateMachineNewStateEvent -= UpdateTextForStateMachine;
 
     void Update()
     {
