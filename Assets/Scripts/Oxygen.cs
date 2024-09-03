@@ -13,13 +13,13 @@ public class Oxygen : MonoBehaviour
     public bool on;
     public event Action<float> OxygenPercentChangeEvent;
 
-    private void Awake()
-    {
-        _current = _max;
-    }
 
+    void Awake() => _current = _max;
     public void On() => on = true;
     public void Off() => on = false;
+    public void UseOxygen(float amountUsed) => SetCurrent(_current - amountUsed);
+    public void AddOxygen(float amountToAdd) => SetCurrent(_current + amountToAdd);
+
 
     public void SetMax(float max) 
     {
@@ -33,16 +33,6 @@ public class Oxygen : MonoBehaviour
         if (_current < 0) _current = 0;
         if (_current > _max) _current = _max;
         TriggerEvent();
-    }
-
-    public void UseOxygen(float amountUsed)
-    {
-        SetCurrent(_current - amountUsed);
-    }
-
-    public void AddOxygen(float amountToAdd)
-    {
-        SetCurrent(_current + amountToAdd);
     }
 
     private void TriggerEvent()
