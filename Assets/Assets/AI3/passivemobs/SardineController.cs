@@ -1,11 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SardineController : MonoBehaviour
 {
 
-    StateMachine stateMachine;
+    public StateMachine stateMachine;
     public Collider container;
     public EnemyAttributes attributes;
     public EnemyDetection enemyDetection;
@@ -18,13 +20,14 @@ public class SardineController : MonoBehaviour
         stateMachine = new StateMachine();
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
         container = gameObject.transform.parent.gameObject.transform.Find("Container").GetComponent<Collider>();
+        //stateMachine.StateMachineNewStateEvent += UpdateTextForStateMachine;
 
         var idleState = new EnemyIdleState(gameObject, null, attributes.pauseAfterMovementTime);
         var wanderState = new EnemyWanderState(gameObject, null, container, attributes.moveSpeed, attributes.rotationSpeed, attributes.wanderDistanceRange);
         var fleeState = new EnemyFleeState(gameObject, null, container, attributes.moveSpeed, attributes.rotationSpeed, enemyDetection);
 
-        //At(idleState, wanderState, new FuncPredicate(() => idleState.cooldownTimer.IsFinished));
-        //At(wanderState, idleState, new FuncPredicate(() => wanderState.reachedDestination));
+        At(idleState, wanderState, new FuncPredicate(() => idleState.cooldownTimer.IsFinished));
+        At(wanderState, idleState, new FuncPredicate(() => wanderState.reachedDestination));
         At(fleeState, idleState, new FuncPredicate(() => !enemyDetection.targetWithinDetectionRange));
         Any(fleeState, new FuncPredicate(() => enemyDetection.targetWithinDetectionRange));
 
@@ -32,13 +35,14 @@ public class SardineController : MonoBehaviour
         
     }
 
-    void Update()
+    private void UpdateTextForStateMachine(Type newState)
     {
-        stateMachine.Update();
+        TextMeshPro textGO = transform.Find("canvasGO")?.GetComponent<TextMeshPro>();
+        textGO.text = newState.Name;
     }
 
-    private void FixedUpdate()
-    {
-        stateMachine.FixUpdate();
-    }
+    void Update() => stateMachine.Update();
+    private void FixedUpdate() => stateMachine.FixUpdate();
+
+    private void OnDestroy() => stateMachine.StateMachineNewStateEvent -= UpdateTextForStateMachine;
 }

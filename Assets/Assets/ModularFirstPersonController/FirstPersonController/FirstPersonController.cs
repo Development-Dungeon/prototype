@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -141,6 +142,24 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
 
+    #region Oxygen Variables
+
+    private Oxygen oxygen;
+    public float usedOxygenPerSecond = 5;
+    private bool isOutOfOxygen;
+    public float outOfOxygenDamage;
+    public float outOfOxygenDamangePeriod;
+    private Utilities.CountdownTimer outOfOxygenTimer;
+
+    #endregion
+
+
+    #region Health Variables
+
+    private Health health;
+
+    #endregion
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -157,6 +176,39 @@ public class FirstPersonController : MonoBehaviour
             sprintRemaining = sprintDuration;
             sprintCooldownReset = sprintCooldown;
         }
+
+        oxygen = GetComponent<Oxygen>();
+        health = GetComponent<Health>();
+        oxygen.OxygenPercentChangeEvent += Oxygen_OxygenPercentChangeEvent;
+        outOfOxygenTimer = new Utilities.CountdownTimer(outOfOxygenDamangePeriod);
+        outOfOxygenTimer.OnTimerStop += OutOfOxygenTimer_OnTimerStop;
+
+    }
+
+    private void OutOfOxygenTimer_OnTimerStop()
+    {
+        health.TakeDamage(outOfOxygenDamage);
+        outOfOxygenTimer.Reset(outOfOxygenDamangePeriod);
+        outOfOxygenTimer.Start();
+    }
+
+    private void Oxygen_OxygenPercentChangeEvent(float o2PercentRemaining)
+    {
+
+        isOutOfOxygen = o2PercentRemaining <= 0;
+
+        if(isOutOfOxygen)
+        {  
+			outOfOxygenTimer.Reset(outOfOxygenDamangePeriod);
+			outOfOxygenTimer.Start();
+		}
+
+
+        if (!isOutOfOxygen && outOfOxygenTimer.IsRunning)
+        {  
+            outOfOxygenTimer.Reset();
+            outOfOxygenTimer.Pause();
+		}
     }
 
     void Start()
@@ -209,8 +261,6 @@ public class FirstPersonController : MonoBehaviour
         #endregion
     }
 
-    float camRotation;
-
     private void Update()
     {
         if (isUnderWater == true)
@@ -221,7 +271,6 @@ public class FirstPersonController : MonoBehaviour
             rb.drag = 5;
             enableSprint = false;
             enableHeadBob = false;
-
         }
         else
         {
@@ -230,19 +279,19 @@ public class FirstPersonController : MonoBehaviour
             rb.useGravity = true;
             enableSprint = true;
             enableHeadBob = true;
-
-
         }
         if (rb.transform.position.y <= 553)
         {
             isUnderWater = true;
             isGrounded = false;
-
+            if(oxygen != null)
+			    oxygen.On();
         }
         else if (rb.transform.position.y > 553)
         {
             isUnderWater = false;
-
+            if(oxygen != null)
+			    oxygen.Off();
         }
         #region Camera
 
@@ -415,6 +464,8 @@ public class FirstPersonController : MonoBehaviour
         }
 
 
+        outOfOxygenTimer.Tick(Time.deltaTime);
+
     }
 
 
@@ -534,8 +585,6 @@ public class FirstPersonController : MonoBehaviour
 
     private void Swim()
     {
-
-        
         // Basic movement
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -558,6 +607,8 @@ public class FirstPersonController : MonoBehaviour
         // Apply smooth movement to the Rigidbody
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetMovement * (isBoosting ? boostSpeed : swimSpeed), ref currentVelocity, smoothTime);
     }
+
+
     void HandleRotation()
     {
         //used to calculate the player's rotation - already done in the momvment method.
@@ -662,9 +713,7 @@ public class FirstPersonController : MonoBehaviour
 
             fpc.playerCamera = (Camera)EditorGUILayout.ObjectField(new GUIContent("Camera", "Camera attached to the controller."), fpc.playerCamera, typeof(Camera), true);
             fpc.fov = EditorGUILayout.Slider(new GUIContent("Field of View", "The camera’s view angle. Changes the player camera directly."), fpc.fov, fpc.zoomFOV, 179f);
-           
 
-            
             fpc.invertCamera = EditorGUILayout.ToggleLeft(new GUIContent("Invert Camera Rotation", "Inverts the up and down movement of the camera."), fpc.invertCamera);
             fpc.mouseSensitivity = EditorGUILayout.Slider(new GUIContent("Look Sensitivity", "Determines how sensitive the mouse movement is."), fpc.mouseSensitivity, .1f, 10f);
             fpc.maxLookAngle = EditorGUILayout.Slider(new GUIContent("Max Look Angle", "Determines the max and min angle the player camera is able to look."), fpc.maxLookAngle, 40, 90);
@@ -827,6 +876,15 @@ public class FirstPersonController : MonoBehaviour
             GUI.enabled = true;
 
             #endregion
+
+            // oxygen fields
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            GUILayout.Label("Oxygen Settings", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
+            EditorGUILayout.Space();
+
+            fpc.outOfOxygenDamage= EditorGUILayout.FloatField(new GUIContent("No Breath Damange", "Damage taken per unit of time when out of breath"), fpc.outOfOxygenDamage);
+            fpc.outOfOxygenDamangePeriod = EditorGUILayout.FloatField(new GUIContent("No Breath Damage Period", "Number of seconds the player will take damage when out of breath"), fpc.outOfOxygenDamangePeriod );
 
             //Sets any changes from the prefab
             if (GUI.changed)

@@ -16,6 +16,8 @@ public class EnemyAttributes : ScriptableObject
     public float rotationSpeed;
     public float pauseAfterMovementTime;
 
-
+    [Header("Attack")]
+    public float attackDamage;
+    public float cooldown;
 
 }

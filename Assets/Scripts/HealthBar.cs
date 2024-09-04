@@ -1,29 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.UI;
+using System;
 
 public class HealthBar : MonoBehaviour
 {
-    private float _maxHealth = 100;
-    private float _currentHealth;
     public Image _healthBarFill;
+    Health health;
 
-    void Start()
+    private void Awake()
     {
-        _currentHealth = _maxHealth;
+        var player = GameObject.FindGameObjectWithTag("Player");
+        health = player.GetComponent<Health>();
+        health.HealthPercentChangeEvent += UpdateFillAmount;
     }
 
-    public void UpdateHealth(float amount)
-    {
-        _currentHealth += amount;
-        UpdateHealthBar();
+    public void UpdateFillAmount(float percent) => _healthBarFill.fillAmount = percent;
 
-    }
-    private void UpdateHealthBar()
-    {
-
-        float targetFillAmount = _currentHealth / _maxHealth;
-        _healthBarFill.fillAmount = targetFillAmount;
-    }
+    private void OnDestroy() => health.HealthPercentChangeEvent -= UpdateFillAmount;
 }

@@ -60,13 +60,11 @@ public class EnemyWanderState : EnemyBaseState
         Vector3 newPosition = go.transform.position + randomUnitsToMove;
 
         // if it is, set that location as the destination and start walking to it
-        if (container.bounds.Contains(newPosition))
-        {
+        if(container == null)
             wanderTarget = newPosition;
-        }
+        else if (container.bounds.Contains(newPosition))
+            wanderTarget = newPosition;
         else
-        {
             Debug.Log("did not find a point within the volume. ");
-        }
     }
 }
