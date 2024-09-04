@@ -10,6 +10,7 @@ public class DecalYPositionController : MonoBehaviour
     private float fadeTimer = 0f;
     private bool isFading = false;
     private bool isVisible = false;
+    
 
     private void Start()
     {

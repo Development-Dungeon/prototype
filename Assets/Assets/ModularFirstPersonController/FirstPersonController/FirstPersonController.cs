@@ -59,11 +59,11 @@ public class FirstPersonController : MonoBehaviour
     public bool playerCanMove = true;
     public float walkSpeed = 5f;
     public float maxVelocityChange = 10f;
-    public float swimSpeed = 1f; // Speed of swimming
+    public float swimSpeed = 10f; // Speed of swimming
     public float rotationSpeed = 2f; // Speed of rotation
     public float moveSpeed = 5f; // Movement speed in all directions
     public float boostSpeed = 4f; // Speed when boosting
-    public float swimUpSpeed = 10f; // Speed when swimming up or down
+    public float swimUpSpeed = 100f; // Speed when swimming up or down
     public float smoothTime = 0.3f; // Smoothing time for movement
 
     // Internal Variables
@@ -87,8 +87,8 @@ public class FirstPersonController : MonoBehaviour
     public bool hideBarWhenFull = true;
     public Image sprintBarBG;
     public Image sprintBar;
-    public float sprintBarWidthPercent = .3f;
-    public float sprintBarHeightPercent = .015f;
+    public float sprintBarWidthPercent = .2f;
+    public float sprintBarHeightPercent = .007f;
 
     // Internal Variables
     private CanvasGroup sprintBarCG;
@@ -270,6 +270,8 @@ public class FirstPersonController : MonoBehaviour
             HandleBoost();
             rb.drag = 5;
             enableSprint = false;
+            sprintBarBG.gameObject.SetActive(false);
+            sprintBar.gameObject.SetActive(false);
             enableHeadBob = false;
         }
         else
@@ -278,6 +280,8 @@ public class FirstPersonController : MonoBehaviour
             isUnderWater = false;
             rb.useGravity = true;
             enableSprint = true;
+            sprintBarBG.gameObject.SetActive(true);
+            sprintBar.gameObject.SetActive(true);
             enableHeadBob = true;
         }
         if (rb.transform.position.y <= 553)
@@ -589,8 +593,9 @@ public class FirstPersonController : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        Vector3 forwardMovement = playerCamera.transform.forward * vertical;
-        Vector3 strafeMovement = playerCamera.transform.right * horizontal;
+        Vector3 forwardMovement = playerCamera.transform.forward * vertical * swimSpeed;
+        Vector3 strafeMovement = playerCamera.transform.right * horizontal * swimSpeed;
+        
 
         Vector3 targetMovement = (forwardMovement + strafeMovement).normalized * swimSpeed;
 
@@ -615,14 +620,14 @@ public class FirstPersonController : MonoBehaviour
     }
     void HandleBoost()
     {
-        //if (Input.GetKeyDown(KeyCode.LeftShift))
-       // {
-            //isBoosting = true;
-       // }
-       // if (Input.GetKeyUp(KeyCode.LeftShift))
-       // {
-           // isBoosting = false;
-        //}
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            isBoosting = true;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            isBoosting = false;
+        }
 
         //Here we can maybe add a power up/ item that can increase the boosting cababilites of the player in the water.
     }
