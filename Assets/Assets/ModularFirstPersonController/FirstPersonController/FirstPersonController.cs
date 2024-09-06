@@ -160,6 +160,10 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
 
+    #region Health Variables
+
+    #endregion
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
