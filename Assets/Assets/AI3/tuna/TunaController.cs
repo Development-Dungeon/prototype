@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class TunaController : MonoBehaviour
 {
-
     public StateMachine stateMachine;
     Animator animator;
     public Collider container;
     public EnemyAttributes attributes;
     public EnemyDetection enemyDetection;
+    private Health health;
 
     void At(IState from, IState to, IPredicate condition) => stateMachine.AddTransition(from, to, condition);
     void Any(IState to, IPredicate condition) => stateMachine.AddAnyTransition(to, condition);
@@ -19,12 +19,21 @@ public class TunaController : MonoBehaviour
 
     void Start()
     {
+
+        // attributes
+        takeDamageTimer = new Utilities.CountdownTimer(3);
         stateMachine = new StateMachine();
         animator = gameObject.GetComponent<Animator>();
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
+        health = gameObject.GetComponent<Health>();
         container = gameObject.transform.parent.gameObject.transform.Find("Container").GetComponent<Collider>();
-        stateMachine.StateMachineNewStateEvent += UpdateTextForStateMachine;
 
+
+        // Events
+        stateMachine.StateMachineNewStateEvent += UpdateTextForStateMachine;
+        health.HealthPercentChangeEvent += CheckForDead;
+
+        // State Machine
         var idleState = new EnemyIdleState(gameObject, animator, attributes.pauseAfterMovementTime);
         var wanderState = new EnemyWanderState(gameObject, animator, container, attributes.moveSpeed, attributes.rotationSpeed, attributes.wanderDistanceRange);
         var chaseState = new EnemyChaseState(gameObject, animator, container, attributes.moveSpeed, attributes.rotationSpeed, enemyDetection);
@@ -41,6 +50,14 @@ public class TunaController : MonoBehaviour
 
         stateMachine.SetState(idleState);
 
+    }
+
+    private void CheckForDead(float healthPercent)
+    {
+        if (healthPercent <= 0)
+            Destroy(gameObject);
+
+        // maybe fire an event that this fish is dead?
     }
 
     private void UpdateTextForStateMachine(Type newState)

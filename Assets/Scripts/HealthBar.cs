@@ -6,13 +6,13 @@ using System;
 
 public class HealthBar : MonoBehaviour
 {
+    public GameObject Entity;
     public Image _healthBarFill;
     Health health;
 
     private void Awake()
     {
-        var player = GameObject.FindGameObjectWithTag("Player");
-        health = player.GetComponent<Health>();
+        health = Entity.GetComponentInChildren<Health>();
         health.HealthPercentChangeEvent += UpdateFillAmount;
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+
     [Serializable]
     public class PrefabLimit
     {
@@ -12,6 +13,14 @@ public class SpawnManager : MonoBehaviour
         public int MaxSpawn;
         public List<GameObject> spawns = new();
         public bool IsMaxedSpawned() => spawns?.Count >= MaxSpawn;
+
+        public void CleanNullList()
+        {
+            if (spawns == null || spawns.Count == 0)
+                return;
+
+            spawns = spawns.FindAll((go) => go != null);
+		}
     }
 
     public List<PrefabLimit> spawnMetadata;
@@ -30,6 +39,7 @@ public class SpawnManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
+
         SpawnCooldownTimer.Reset(SpawnCoolDownInSeconds);
         SpawnCooldownTimer.Start();
 
@@ -42,6 +52,11 @@ public class SpawnManager : MonoBehaviour
         {
             // check every index and see if it has an available max
             var indexMod = (lastSpawnIndex + i) % this.spawnMetadata.Count;
+
+            // clean spawns
+            spawnMetadata[indexMod].CleanNullList();
+
+            // if not maxed
             if (!this.spawnMetadata[indexMod].IsMaxedSpawned())
             {
                 lastSpawnIndex = indexMod;
@@ -66,4 +81,5 @@ public class SpawnManager : MonoBehaviour
     {
         SpawnCooldownTimer.Tick(Time.deltaTime);
     }
+
 }
