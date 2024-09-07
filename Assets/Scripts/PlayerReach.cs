@@ -20,11 +20,11 @@ public class PlayerReach : MonoBehaviour
         }
     }
 
-    public bool IsRaycastHit()
+    public bool IsRaycastHit(int additionalReach = 0)
     {
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
-        return Physics.Raycast(ray, out hit, reachDistance);
+        return Physics.Raycast(ray, out hit, additionalReach + reachDistance);
     }
 }

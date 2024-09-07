@@ -6,6 +6,7 @@ using UnityEngine;
 public class ItemPickUp : MonoBehaviour
 {
     public Item item;
+    public int additionalRange = 0;
 
     void Pickup()
     {
@@ -28,7 +29,7 @@ public class ItemPickUp : MonoBehaviour
     private void AttemptPickup()
     {
        var playerReachScript = Camera.main.gameObject.GetComponentInChildren<PlayerReach>();
-        if (playerReachScript == null || !playerReachScript.IsRaycastHit())
+        if (playerReachScript == null || !playerReachScript.IsRaycastHit(additionalRange))
             return;
 
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

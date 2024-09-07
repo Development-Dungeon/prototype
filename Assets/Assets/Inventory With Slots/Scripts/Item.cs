@@ -32,7 +32,8 @@ public enum ItemType {
     Chest,
     Suit,
     Tank,
-    Money
+    Money,
+    Misc
 }
 
 public enum ActionType {  
