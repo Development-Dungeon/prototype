@@ -6,6 +6,7 @@ using System;
 public class Oxygen : MonoBehaviour
 {
 
+    public readonly float _defaultMax = 100;
     public float _max = 100;
     public float _usePerSecond;
     public float _restorePerSecond;
@@ -24,6 +25,7 @@ public class Oxygen : MonoBehaviour
     public void SetMax(float max) 
     {
 		_max = max;
+        if (_current > _max) _current = _max;
         TriggerEvent();
 	}
 

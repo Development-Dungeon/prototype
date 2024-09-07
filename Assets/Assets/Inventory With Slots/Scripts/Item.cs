@@ -15,6 +15,7 @@ public class Item: ScriptableObject
     public ItemType type;
     public ActionType actionType;
     public GameObject inWorldPrefab;
+    public float value;
 
     [Header("Only UI")]
     public bool stackable = true;

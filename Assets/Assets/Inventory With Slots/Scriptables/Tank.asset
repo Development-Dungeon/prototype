@@ -18,6 +18,7 @@ MonoBehaviour:
   type: 5
   actionType: 0
   inWorldPrefab: {fileID: 0}
+  value: 100
   stackable: 1
   maxStackable: 10
   image: {fileID: 21300000, guid: bbc53608878294d46a1e3b694ee0a1fb, type: 3}

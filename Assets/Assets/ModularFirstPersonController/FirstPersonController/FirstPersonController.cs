@@ -160,9 +160,11 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
 
-    #region Health Variables
+    private Utilities.CountdownTimer refreshEquipmentTimer;
+    public float refreshEquipmentTimerSeconds = .2f;
 
-    #endregion
+    private List<Utilities.Timer> timers = new();
+
 
     private void Awake()
     {
@@ -184,9 +186,52 @@ public class FirstPersonController : MonoBehaviour
         oxygen = GetComponent<Oxygen>();
         health = GetComponent<Health>();
         oxygen.OxygenPercentChangeEvent += Oxygen_OxygenPercentChangeEvent;
+
         outOfOxygenTimer = new Utilities.CountdownTimer(outOfOxygenDamangePeriod);
         outOfOxygenTimer.OnTimerStop += OutOfOxygenTimer_OnTimerStop;
 
+        refreshEquipmentTimer = new Utilities.CountdownTimer(refreshEquipmentTimerSeconds);
+        refreshEquipmentTimer.OnTimerStop += RegreshAllEquipment;
+
+        InventorySlot.EquipmentAdded += EquipementRefresh;
+        InventorySlot.EquipmentRemoved += EquipementRefresh;
+
+        timers.Add(refreshEquipmentTimer);
+        timers.Add(outOfOxygenTimer);
+
+    }
+
+    private void RegreshAllEquipment()
+    {
+        CalculateOxygenTank();
+    }
+
+    private void EquipementRefresh(Item itemUpdate)
+    {
+        refreshEquipmentTimer.Reset(refreshEquipmentTimerSeconds);
+        refreshEquipmentTimer.Start();
+    }
+
+    private void CalculateOxygenTank()
+    {
+        if (InventoryManagerNew.Instance.tankSlot != null)
+        {
+            var inventoryItem = InventoryManagerNew.Instance.tankSlot.GetComponentInChildren<InventoryItem>();
+
+            if (inventoryItem != null)
+            {
+                var equipedTank = inventoryItem.item;
+
+                var newOxygenTankValue = oxygen._defaultMax + equipedTank.value;
+
+                oxygen.SetMax(newOxygenTankValue);
+
+            }
+            else
+                oxygen.SetMax(oxygen._defaultMax);
+        }
+        else
+            oxygen.SetMax(oxygen._defaultMax);
     }
 
     private void OutOfOxygenTimer_OnTimerStop()
@@ -201,18 +246,18 @@ public class FirstPersonController : MonoBehaviour
 
         isOutOfOxygen = o2PercentRemaining <= 0;
 
-        if(isOutOfOxygen)
-        {  
-			outOfOxygenTimer.Reset(outOfOxygenDamangePeriod);
-			outOfOxygenTimer.Start();
-		}
+        if (isOutOfOxygen)
+        {
+            outOfOxygenTimer.Reset(outOfOxygenDamangePeriod);
+            outOfOxygenTimer.Start();
+        }
 
 
         if (!isOutOfOxygen && outOfOxygenTimer.IsRunning)
-        {  
+        {
             outOfOxygenTimer.Reset();
             outOfOxygenTimer.Pause();
-		}
+        }
     }
 
     void Start()
@@ -292,14 +337,14 @@ public class FirstPersonController : MonoBehaviour
         {
             isUnderWater = true;
             isGrounded = false;
-            if(oxygen != null)
-			    oxygen.On();
+            if (oxygen != null)
+                oxygen.On();
         }
         else if (rb.transform.position.y > 553)
         {
             isUnderWater = false;
-            if(oxygen != null)
-			    oxygen.Off();
+            if (oxygen != null)
+                oxygen.Off();
         }
         #region Camera
 
@@ -437,7 +482,7 @@ public class FirstPersonController : MonoBehaviour
             Jump();
         }
 
-        
+
 
         #endregion
 
@@ -471,9 +516,8 @@ public class FirstPersonController : MonoBehaviour
             HeadBob();
         }
 
-
-        outOfOxygenTimer.Tick(Time.deltaTime);
-
+        timers.ForEach(i => i.Tick(Time.deltaTime));
+       
     }
 
 
@@ -599,7 +643,7 @@ public class FirstPersonController : MonoBehaviour
 
         Vector3 forwardMovement = playerCamera.transform.forward * vertical * swimSpeed;
         Vector3 strafeMovement = playerCamera.transform.right * horizontal * swimSpeed;
-        
+
 
         Vector3 targetMovement = (forwardMovement + strafeMovement).normalized * swimSpeed;
 
@@ -892,8 +936,8 @@ public class FirstPersonController : MonoBehaviour
             GUILayout.Label("Oxygen Settings", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
             EditorGUILayout.Space();
 
-            fpc.outOfOxygenDamage= EditorGUILayout.FloatField(new GUIContent("No Breath Damange", "Damage taken per unit of time when out of breath"), fpc.outOfOxygenDamage);
-            fpc.outOfOxygenDamangePeriod = EditorGUILayout.FloatField(new GUIContent("No Breath Damage Period", "Number of seconds the player will take damage when out of breath"), fpc.outOfOxygenDamangePeriod );
+            fpc.outOfOxygenDamage = EditorGUILayout.FloatField(new GUIContent("No Breath Damange", "Damage taken per unit of time when out of breath"), fpc.outOfOxygenDamage);
+            fpc.outOfOxygenDamangePeriod = EditorGUILayout.FloatField(new GUIContent("No Breath Damage Period", "Number of seconds the player will take damage when out of breath"), fpc.outOfOxygenDamangePeriod);
 
             //Sets any changes from the prefab
             if (GUI.changed)

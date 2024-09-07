@@ -17,7 +17,7 @@ MonoBehaviour:
   tile: {fileID: 0}
   type: 1
   actionType: 0
-  inWorldPrefab: {fileID: 0}
+  inWorldPrefab: {fileID: 4778971140145638936, guid: 7d28be0e13a989b4ebe631a1b02ada4b, type: 3}
   stackable: 1
   maxStackable: 1
   image: {fileID: 21300000, guid: 3faa68d4e2f05f04786133598667ac36, type: 3}

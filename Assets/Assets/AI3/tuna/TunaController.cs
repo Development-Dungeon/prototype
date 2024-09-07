@@ -66,7 +66,12 @@ public class TunaController : MonoBehaviour
         textGO.text = newState.Name;
     }
 
-    private void OnDestroy() => stateMachine.StateMachineNewStateEvent -= UpdateTextForStateMachine;
+    private void OnDestroy() 
+    {
+		stateMachine.StateMachineNewStateEvent -= UpdateTextForStateMachine;
+        health.HealthPercentChangeEvent -= CheckForDead;
+	}
+
 
     void Update()
     {

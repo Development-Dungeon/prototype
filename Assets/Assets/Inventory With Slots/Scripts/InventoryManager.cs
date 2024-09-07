@@ -5,6 +5,12 @@ using UnityEngine;
 public class InventoryManagerNew : MonoBehaviour
 {
     public InventorySlot[] inventorSlots;
+
+    public InventorySlot tankSlot;
+    public InventorySlot HeadSlot;
+    public InventorySlot ChestSlot;
+    public InventorySlot SuitSlot;
+
     public GameObject inventoryObjectPrefab;
     public static InventoryManagerNew Instance;
     public int selectedSlot = -1;
