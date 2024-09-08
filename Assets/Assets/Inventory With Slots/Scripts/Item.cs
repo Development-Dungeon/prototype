@@ -17,6 +17,15 @@ public class Item: ScriptableObject
     public GameObject inWorldPrefab;
     public float value;
 
+
+    [Header("Weapon States")]
+    public float damage;
+    public float range;
+    public float innerConeAngle;
+    public float cooldownInSeconds;
+    public bool canAttackMultiple;
+
+
     [Header("Only UI")]
     public bool stackable = true;
     public int maxStackable = 10;
@@ -34,11 +43,13 @@ public enum ItemType {
     Suit,
     Tank,
     Money,
+    Weapon,
     Misc
 }
 
 public enum ActionType {  
     None,
     Dig,
-    Mine
+    Mine,
+    Attack
 }

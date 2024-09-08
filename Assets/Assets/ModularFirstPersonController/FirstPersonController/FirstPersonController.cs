@@ -163,8 +163,9 @@ public class FirstPersonController : MonoBehaviour
     private Utilities.CountdownTimer refreshEquipmentTimer;
     public float refreshEquipmentTimerSeconds = .2f;
 
-    private List<Utilities.Timer> timers = new();
+    private Utilities.CountdownTimer attackCooldownTimer;
 
+    private List<Utilities.Timer> timers = new();
 
     private void Awake()
     {
@@ -196,8 +197,11 @@ public class FirstPersonController : MonoBehaviour
         InventorySlot.EquipmentAdded += EquipementRefresh;
         InventorySlot.EquipmentRemoved += EquipementRefresh;
 
+        attackCooldownTimer = new Utilities.CountdownTimer(0);
+
         timers.Add(refreshEquipmentTimer);
         timers.Add(outOfOxygenTimer);
+        timers.Add(attackCooldownTimer);
 
     }
 
@@ -335,6 +339,7 @@ public class FirstPersonController : MonoBehaviour
         }
         if (rb.transform.position.y <= 553)
         {
+
             isUnderWater = true;
             isGrounded = false;
             if (oxygen != null)
@@ -342,6 +347,10 @@ public class FirstPersonController : MonoBehaviour
         }
         else if (rb.transform.position.y > 553)
         {
+            var wasSwimming = isUnderWater;
+            if (wasSwimming)
+                rb.velocity = Vector3.zero;
+
             isUnderWater = false;
             if (oxygen != null)
                 oxygen.Off();
@@ -516,10 +525,83 @@ public class FirstPersonController : MonoBehaviour
             HeadBob();
         }
 
+
         timers.ForEach(i => i.Tick(Time.deltaTime));
        
+        #region Attack
+
+        if(Input.GetKeyDown(KeyCode.Mouse0) && !attackCooldownTimer.IsRunning)
+        {
+            AttemptAttack();
+        }
+
+
+        #endregion
     }
 
+    private void AttemptAttack()
+    {
+        if (attackCooldownTimer.IsRunning) return;
+
+        // if I have selected in my inventory, an item which can attack, attempt to use it in an attack
+        var selectedItem = InventoryManagerNew.Instance.GetSelectedItem();
+
+        if (selectedItem != null && selectedItem.actionType.Equals(ActionType.Attack))
+        {
+
+            // attempt an attack
+            var weaponAttackRange = selectedItem.range;
+            var weaponAttackDamage = selectedItem.damage;
+            var weaponAttackWidth = selectedItem.damage;
+            var weaponCooldown = selectedItem.cooldownInSeconds;
+            var weaponAttackInnerCone = selectedItem.innerConeAngle;
+            var weaponAttackMultiple = selectedItem.canAttackMultiple;
+
+            // get all the enemies in a radius?
+            List<GameObject> allGameObjectsWithinRadius = WorldUtils.DetectAllClosest(transform.position, weaponAttackRange, 3);
+
+            if (allGameObjectsWithinRadius.Count == 0) return;
+
+
+            allGameObjectsWithinRadius = allGameObjectsWithinRadius
+                                    .FindAll((go) => go.GetComponent<Health>() != null)
+                                    .FindAll((go) => !go.CompareTag("Player"))
+                                    .FindAll((go) =>
+                    {
+                        // check if the go is within the viewing angle?
+                        var directionToEnemy = go.transform.position - transform.position;
+                        var angleToEnemy = Vector3.Angle(directionToEnemy, playerCamera.transform.forward);
+
+                        var targetWithinViewingAngle = angleToEnemy <= (weaponAttackInnerCone / 2);
+
+                        return targetWithinViewingAngle;
+
+
+                    });
+
+
+            if (weaponAttackMultiple) 
+		    {
+			    // at this point, all the objects which are left are within range and are within the angle and should all be attacked
+			    allGameObjectsWithinRadius.ForEach((i) => i.GetComponent<Health>().TakeDamage(weaponAttackDamage));
+		    }
+            else
+            {
+                // find the closest one of all that remain
+                GameObject closest = WorldUtils.DetectClosest(allGameObjectsWithinRadius, transform.position);
+                closest.GetComponent<Health>().TakeDamage(weaponAttackDamage);
+		    }
+
+            // if the attack cooldown is not running
+            attackCooldownTimer.Reset(weaponCooldown);
+            attackCooldownTimer.Start();
+
+        }
+
+
+        // otherwise do nothing
+        // TODO set the icon in inventory to inactive color when the cooldown is there
+    }
 
     void FixedUpdate()
     {
@@ -938,6 +1020,8 @@ public class FirstPersonController : MonoBehaviour
 
             fpc.outOfOxygenDamage = EditorGUILayout.FloatField(new GUIContent("No Breath Damange", "Damage taken per unit of time when out of breath"), fpc.outOfOxygenDamage);
             fpc.outOfOxygenDamangePeriod = EditorGUILayout.FloatField(new GUIContent("No Breath Damage Period", "Number of seconds the player will take damage when out of breath"), fpc.outOfOxygenDamangePeriod);
+
+            fpc.refreshEquipmentTimerSeconds = EditorGUILayout.FloatField(new GUIContent("Equipment Refresh After equipment changes have taken place", ""), fpc.refreshEquipmentTimerSeconds);
 
             //Sets any changes from the prefab
             if (GUI.changed)

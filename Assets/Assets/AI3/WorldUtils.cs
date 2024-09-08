@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class WorldUtils 
 {
@@ -35,6 +36,44 @@ public class WorldUtils
         return closestGO;
 
     }
+
+    public static GameObject DetectClosest(List<GameObject> gameObjects, Vector3 fromPostion)
+    {
+        if (gameObjects == null || gameObjects.Count == 0) return null;
+
+        float closestDistance = Mathf.Infinity;
+        GameObject closestGO = null;
+
+        foreach (var possibleMatch in gameObjects)
+        {
+			var distanceFromCenter = Vector3.Distance(fromPostion, possibleMatch.transform.position);
+
+			if (distanceFromCenter < closestDistance)
+			{
+			    closestGO = possibleMatch.gameObject;
+			    closestDistance = distanceFromCenter;
+			}
+        }
+
+        return closestGO;
+    }
+
+    public static List<GameObject> DetectAllClosest(Vector3 center, float radius, int layer)
+    {
+
+        Collider[] results = Physics.OverlapSphere(center, radius, layer);
+
+        if (results == null)
+            return new List<GameObject>();
+
+        return results
+				    .ToList()
+				    .Select((i) => i.gameObject)
+				    .ToList();
+
+    }
+
+
     public static Quaternion LookAt1(Transform transform, Vector3 startingPos, Vector3 target, float rotationSpeed)
     {
         var direction = target - startingPos;
