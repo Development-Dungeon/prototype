@@ -347,9 +347,6 @@ public class FirstPersonController : MonoBehaviour
         }
         else if (rb.transform.position.y > 553)
         {
-            var wasSwimming = isUnderWater;
-            if (wasSwimming)
-                rb.velocity = Vector3.zero;
 
             isUnderWater = false;
             if (oxygen != null)
