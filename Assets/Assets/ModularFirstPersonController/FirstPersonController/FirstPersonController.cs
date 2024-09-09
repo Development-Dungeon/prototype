@@ -58,13 +58,14 @@ public class FirstPersonController : MonoBehaviour
 
     public bool playerCanMove = true;
     public float walkSpeed = 5f;
-    public float maxVelocityChange = 10f;
+    public float maxVelocityChange = 8f;
     public float swimSpeed = 10f; // Speed of swimming
     public float rotationSpeed = 2f; // Speed of rotation
     public float moveSpeed = 5f; // Movement speed in all directions
     public float boostSpeed = 4f; // Speed when boosting
-    public float swimUpSpeed = 100f; // Speed when swimming up or down
-    public float smoothTime = 0.3f; // Smoothing time for movement
+    public float swimUpSpeed = 0.3f; // Speed when swimming up or down
+    public float smoothTime = 0.9f; // Smoothing time for movement
+    public float movementMultiplier = 0.8f; //using this to slow down the players underwater up and down swim speed
 
     // Internal Variables
     private bool isWalking = false;
@@ -319,9 +320,9 @@ public class FirstPersonController : MonoBehaviour
         if (isUnderWater == true)
         {
             Swim();
-            HandleRotation();
             HandleBoost();
-            rb.drag = 5;
+            HandleRotation();
+            rb.drag = 8;
             enableSprint = false;
             sprintBarBG.gameObject.SetActive(false);
             sprintBar.gameObject.SetActive(false);
@@ -421,6 +422,7 @@ public class FirstPersonController : MonoBehaviour
 
         #endregion
         #endregion
+
 
         #region Sprint
 
@@ -720,24 +722,35 @@ public class FirstPersonController : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        Vector3 forwardMovement = playerCamera.transform.forward * vertical * swimSpeed;
-        Vector3 strafeMovement = playerCamera.transform.right * horizontal * swimSpeed;
+        // Calculate basic movement based on input
+        Vector3 forwardMovement = transform.forward * vertical;
+        Vector3 strafeMovement = transform.right * horizontal;
 
-
-        Vector3 targetMovement = (forwardMovement + strafeMovement).normalized * swimSpeed;
+        // Reset targetMovement each frame to avoid exponential build-up
+        Vector3 targetMovement = (forwardMovement + strafeMovement) * movementMultiplier;
 
         // Swimming up and down based on camera's up direction
         if (Input.GetKey(KeyCode.Space))
         {
-            targetMovement += playerCamera.transform.up * swimUpSpeed;
+            // Move up
+            targetMovement += transform.up.normalized * swimUpSpeed * movementMultiplier;
         }
         if (Input.GetKey(KeyCode.LeftControl))
         {
-            targetMovement -= playerCamera.transform.up * swimUpSpeed;
+            // Move down
+            targetMovement -= transform.up.normalized * swimUpSpeed * movementMultiplier;
         }
 
-        // Apply smooth movement to the Rigidbody
-        rb.velocity = Vector3.SmoothDamp(rb.velocity, targetMovement * (isBoosting ? boostSpeed : swimSpeed), ref currentVelocity, smoothTime);
+        // Smooth the movement based on target direction
+        Vector3 desiredMovement = Vector3.SmoothDamp(rb.velocity, targetMovement, ref currentVelocity, smoothTime);
+
+        // Apply the smooth movement to the Rigidbody
+        rb.velocity = desiredMovement;
+
+        // Optional: Clamp the maximum velocity if necessary
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocityChange);
+
+
     }
 
 
@@ -747,14 +760,14 @@ public class FirstPersonController : MonoBehaviour
     }
     void HandleBoost()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            isBoosting = true;
-        }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            isBoosting = false;
-        }
+        //if (Input.GetKeyDown(KeyCode.LeftShift))
+       // {
+            //isBoosting = true;
+        //}
+        //if (Input.GetKeyUp(KeyCode.LeftShift))
+        //{
+            //isBoosting = false;
+        //}
 
         //Here we can maybe add a power up/ item that can increase the boosting cababilites of the player in the water.
     }

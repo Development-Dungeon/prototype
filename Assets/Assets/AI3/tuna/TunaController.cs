@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Utilities;
 
 public class TunaController : MonoBehaviour
 {
+    private CountdownTimer takeDamageTimer;
     public StateMachine stateMachine;
     Animator animator;
     public Collider container;
@@ -76,6 +78,7 @@ public class TunaController : MonoBehaviour
     void Update()
     {
         stateMachine.Update();
+        takeDamageTimer.Tick(Time.deltaTime);
     }
 
     private void FixedUpdate()
