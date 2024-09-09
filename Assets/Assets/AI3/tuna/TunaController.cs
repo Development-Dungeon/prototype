@@ -7,7 +7,6 @@ using Utilities;
 
 public class TunaController : MonoBehaviour
 {
-    private CountdownTimer takeDamageTimer;
     public StateMachine stateMachine;
     Animator animator;
     public Collider container;
@@ -23,7 +22,6 @@ public class TunaController : MonoBehaviour
     {
 
         // attributes
-        takeDamageTimer = new Utilities.CountdownTimer(3);
         stateMachine = new StateMachine();
         animator = gameObject.GetComponent<Animator>();
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
@@ -78,7 +76,6 @@ public class TunaController : MonoBehaviour
     void Update()
     {
         stateMachine.Update();
-        takeDamageTimer.Tick(Time.deltaTime);
     }
 
     private void FixedUpdate()
