@@ -11,6 +11,7 @@ public class SardineController : MonoBehaviour
     public Collider container;
     public EnemyAttributes attributes;
     public EnemyDetection enemyDetection;
+    private Animator animator;
 
     void At(IState from, IState to, IPredicate condition) => stateMachine.AddTransition(from, to, condition);
     void Any(IState to, IPredicate condition) => stateMachine.AddAnyTransition(to, condition);
@@ -20,11 +21,12 @@ public class SardineController : MonoBehaviour
         stateMachine = new StateMachine();
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
         container = gameObject.transform.parent.gameObject.transform.Find("Container").GetComponent<Collider>();
+        animator = gameObject.GetComponent<Animator>();
         //stateMachine.StateMachineNewStateEvent += UpdateTextForStateMachine;
 
-        var idleState = new EnemyIdleState(gameObject, null, attributes.pauseAfterMovementTime);
-        var wanderState = new EnemyWanderState(gameObject, null, container, attributes.moveSpeed, attributes.rotationSpeed, attributes.wanderDistanceRange);
-        var fleeState = new EnemyFleeState(gameObject, null, container, attributes.moveSpeed, attributes.rotationSpeed, enemyDetection);
+        var idleState = new EnemyIdleState(gameObject, animator, attributes.pauseAfterMovementTime);
+        var wanderState = new EnemyWanderState(gameObject, animator, container, attributes.moveSpeed, attributes.rotationSpeed, attributes.wanderDistanceRange);
+        var fleeState = new EnemyFleeState(gameObject, animator, container, attributes.moveSpeed, attributes.rotationSpeed, enemyDetection);
 
         At(idleState, wanderState, new FuncPredicate(() => idleState.cooldownTimer.IsFinished));
         At(wanderState, idleState, new FuncPredicate(() => wanderState.reachedDestination));
