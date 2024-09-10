@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class InventoryManagerNew : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class InventoryManagerNew : MonoBehaviour
     public bool IsInventoryOpen = false;
 
     public List<InventorySlot> GetInventorySlots() { return new List<InventorySlot>(inventorSlots); }
+
+    public static event Action<Item> SelectedItemChanged;
     
 
     public int GetMoney()
@@ -164,6 +167,11 @@ public class InventoryManagerNew : MonoBehaviour
 
         selectedSlot = newValue;
         inventorSlots[selectedSlot].Select();
+
+        if (SelectedItemChanged != null)
+            SelectedItemChanged.Invoke(GetSelectedItem());
+
+
     }
 
     public void Awake()
