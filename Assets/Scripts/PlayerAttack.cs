@@ -56,7 +56,8 @@ public class PlayerAttack
             {
                 // find the closest one of all that remain
                 GameObject closest = WorldUtils.DetectClosest(allGameObjectsWithinRadius, transform.position);
-                closest.GetComponent<Health>().TakeDamage(weaponAttackDamage);
+                if(closest != null)
+					closest.GetComponent<Health>().TakeDamage(weaponAttackDamage);
             }
 
             // if the attack cooldown is not running
