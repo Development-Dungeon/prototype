@@ -957,8 +957,6 @@ public class FirstPersonController : MonoBehaviour
             fpc.outOfOxygenDamage = EditorGUILayout.FloatField(new GUIContent("No Breath Damange", "Damage taken per unit of time when out of breath"), fpc.outOfOxygenDamage);
             fpc.outOfOxygenDamangePeriod = EditorGUILayout.FloatField(new GUIContent("No Breath Damage Period", "Number of seconds the player will take damage when out of breath"), fpc.outOfOxygenDamangePeriod);
 
-            fpc.refreshEquipmentTimerSeconds = EditorGUILayout.FloatField(new GUIContent("Equipment Refresh After equipment changes have taken place", ""), fpc.refreshEquipmentTimerSeconds);
-
             //Sets any changes from the prefab
             if (GUI.changed)
             {
