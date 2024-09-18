@@ -21,6 +21,11 @@ public class Oxygen : MonoBehaviour
     public void UseOxygen(float amountUsed) => SetCurrent(_current - amountUsed);
     public void AddOxygen(float amountToAdd) => SetCurrent(_current + amountToAdd);
 
+    public void IncreaseCurrentAndMax(float additionalCurrent, float additionalMax)
+    {
+        SetCurrent(_current + additionalCurrent);
+        SetMax(_max + additionalMax);
+    }
 
     public void SetMax(float max) 
     {

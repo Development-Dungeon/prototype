@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using TMPro;
+using System;
 
 public class PlayerDepth : MonoBehaviour
 {
@@ -36,9 +37,9 @@ public class PlayerDepth : MonoBehaviour
     { 
 
     }
-    public void SetMaxHealth(float maxHealth) => _maxDepth = maxHealth;
-    public void SetCurrentHealth(float currentHealth) => _currentDepth = currentHealth;
-    public bool IsDead() => _currentDepth <= 0;
+
+    public void SetMaxDepth(float newMaxDepth) => _maxDepth = newMaxDepth;
+    public void SetCurrentDepth(float currentDepth) => _currentDepth = currentDepth;
 
     private void Update()
     {
@@ -88,4 +89,8 @@ public class PlayerDepth : MonoBehaviour
 
     }
 
+    public void IncreaseMax(int depthBonus)
+    {
+        SetMaxDepth(_maxDepth + depthBonus);
+    }
 }

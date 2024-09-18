@@ -154,15 +154,14 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
 
+    private PlayerDepth depth;
+
 
     #region Health Variables
 
     private Health health;
 
     #endregion
-
-    private Utilities.CountdownTimer refreshEquipmentTimer;
-    public float refreshEquipmentTimerSeconds = .2f;
 
     private Utilities.CountdownTimer attackCooldownTimer;
 
@@ -185,6 +184,7 @@ public class FirstPersonController : MonoBehaviour
             sprintCooldownReset = sprintCooldown;
         }
 
+        depth = GetComponentInChildren<PlayerDepth>();
         oxygen = GetComponent<Oxygen>();
         health = GetComponent<Health>();
         oxygen.OxygenPercentChangeEvent += Oxygen_OxygenPercentChangeEvent;
@@ -192,52 +192,41 @@ public class FirstPersonController : MonoBehaviour
         outOfOxygenTimer = new Utilities.CountdownTimer(outOfOxygenDamangePeriod);
         outOfOxygenTimer.OnTimerStop += OutOfOxygenTimer_OnTimerStop;
 
-        refreshEquipmentTimer = new Utilities.CountdownTimer(refreshEquipmentTimerSeconds);
-        refreshEquipmentTimer.OnTimerStop += RegreshAllEquipment;
-
-        InventorySlot.EquipmentAdded += EquipementRefresh;
-        InventorySlot.EquipmentRemoved += EquipementRefresh;
+        InventorySlot.EquipmentAdded += EquipmentAdded;
+        InventorySlot.EquipmentRemoved += EquipmentRemoved;
 
         attackCooldownTimer = new Utilities.CountdownTimer(0);
 
-        timers.Add(refreshEquipmentTimer);
         timers.Add(outOfOxygenTimer);
         timers.Add(attackCooldownTimer);
 
     }
 
-    private void RegreshAllEquipment()
+    private void EquipmentRemoved(Item removedItem)
     {
-        CalculateOxygenTank();
+        var oxygenBonus = removedItem.oxygenTankIncrease;
+        var depthBonus = removedItem.depthPresureIncrease;
+        var healthBonus = removedItem.healthIncrease;
+
+        oxygen.IncreaseCurrentAndMax(0, -oxygenBonus);
+        depth.IncreaseMax(-depthBonus);
+        health.IncreaseCurrentAndMax(0, -healthBonus);
     }
 
-    private void EquipementRefresh(Item itemUpdate)
+    private void EquipmentAdded(Item addedItem)
     {
-        refreshEquipmentTimer.Reset(refreshEquipmentTimerSeconds);
-        refreshEquipmentTimer.Start();
+        var oxygenBonus = addedItem.oxygenTankIncrease;
+        var depthBonus = addedItem.depthPresureIncrease;
+        var healthBonus = addedItem.healthIncrease;
+
+        if(oxygen != null)
+			oxygen.IncreaseCurrentAndMax(0, oxygenBonus);
+        if(depth != null)
+			depth.IncreaseMax(depthBonus);
+        if(health != null)
+			health.IncreaseCurrentAndMax(0, healthBonus);
     }
 
-    private void CalculateOxygenTank()
-    {
-        if (InventoryManagerNew.Instance.tankSlot != null)
-        {
-            var inventoryItem = InventoryManagerNew.Instance.tankSlot.GetComponentInChildren<InventoryItem>();
-
-            if (inventoryItem != null)
-            {
-                var equipedTank = inventoryItem.item;
-
-                var newOxygenTankValue = oxygen._defaultMax + equipedTank.value;
-
-                oxygen.SetMax(newOxygenTankValue);
-
-            }
-            else
-                oxygen.SetMax(oxygen._defaultMax);
-        }
-        else
-            oxygen.SetMax(oxygen._defaultMax);
-    }
 
     private void OutOfOxygenTimer_OnTimerStop()
     {
@@ -524,83 +513,20 @@ public class FirstPersonController : MonoBehaviour
             HeadBob();
         }
 
-
         timers.ForEach(i => i.Tick(Time.deltaTime));
        
         #region Attack
 
         if(Input.GetKeyDown(KeyCode.Mouse0) && !attackCooldownTimer.IsRunning)
         {
-            AttemptAttack();
+            PlayerAttack.AttemptAttack(attackCooldownTimer, transform, playerCamera);
         }
 
 
         #endregion
     }
 
-    private void AttemptAttack()
-    {
-        if (attackCooldownTimer.IsRunning) return;
-
-        // if I have selected in my inventory, an item which can attack, attempt to use it in an attack
-        var selectedItem = InventoryManagerNew.Instance.GetSelectedItem();
-
-        if (selectedItem != null && selectedItem.actionType.Equals(ActionType.Attack))
-        {
-
-            // attempt an attack
-            var weaponAttackRange = selectedItem.range;
-            var weaponAttackDamage = selectedItem.damage;
-            var weaponAttackWidth = selectedItem.damage;
-            var weaponCooldown = selectedItem.cooldownInSeconds;
-            var weaponAttackInnerCone = selectedItem.innerConeAngle;
-            var weaponAttackMultiple = selectedItem.canAttackMultiple;
-
-            // get all the enemies in a radius?
-            List<GameObject> allGameObjectsWithinRadius = WorldUtils.DetectAllClosest(transform.position, weaponAttackRange, 3);
-
-            if (allGameObjectsWithinRadius.Count == 0) return;
-
-
-            allGameObjectsWithinRadius = allGameObjectsWithinRadius
-                                    .FindAll((go) => go.GetComponent<Health>() != null)
-                                    .FindAll((go) => !go.CompareTag("Player"))
-                                    .FindAll((go) =>
-                    {
-                        // check if the go is within the viewing angle?
-                        var directionToEnemy = go.transform.position - transform.position;
-                        var angleToEnemy = Vector3.Angle(directionToEnemy, playerCamera.transform.forward);
-
-                        var targetWithinViewingAngle = angleToEnemy <= (weaponAttackInnerCone / 2);
-
-                        return targetWithinViewingAngle;
-
-
-                    });
-
-
-            if (weaponAttackMultiple) 
-		    {
-			    // at this point, all the objects which are left are within range and are within the angle and should all be attacked
-			    allGameObjectsWithinRadius.ForEach((i) => i.GetComponent<Health>().TakeDamage(weaponAttackDamage));
-		    }
-            else
-            {
-                // find the closest one of all that remain
-                GameObject closest = WorldUtils.DetectClosest(allGameObjectsWithinRadius, transform.position);
-                closest.GetComponent<Health>().TakeDamage(weaponAttackDamage);
-		    }
-
-            // if the attack cooldown is not running
-            attackCooldownTimer.Reset(weaponCooldown);
-            attackCooldownTimer.Start();
-
-        }
-
-
-        // otherwise do nothing
-        // TODO set the icon in inventory to inactive color when the cooldown is there
-    }
+    
 
     void FixedUpdate()
     {

@@ -6,7 +6,6 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu(fileName = "New Scriptable Item", menuName = "Item new/Create new Item")]
 public class Item: ScriptableObject
 {
-
     public int id;
     public string itemName;
 
@@ -18,6 +17,10 @@ public class Item: ScriptableObject
     public GameObject leftHandPrefab; 
     public float value;
 
+    [Header("Player Equipement Attributes")]
+    public int oxygenTankIncrease;
+    public int depthPresureIncrease;
+    public int healthIncrease;
 
     [Header("Weapon States")]
     public float damage;
