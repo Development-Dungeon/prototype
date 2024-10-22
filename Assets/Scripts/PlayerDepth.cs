@@ -12,6 +12,7 @@ public class PlayerDepth : MonoBehaviour
     public float damageTimerLength = 5;
     public int WaterDepth = 553;
     public TMP_Text depthText;
+    public event Action<PlayerDepth> PlayerDepthUpdateEvent;
 
     private Utilities.CountdownTimer DamageTimer;
     private GameObject player;
@@ -19,7 +20,7 @@ public class PlayerDepth : MonoBehaviour
 
     private void Awake()
     {
-        _currentDepth = _maxDepth;
+        SetCurrentDepth(_maxDepth);
         player = GameObject.FindGameObjectWithTag("Player");
         PlayerHealth = player.GetComponent<Health>();
         DamageTimer = new Utilities.CountdownTimer(damageTimerLength);
@@ -33,25 +34,51 @@ public class PlayerDepth : MonoBehaviour
         DamageTimer.Start();
     }
 
-    private void Start() 
-    { 
+    public void SetMaxDepth(float newMaxDepth)
+    {
+        // if the new max is different then the old. fire an event
+        if(newMaxDepth != _maxDepth) 
+		{ 
+			_maxDepth = newMaxDepth;
+
+            if (PlayerDepthUpdateEvent != null)
+            {  
+                PlayerDepthUpdateEvent.Invoke(this);
+		    }
+
+		}
 
     }
-
-    public void SetMaxDepth(float newMaxDepth) => _maxDepth = newMaxDepth;
-    public void SetCurrentDepth(float currentDepth) => _currentDepth = currentDepth;
+    public void SetCurrentDepth(float currentDepth)
+    {
+        if(_currentDepth != currentDepth)
+        {  
+			_currentDepth = currentDepth;
+            if (PlayerDepthUpdateEvent != null)
+            {  
+                PlayerDepthUpdateEvent.Invoke(this);
+		    }
+		}
+    }
 
     private void Update()
     {
         DamageTimer.Tick(Time.deltaTime);
     }
         
-
     public void FixedUpdate()
     {
-	    _currentDepth = Mathf.RoundToInt(WaterDepth - player.transform.position.y);
-        if (_currentDepth < 0) _currentDepth = 0;
+	    var calculatedDepth = Mathf.RoundToInt(WaterDepth - player.transform.position.y);
 
+        if(calculatedDepth < 0)
+        {
+            SetCurrentDepth(0);
+		} 
+		else
+        {
+            SetCurrentDepth(calculatedDepth);
+		}
+        
         UpdateDepthUI();
         TriggerDamageEvent();
 

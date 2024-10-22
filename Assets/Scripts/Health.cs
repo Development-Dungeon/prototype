@@ -9,6 +9,7 @@ public class Health : MonoBehaviour
     public float _maxHealth;
     public float _currentHealth;
     public event Action<float> HealthPercentChangeEvent;
+    public event Action<Health> HealthUpdatedEvent;
 
     private void Awake() => _currentHealth = _maxHealth;
     private void Start() => TriggerEvent();
@@ -39,6 +40,8 @@ public class Health : MonoBehaviour
     {  
         if(_maxHealth != 0 && HealthPercentChangeEvent != null)
 			HealthPercentChangeEvent.Invoke(_currentHealth / _maxHealth);
+        if (HealthUpdatedEvent != null)
+            HealthUpdatedEvent.Invoke(this);
     }
 
     public void IncreaseCurrentAndMax(float additinalCurrentHealth, float additionalMax )

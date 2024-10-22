@@ -13,6 +13,7 @@ public class Oxygen : MonoBehaviour
     public float _current;
     public bool on;
     public event Action<float> OxygenPercentChangeEvent;
+    public event Action<Oxygen> OxygenUpdateEvent;
 
 
     void Awake() => _current = _max;
@@ -56,6 +57,9 @@ public class Oxygen : MonoBehaviour
     {
         if(_max != 0 && OxygenPercentChangeEvent != null) 
 			OxygenPercentChangeEvent.Invoke(_current / _max);
+
+        if (OxygenUpdateEvent != null)
+            OxygenUpdateEvent.Invoke(this);
 
     }
 

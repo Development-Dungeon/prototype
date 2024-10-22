@@ -1,8 +1,27 @@
+using System;
 using UnityEngine;
 
 public class PlayerReach : MonoBehaviour
 {
     public float reachDistance = 5f;
+    public event Action<PlayerReach> ReachUpdateEvent;
+
+    public void SetReachDistance(float newReach)
+    {
+        if (newReach == reachDistance)
+            return;
+
+        reachDistance = newReach;
+
+        if (ReachUpdateEvent != null)
+            ReachUpdateEvent.Invoke(this);
+    }
+    public void Start()
+    {
+        if (ReachUpdateEvent != null)
+            ReachUpdateEvent.Invoke(this);
+    }
+
 
     void Update()
     {
