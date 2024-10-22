@@ -13,6 +13,7 @@ public class PlayerStatsUIController : MonoBehaviour
     public TMP_Text attackText;
     public TMP_Text playerReachText;
     public GameObject player;
+    public GameObject ui;
 
 
     void Start()
@@ -26,6 +27,20 @@ public class PlayerStatsUIController : MonoBehaviour
 
         // initialize those states which don't change on startup or can't be relied on based on the startup order
         ReachUpdateEvent(player.GetComponentInChildren<PlayerReach>());
+    }
+
+    public void Update()
+    {
+        if(Input.inputString != null) {
+            if (Input.GetKeyDown(KeyCode.P)){
+                ToggleUI();
+		    }
+        }
+    }
+
+    private void ToggleUI()
+    {
+        ui.SetActive(!ui.activeSelf);
     }
 
     private void ReachUpdateEvent(PlayerReach playerReachChangeInfo)
