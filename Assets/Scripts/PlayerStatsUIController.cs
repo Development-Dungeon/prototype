@@ -12,6 +12,10 @@ public class PlayerStatsUIController : MonoBehaviour
     public TMP_Text healthText;
     public TMP_Text attackText;
     public TMP_Text playerReachText;
+    public TMP_Text attackRangeText;
+    public TMP_Text attackCooldownText;
+    public TMP_Text attackAoeText;
+
     public GameObject player;
     public GameObject ui;
 
@@ -27,6 +31,8 @@ public class PlayerStatsUIController : MonoBehaviour
 
         // initialize those states which don't change on startup or can't be relied on based on the startup order
         ReachUpdateEvent(player.GetComponentInChildren<PlayerReach>());
+        HealthUpdatedEvent(player.GetComponent<Health>());
+        OxygenUpdateEvent(player.GetComponent<Oxygen>());
     }
 
     public void Update()
@@ -57,17 +63,35 @@ public class PlayerStatsUIController : MonoBehaviour
 
     private void SelectedItemChangedEvent(Item selectedItemChangeInfo)
     {
-        if (attackText == null)
-            return;
 
-        else if (selectedItemChangeInfo == null)
-		    attackText.text = $"Attack : 0";
-        else if (!selectedItemChangeInfo.actionType.Equals(ActionType.Attack))
-		    attackText.text = $"Attack : 0";
-        else 
-		    attackText.text = $"Attack : {selectedItemChangeInfo.damage}";
+        if (selectedItemChangeInfo == null || !selectedItemChangeInfo.actionType.Equals(ActionType.Attack))
+        { 
+            if(attackText != null)
+			    attackText.text = $"Attack : n/a";
+            if(attackRangeText != null)
+			    attackRangeText.text = $"Attack Range : n/a";
+            if(attackCooldownText != null)
+			    attackCooldownText.text = $"Attack cooldown : n/a";
+            if(attackAoeText != null)
+			    attackAoeText.text = $"Attacks multiple : n/a";
+		}
+        else
+        {  
+            if(attackText != null)
+			    attackText.text = $"Attack : {selectedItemChangeInfo.damage}";
+
+            if(attackRangeText != null)
+			    attackRangeText.text = $"Attack Range : {selectedItemChangeInfo.range}";
+            
+            if(attackCooldownText != null)
+			    attackCooldownText.text = $"Attack cooldown : {selectedItemChangeInfo.cooldownInSeconds}";
+
+            if(attackAoeText != null)
+			    attackAoeText.text = $"Attacks multiple : {selectedItemChangeInfo.canAttackMultiple}";
+        }
 
     }
+
 
     private void DepthUpdateEvent(PlayerDepth depthEventInfo)
     {
