@@ -19,6 +19,7 @@ public class DeathUiController : MonoBehaviour
       
         if (health == 0)
         {
+            UnlockMouse();
             DeathUi.SetActive(true);
         }
     }
@@ -26,6 +27,21 @@ public class DeathUiController : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
+
+    public void UnlockMouse()
+    {  
+	    FirstPersonController.cameraCanMove = false;
+	    Cursor.lockState = CursorLockMode.None;
+	    Cursor.visible = true;
+    }
+
+    public void LockMouse()
+    {  
+	    FirstPersonController.cameraCanMove = true;
+	    Cursor.lockState = CursorLockMode.Locked;
+	    Cursor.visible = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
