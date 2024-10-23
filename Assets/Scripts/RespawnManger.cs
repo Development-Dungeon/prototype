@@ -15,23 +15,14 @@ public class RespawnManger : MonoBehaviour
     void Start()
     {
         playerHealth = playerGo.GetComponent<Health>();
-        playerHealth.HealthPercentChangeEvent+= healthUpdateEvent;
-
     }
-
-    private void healthUpdateEvent(float percentRemaining)
+    public void Respawn()
     {
-        if(percentRemaining <= 0)
-        {  
-            if(respawnLocation != null)
-            {
-                playerHealth.SetCurrentHealth(playerHealth._maxHealth);
-                playerGo.transform.position = respawnLocation.position;
-                playerGo.transform.rotation = respawnLocation.rotation;
-		    }
-
-		}
-
-
+        if (respawnLocation != null)
+        {
+            playerHealth.SetCurrentHealth(playerHealth._maxHealth);
+            playerGo.transform.position = respawnLocation.position;
+            playerGo.transform.rotation = respawnLocation.rotation;
+        }
     }
 }
