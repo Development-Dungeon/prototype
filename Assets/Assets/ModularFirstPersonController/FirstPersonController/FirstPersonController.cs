@@ -219,12 +219,12 @@ public class FirstPersonController : MonoBehaviour
         var depthBonus = addedItem.depthPresureIncrease;
         var healthBonus = addedItem.healthIncrease;
 
-        if(oxygen != null)
-			oxygen.IncreaseCurrentAndMax(0, oxygenBonus);
-        if(depth != null)
-			depth.IncreaseMax(depthBonus);
-        if(health != null)
-			health.IncreaseCurrentAndMax(0, healthBonus);
+        if (oxygen != null)
+            oxygen.IncreaseCurrentAndMax(0, oxygenBonus);
+        if (depth != null)
+            depth.IncreaseMax(depthBonus);
+        if (health != null)
+            health.IncreaseCurrentAndMax(0, healthBonus);
     }
 
 
@@ -514,10 +514,10 @@ public class FirstPersonController : MonoBehaviour
         }
 
         timers.ForEach(i => i.Tick(Time.deltaTime));
-       
+
         #region Attack
 
-        if(Input.GetKeyDown(KeyCode.Mouse0) && !attackCooldownTimer.IsRunning)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !attackCooldownTimer.IsRunning)
         {
             PlayerAttack.AttemptAttack(attackCooldownTimer, transform, playerCamera);
         }
@@ -526,7 +526,7 @@ public class FirstPersonController : MonoBehaviour
         #endregion
     }
 
-    
+
 
     void FixedUpdate()
     {
@@ -687,12 +687,12 @@ public class FirstPersonController : MonoBehaviour
     void HandleBoost()
     {
         //if (Input.GetKeyDown(KeyCode.LeftShift))
-       // {
-            //isBoosting = true;
+        // {
+        //isBoosting = true;
         //}
         //if (Input.GetKeyUp(KeyCode.LeftShift))
         //{
-            //isBoosting = false;
+        //isBoosting = false;
         //}
 
         //Here we can maybe add a power up/ item that can increase the boosting cababilites of the player in the water.
@@ -749,6 +749,7 @@ public class FirstPersonController : MonoBehaviour
             joint.localPosition = new Vector3(Mathf.Lerp(joint.localPosition.x, jointOriginalPos.x, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.y, jointOriginalPos.y, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.z, jointOriginalPos.z, Time.deltaTime * bobSpeed));
         }
     }
+}
 
 
 
@@ -967,5 +968,5 @@ public class FirstPersonController : MonoBehaviour
         }
 
     }
-}
+//}
 #endif
