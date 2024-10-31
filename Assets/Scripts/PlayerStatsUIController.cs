@@ -19,20 +19,33 @@ public class PlayerStatsUIController : MonoBehaviour
     public GameObject player;
     public GameObject ui;
 
+    private PlayerDepth playerDepth;
+    private Health playerHealth;
+    private Oxygen playerOxygen;
+    private PlayerReach playerReach;
+
 
     void Start()
     {
-        player.GetComponent<Health>().HealthUpdatedEvent += HealthUpdatedEvent;
-        player.GetComponent<Oxygen>().OxygenUpdateEvent += OxygenUpdateEvent;
-        player.GetComponentInChildren<PlayerDepth>().PlayerDepthUpdateEvent += DepthUpdateEvent ;
-        player.GetComponentInChildren<PlayerReach>().ReachUpdateEvent += ReachUpdateEvent;
+        playerHealth = player.GetComponent<Health>(); 
+	    playerHealth.HealthUpdatedEvent += HealthUpdatedEvent;
+
+        playerOxygen = player.GetComponent<Oxygen>();
+		playerOxygen.OxygenUpdateEvent += OxygenUpdateEvent;
+
+        playerDepth = player.GetComponentInChildren<PlayerDepth>();
+	    playerDepth.PlayerDepthUpdateEvent += DepthUpdateEvent ;
+
+        playerReach = player.GetComponentInChildren<PlayerReach>();
+	    playerReach.ReachUpdateEvent += ReachUpdateEvent;
+
         InventoryManagerNew.SelectedItemChanged += SelectedItemChangedEvent;
 
 
         // initialize those states which don't change on startup or can't be relied on based on the startup order
-        ReachUpdateEvent(player.GetComponentInChildren<PlayerReach>());
-        HealthUpdatedEvent(player.GetComponent<Health>());
-        OxygenUpdateEvent(player.GetComponent<Oxygen>());
+        ReachUpdateEvent(playerReach);
+        HealthUpdatedEvent(playerHealth);
+        OxygenUpdateEvent(playerOxygen);
     }
 
     public void Update()
@@ -131,10 +144,11 @@ public class PlayerStatsUIController : MonoBehaviour
 
     private void OnDestroy()
     {
-        player.GetComponent<Health>().HealthUpdatedEvent -= HealthUpdatedEvent;
-        player.GetComponent<Oxygen>().OxygenUpdateEvent -= OxygenUpdateEvent;
-        player.GetComponent<PlayerDepth>().PlayerDepthUpdateEvent -= DepthUpdateEvent;
-        player.GetComponentInChildren<PlayerReach>().ReachUpdateEvent -= ReachUpdateEvent;
+        playerHealth.HealthUpdatedEvent -= HealthUpdatedEvent;
+        playerOxygen.OxygenUpdateEvent -= OxygenUpdateEvent;
+        playerDepth.PlayerDepthUpdateEvent -= DepthUpdateEvent;
+        playerReach.ReachUpdateEvent -= ReachUpdateEvent;
+
         InventoryManagerNew.SelectedItemChanged -= SelectedItemChangedEvent;
     }
 
