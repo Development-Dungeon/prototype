@@ -20,11 +20,11 @@
     "_tempCollidersAction": 1,
     "_paletteManager": {
         "_selectedPaletteIdx": 0,
-        "_selectedBrushIdx": 21,
+        "_selectedBrushIdx": 17,
         "_showBrushName": false,
         "_viewList": false,
         "_showTabsInMultipleRows": false,
-        "_iconSize": 64
+        "_iconSize": 99
     },
     "_pinManager": {
         "_profileKeys": [
@@ -481,7 +481,7 @@
         ],
         "_selectedProfileName": "Default",
         "_unsavedProfile": {
-            "_radius": 29.700000762939454,
+            "_radius": 10.699999809265137,
             "_paintTool": {
                 "_parentGlobalId": "",
                 "_autoCreateParent": true,
@@ -610,7 +610,7 @@
                 "z": 0.0
             },
             "_spacingType": 0,
-            "_minSpacing": 1.8114914894104005,
+            "_minSpacing": 1.3586186170578004,
             "_randomizePositions": true,
             "_randomness": 1.0,
             "_paintOnSurfaceToolSettings": {
@@ -2873,7 +2873,7 @@
             },
             "_origin": {
                 "x": 0.0,
-                "y": 538.8218383789063,
+                "y": 2.3436203002929689,
                 "z": 0.0
             },
             "_rotation": {
