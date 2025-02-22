@@ -20,7 +20,7 @@
     "_tempCollidersAction": 1,
     "_paletteManager": {
         "_selectedPaletteIdx": 0,
-        "_selectedBrushIdx": 17,
+        "_selectedBrushIdx": -1,
         "_showBrushName": false,
         "_viewList": false,
         "_showTabsInMultipleRows": false,
@@ -609,8 +609,8 @@
                 "y": 0.0,
                 "z": 0.0
             },
-            "_spacingType": 0,
-            "_minSpacing": 1.3586186170578004,
+            "_spacingType": 1,
+            "_minSpacing": 5.0,
             "_randomizePositions": true,
             "_randomness": 1.0,
             "_paintOnSurfaceToolSettings": {
@@ -620,7 +620,7 @@
                 "_mode": 0,
                 "_paralellToTheSurface": true
             },
-            "_maxHeightFromCenter": 2.0,
+            "_maxHeightFromCenter": 10.699999809265137,
             "_heightType": 1,
             "_avoidOverlapping": 4,
             "_layerFilter": {
@@ -2874,7 +2874,7 @@
             "_origin": {
                 "x": 0.0,
                 "y": 2.3436203002929689,
-                "z": 0.0
+                "z": 1511.055908203125
             },
             "_rotation": {
                 "x": 0.0,
