@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,9 @@ public class PlayerTemperature : MonoBehaviour
     //public int CurrentDistanceFromHeatSource = 0;
     public float DamageFromLowTemperature = 5;
     public float DamageTimerLength = 5;
+    public float minPlayerTemperatureThreshold = 32.0f; // This field is in Freedom Units
+    public float maxPlayerTemperatureThreshold = 150.0f; // This field is in Freedom Units
+    
     private GameObject Player;
     private Health PlayerHealth;
     private Utilities.CountdownTimer DamageTimer;
@@ -36,11 +40,17 @@ public class PlayerTemperature : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         DamageTimer.Tick(Time.deltaTime);
 
-        if (HeatSourceManagerScript.Instance.TargetWithinDistance(transform))
+        // need to calculate the heat that the player feels
+        var currentTemperatureAtPlayer = HeatSourceManagerScript.Instance.GetCurrentTemperature(transform);
+        
+        Debug.Log("Current temperature: " + currentTemperatureAtPlayer);
+        
+        if(currentTemperatureAtPlayer >= minPlayerTemperatureThreshold 
+           && currentTemperatureAtPlayer <= maxPlayerTemperatureThreshold)
         {
             // if the timer is running then stop it because i'm within warmth
             if (DamageTimer.IsRunning)
@@ -55,9 +65,10 @@ public class PlayerTemperature : MonoBehaviour
             // if the timer is not running then start it
             else
             {
-                DamageTimer.Reset(DamageFromLowTemperature);
+                DamageTimer.Reset(DamageTimerLength);
                 DamageTimer.Start();
 		    }
 		}
     }
+
 }

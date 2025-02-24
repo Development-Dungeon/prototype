@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 public partial class ShopManager : MonoBehaviour
 {
 
     public static ShopManager Instance;
-    public GameObject ShopInventorySlotPrefab;
+    public GameObject shopInventorySlotPrefab;
     public GameObject ShopSellInventorySlotPrefab;
-    [HideInInspector] List<ShopBuyInventorySlotController> slots = new List<ShopBuyInventorySlotController>();
+    [HideInInspector] private List<ShopBuyInventorySlotController> _slots = new List<ShopBuyInventorySlotController>();
     [HideInInspector] public List<ShopItemMetadata> _shopBuySellConfig;
     [HideInInspector] List<ShopSellInventoryController> itemsInSellShop = new List<ShopSellInventoryController>();
     public GameObject ShopContent;
@@ -27,12 +28,12 @@ public partial class ShopManager : MonoBehaviour
     public void PopulateBuyShop(List<ShopItemMetadata> shopBuySellConfig)
     {
         // clear out the current buy shop
-        foreach(var buySlot in slots)
+        foreach(var buySlot in _slots)
         {
             if (buySlot == null) continue;
             Destroy(buySlot.gameObject);
 		}
-        slots = new List<ShopBuyInventorySlotController>();
+        _slots = new List<ShopBuyInventorySlotController>();
 
         // get a prefab for the ship inventory slot
         foreach(ShopItemMetadata itemMetadata in shopBuySellConfig)
@@ -40,12 +41,12 @@ public partial class ShopManager : MonoBehaviour
             if (!itemMetadata.isBuyable || itemMetadata.buyQuantity <= 0)
                 continue;
 
-			GameObject newItemGameObject = Instantiate(ShopInventorySlotPrefab, ShopContent.transform);
+			GameObject newItemGameObject = Instantiate(shopInventorySlotPrefab, ShopContent.transform);
 			var shopInventoryController = newItemGameObject.GetComponent<ShopBuyInventorySlotController>();
 
             shopInventoryController.InitializeItem(itemMetadata.item, itemMetadata.buyPrice, itemMetadata.buyQuantity);
 
-            slots.Add(shopInventoryController);
+            _slots.Add(shopInventoryController);
 		}
         EnableBuyTextForAffordableItems();
     }
@@ -54,7 +55,7 @@ public partial class ShopManager : MonoBehaviour
     {
         var totalPlayerMoney = InventoryManagerNew.Instance.GetMoney();
         // iterate through each item in buys lot and enable/disable based on the amount of money the player has
-        foreach(var buySlot in slots)
+        foreach(var buySlot in _slots)
         {  
             if(totalPlayerMoney >= buySlot.priceOfItem)
             {

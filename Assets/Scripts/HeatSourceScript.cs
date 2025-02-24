@@ -7,7 +7,9 @@ using UnityEngine;
 public class HeatSourceScript : MonoBehaviour
 {
 
-    public int heatPower = 10;
+    public float heatPower = 10.0f;
+    public float heatDissipationRate = 1.0f;
+    
 
     private void Start()
     {

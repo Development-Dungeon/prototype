@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,8 +6,8 @@ using UnityEngine;
 // this script is in charge of keeping track of all the heat objects inside the scene
 public class HeatSourceManagerScript : MonoBehaviour
 {
-
     public List<HeatSourceScript> heatSources;
+    public float baseTemperature = 0.0f; // This is in Freedom Units
 
     public static HeatSourceManagerScript Instance;
 
@@ -58,16 +59,18 @@ public class HeatSourceManagerScript : MonoBehaviour
 
         RemoveNullsFromHeatSource();
 
-        foreach(var hSource in heatSources)
+        foreach (var hSource in heatSources)
         {
-
             // get the distance between the heat source and the target
             var distance = Vector3.Distance(hSource.transform.position, target.position);
             // get the power of this heat source
             var power = hSource.heatPower; // this is measured in meters or the same metric as distance
-            if (power >= distance )
+            
+            
+            
+            if (power >= distance)
                 return targetWithinDistance;
-		}
+        }
 
 
         return targetNotWithinDistance;
@@ -80,6 +83,36 @@ public class HeatSourceManagerScript : MonoBehaviour
             return;
 
         heatSources.RemoveAll(source => source == null || source.gameObject == null);
+
+    }
+
+    public float GetCurrentTemperature(Transform target)
+    {
+        // loop through all the lamps and temperatures and find the largest one
+        const bool targetWithinDistance = true;
+        const bool targetNotWithinDistance = false;
+
+        if (target is null || heatSources is null || heatSources.Count == 0)
+            return baseTemperature;
+
+        RemoveNullsFromHeatSource();
+
+        var maxTemperature = baseTemperature;
+        
+        foreach (var hSource in heatSources)
+        {
+            // get the distance between the heat source and the target
+            var distance = Vector3.Distance(hSource.transform.position, target.position);
+            // get the power of this heat source
+            var power = hSource.heatPower; // this is measured in meters or the same metric as distance
+            var heatDissipationRate = hSource.heatDissipationRate;
+
+            var heatAtPlayerLocation =  baseTemperature + (power - (distance * heatDissipationRate));
+            
+            maxTemperature = Mathf.Max(maxTemperature, heatAtPlayerLocation);
+        }
+
+        return maxTemperature;
 
     }
 }
