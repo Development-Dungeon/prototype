@@ -48,7 +48,8 @@ public enum ItemType {
     Tank,
     Money,
     Weapon,
-    Misc
+    Misc,
+    Fuel
 }
 
 public enum ActionType {  

@@ -47,8 +47,6 @@ public class PlayerTemperature : MonoBehaviour
         // need to calculate the heat that the player feels
         var currentTemperatureAtPlayer = HeatSourceManagerScript.Instance.GetCurrentTemperature(transform);
         
-        Debug.Log("Current temperature: " + currentTemperatureAtPlayer);
-        
         if(currentTemperatureAtPlayer >= minPlayerTemperatureThreshold 
            && currentTemperatureAtPlayer <= maxPlayerTemperatureThreshold)
         {

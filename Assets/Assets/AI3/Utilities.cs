@@ -48,6 +48,8 @@ namespace Utilities
     {
         public CountdownTimer(float value) : base(value) { }
 
+        public float Progress => (initialTime - Time) / initialTime;
+        
         public override void Tick(float deltaTime)
         {
             if (IsRunning && Time > 0)

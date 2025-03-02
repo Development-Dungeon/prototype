@@ -15,6 +15,7 @@ public class InventorySlot: MonoBehaviour, IDropHandler
 
     public static event Action<Item> EquipmentAdded;
     public static event Action<Item> EquipmentRemoved;
+    public event Action<InventoryItem> ItemAdded ;
 
     private void Awake()
     {
@@ -51,7 +52,9 @@ public class InventorySlot: MonoBehaviour, IDropHandler
             Transform previousParent = dragableItem.parentAfterDrag;
 
             dragableItem.parentAfterDrag = transform;
-
+            
+            if(ItemAdded != null)
+                ItemAdded.Invoke(dragableItem);
 
             // if it is an equipment slot then send a message out that the item was added
             if(IsEquipmentSlot)
