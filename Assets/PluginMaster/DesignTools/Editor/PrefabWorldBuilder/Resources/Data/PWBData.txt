@@ -2885,7 +2885,7 @@
             "_showPositionHandle": true,
             "_showRotationHandle": false,
             "_showScaleHandle": false,
-            "_radialGridEnabled": false,
+            "_radialGridEnabled": true,
             "_radialStep": 1.0,
             "_radialSectors": 8,
             "_snapToRadius": true,
