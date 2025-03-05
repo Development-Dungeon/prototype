@@ -15,6 +15,9 @@ public class PlayerStatsUIController : MonoBehaviour
     public TMP_Text attackRangeText;
     public TMP_Text attackCooldownText;
     public TMP_Text attackAoeText;
+    public TMP_Text playerTemperatureText;
+    public TMP_Text playerMinTemperatureText;
+    public TMP_Text playerMaxTemperatureText;
 
     public GameObject player;
     public GameObject ui;
@@ -23,6 +26,7 @@ public class PlayerStatsUIController : MonoBehaviour
     private Health playerHealth;
     private Oxygen playerOxygen;
     private PlayerReach playerReach;
+    private PlayerTemperature playerTemperature;
 
 
     void Start()
@@ -38,6 +42,9 @@ public class PlayerStatsUIController : MonoBehaviour
 
         playerReach = player.GetComponentInChildren<PlayerReach>();
 	    playerReach.ReachUpdateEvent += ReachUpdateEvent;
+        
+        playerTemperature = player.GetComponentInChildren<PlayerTemperature>();
+        playerTemperature.TemperatureChangedEvent += PlayerTemperatureChangedEvent;
 
         InventoryManagerNew.SelectedItemChanged += SelectedItemChangedEvent;
 
@@ -46,6 +53,25 @@ public class PlayerStatsUIController : MonoBehaviour
         ReachUpdateEvent(playerReach);
         HealthUpdatedEvent(playerHealth);
         OxygenUpdateEvent(playerOxygen);
+        PlayerTemperatureChangedEvent(playerTemperature.currentTemperatureAtPlayer);
+    }
+
+    private void PlayerTemperatureChangedEvent(float currentPlayerTemperature)
+    {
+        if(playerTemperatureText != null)
+            playerTemperatureText.text = $"P. Cur Temp : {currentPlayerTemperature}F";
+        else 
+            playerTemperatureText.text = $"P. Cur Temp : n/a";
+        
+        if(playerMinTemperatureText != null)
+            playerMinTemperatureText.text = $"P. Min Temp : {playerTemperature.minPlayerTemperatureThreshold}F";
+        else 
+            playerMinTemperatureText.text = $"P. Min Temp : n/a";
+        
+        if(playerMaxTemperatureText != null)
+            playerMaxTemperatureText.text = $"P. Max Temp: {playerTemperature.maxPlayerTemperatureThreshold}F";
+        else 
+            playerMaxTemperatureText.text = $"P. Max Temp : n/a";
     }
 
     public void Update()

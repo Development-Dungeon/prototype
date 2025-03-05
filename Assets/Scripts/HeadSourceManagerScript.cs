@@ -105,8 +105,10 @@ public class HeatSourceManagerScript : MonoBehaviour
             
             maxTemperature = Mathf.Max(maxTemperature, heatAtPlayerLocation);
         }
+        
+        var roundedTemperature = Mathf.RoundToInt(maxTemperature);
 
-        return maxTemperature;
+        return roundedTemperature;
 
     }
 }

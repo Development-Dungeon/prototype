@@ -14,8 +14,9 @@ public class PlayerTemperature : MonoBehaviour
     public float DamageTimerLength = 5;
     public float minPlayerTemperatureThreshold = 32.0f; // This field is in Freedom Units
     public float maxPlayerTemperatureThreshold = 150.0f; // This field is in Freedom Units
-    [ReadOnly]
     public float currentTemperatureAtPlayer;
+    
+    public event Action<float> TemperatureChangedEvent;
     
     private GameObject Player;
     private Health PlayerHealth;
@@ -48,7 +49,7 @@ public class PlayerTemperature : MonoBehaviour
         DamageTimer.Tick(Time.deltaTime);
 
         // need to calculate the heat that the player feels
-        currentTemperatureAtPlayer = HeatSourceManagerScript.Instance.GetCurrentTemperature(transform);
+        SetCurrentTemperatureAtPlayer(HeatSourceManagerScript.Instance.GetCurrentTemperature(transform));
         
         if(currentTemperatureAtPlayer >= minPlayerTemperatureThreshold 
            && currentTemperatureAtPlayer <= maxPlayerTemperatureThreshold)
@@ -72,4 +73,15 @@ public class PlayerTemperature : MonoBehaviour
 		}
     }
 
+    private void SetCurrentTemperatureAtPlayer(float newTemperature)
+    {
+        if (Mathf.Approximately(newTemperature, currentTemperatureAtPlayer))
+            return;
+        
+        currentTemperatureAtPlayer = newTemperature;
+        
+        if(TemperatureChangedEvent != null)
+            TemperatureChangedEvent.Invoke(currentTemperatureAtPlayer);
+        
+    }
 }
