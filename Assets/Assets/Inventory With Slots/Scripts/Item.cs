@@ -29,7 +29,6 @@ public class Item: ScriptableObject
     public float cooldownInSeconds;
     public bool canAttackMultiple;
 
-
     [Header("Only UI")]
     public bool stackable = true;
     public int maxStackable = 10;
@@ -37,6 +36,8 @@ public class Item: ScriptableObject
     [Header("Both")]
     public Sprite image;
 
+    [Header("Fuel Items")] 
+    public float burnTimeInSeconds;
 }
 
 public enum ItemType { 

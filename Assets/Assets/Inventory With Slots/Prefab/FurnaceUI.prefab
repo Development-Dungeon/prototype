@@ -281,6 +281,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6035103826069918201}
+  - component: {fileID: 2318274284415121470}
   m_Layer: 5
   m_Name: FurnaceUI
   m_TagString: Untagged
@@ -308,6 +309,22 @@ RectTransform:
   m_AnchoredPosition: {x: 960, y: 540}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2318274284415121470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2270896137926763128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7ea53256bbf04df3b6af0028c9f9400, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  consumptionRateText: {fileID: 5748283006291456526}
+  heatProductionText: {fileID: 3663002174291791726}
+  furnaceIsOnText: {fileID: 953441552069864252}
+  progressText: {fileID: 7506235205320621968}
 --- !u!1 &5284943973751575533
 GameObject:
   m_ObjectHideFlags: 0

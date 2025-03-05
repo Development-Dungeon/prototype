@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public class PlayerTemperature : MonoBehaviour
@@ -13,6 +14,8 @@ public class PlayerTemperature : MonoBehaviour
     public float DamageTimerLength = 5;
     public float minPlayerTemperatureThreshold = 32.0f; // This field is in Freedom Units
     public float maxPlayerTemperatureThreshold = 150.0f; // This field is in Freedom Units
+    [ReadOnly]
+    public float currentTemperatureAtPlayer;
     
     private GameObject Player;
     private Health PlayerHealth;
@@ -45,7 +48,7 @@ public class PlayerTemperature : MonoBehaviour
         DamageTimer.Tick(Time.deltaTime);
 
         // need to calculate the heat that the player feels
-        var currentTemperatureAtPlayer = HeatSourceManagerScript.Instance.GetCurrentTemperature(transform);
+        currentTemperatureAtPlayer = HeatSourceManagerScript.Instance.GetCurrentTemperature(transform);
         
         if(currentTemperatureAtPlayer >= minPlayerTemperatureThreshold 
            && currentTemperatureAtPlayer <= maxPlayerTemperatureThreshold)

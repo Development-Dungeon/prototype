@@ -9,7 +9,7 @@ public class HeatSourceScript : MonoBehaviour
 
     public float heatPower = 10.0f;
     public float heatDissipationRate = 1.0f;
-    
+    public bool isActive = false;
 
     private void Start()
     {

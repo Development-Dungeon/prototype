@@ -7,11 +7,9 @@ using UnityEngine;
 public class HeatSourceManagerScript : MonoBehaviour
 {
     public List<HeatSourceScript> heatSources;
-    public float baseTemperature = 0.0f; // This is in Freedom Units
+    public float baseTemperature = 0.0f; 
 
     public static HeatSourceManagerScript Instance;
-
-    // Start is called before the first frame update
 
     private void Awake()
     {
@@ -24,12 +22,6 @@ public class HeatSourceManagerScript : MonoBehaviour
         // search for all the game objects in the scene which already exist under the heat source script (or tag) 
         //  and add them to the array
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // i don't think it has to do anything on the update
     }
 
     public void RegisterHeatSource(HeatSourceScript heatSource)
@@ -101,6 +93,8 @@ public class HeatSourceManagerScript : MonoBehaviour
         
         foreach (var hSource in heatSources)
         {
+            if (!hSource.isActive)
+                continue;
             // get the distance between the heat source and the target
             var distance = Vector3.Distance(hSource.transform.position, target.position);
             // get the power of this heat source

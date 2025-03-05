@@ -31,3 +31,4 @@ MonoBehaviour:
   stackable: 1
   maxStackable: 1
   image: {fileID: 21300000, guid: 3281e91e074a48d4eb5d6a1fdd332a36, type: 3}
+  burnTimeInSeconds: 20
