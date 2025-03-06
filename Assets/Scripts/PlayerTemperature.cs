@@ -47,26 +47,31 @@ public class PlayerTemperature : MonoBehaviour
         // need to calculate the heat that the player feels
         SetCurrentTemperatureAtPlayer(HeatSourceManagerScript.Instance.GetCurrentTemperature(transform));
         
+        CalculateTemperatureEffect();
+    }
+
+    private void CalculateTemperatureEffect()
+    {
         if(currentTemperatureAtPlayer >= minPlayerTemperatureThreshold 
            && currentTemperatureAtPlayer <= maxPlayerTemperatureThreshold)
         {
             // if the timer is running then stop it because i'm within warmth
             if (DamageTimer.IsRunning)
                 DamageTimer.Pause();
-		}
+        }
         else 
-		{ 
+        { 
             if(DamageTimer.IsRunning)
             { 
                 // do nothing
-		    }
+            }
             // if the timer is not running then start it
             else
             {
                 DamageTimer.Reset(DamageTimerLength);
                 DamageTimer.Start();
-		    }
-		}
+            }
+        }
     }
 
     private void SetCurrentTemperatureAtPlayer(float newTemperature)

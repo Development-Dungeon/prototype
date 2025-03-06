@@ -19,9 +19,9 @@ public class PlayerStatsUIController : MonoBehaviour
     public TMP_Text playerMinTemperatureText;
     public TMP_Text playerMaxTemperatureText;
 
-    public GameObject player;
     public GameObject ui;
 
+    private GameObject player;
     private PlayerDepth playerDepth;
     private Health playerHealth;
     private Oxygen playerOxygen;
@@ -31,6 +31,8 @@ public class PlayerStatsUIController : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+        
         playerHealth = player.GetComponent<Health>(); 
 	    playerHealth.HealthUpdatedEvent += HealthUpdatedEvent;
 
