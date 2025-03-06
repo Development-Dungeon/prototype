@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// the point of this class is to indicate a heat source
-// this class may contain a power level
 public class HeatSourceScript : MonoBehaviour
 {
 
