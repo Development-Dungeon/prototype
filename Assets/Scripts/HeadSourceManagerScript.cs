@@ -19,9 +19,6 @@ public class HeatSourceManagerScript : MonoBehaviour
 
     void Start()
     {
-        // search for all the game objects in the scene which already exist under the heat source script (or tag) 
-        //  and add them to the array
-        
     }
 
     public void RegisterHeatSource(HeatSourceScript heatSource)
@@ -80,10 +77,6 @@ public class HeatSourceManagerScript : MonoBehaviour
 
     public float GetCurrentTemperature(Transform target)
     {
-        // loop through all the lamps and temperatures and find the largest one
-        const bool targetWithinDistance = true;
-        const bool targetNotWithinDistance = false;
-
         if (target is null || heatSources is null || heatSources.Count == 0)
             return baseTemperature;
 
