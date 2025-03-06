@@ -6,14 +6,10 @@ using UnityEngine;
 
 public class PlayerTemperature : MonoBehaviour
 {
-    // what do we need in this?
-    // probably the max distance the player can be from a heat source 
-    //public int MaxDistanceFromHeatSourceInMeters = 100;
-    //public int CurrentDistanceFromHeatSource = 0;
     public float DamageFromLowTemperature = 5;
     public float DamageTimerLength = 5;
-    public float minPlayerTemperatureThreshold = 32.0f; // This field is in Freedom Units
-    public float maxPlayerTemperatureThreshold = 150.0f; // This field is in Freedom Units
+    public float minPlayerTemperatureThreshold = 32.0f; 
+    public float maxPlayerTemperatureThreshold = 150.0f; 
     public float currentTemperatureAtPlayer;
     
     public event Action<float> TemperatureChangedEvent;

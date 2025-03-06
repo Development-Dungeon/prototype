@@ -7,12 +7,10 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-// convert this code to only use the prefab and not dragging all the information
 public class FurnaceController : MonoBehaviour
 { public GameObject furnaceUIPrefab;
     public GameObject furnaceUI;
     public GameObject furnaceUIParent; // This object will contain all the furnace UI's when they are created
-    // public float furnaceMaxTemperature;
     public float baseFurnaceItemConsumptionRateInSeconds;
     
     private Utilities.CountdownTimer consumeItemCountdownTimer;
@@ -90,7 +88,6 @@ public class FurnaceController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        // Close the UI
         CloseFurnaceUI();
         LockCursor();
     }
@@ -125,13 +122,6 @@ public class FurnaceController : MonoBehaviour
         
     }
     
-    /*
-     * this code needs to do the following
-     * 1) See that there is an item inside the inventory slot
-     * 2) Pull the power from the item
-     * 3) consume the item
-     * 4) update the text for the furnace status
-     */
     
     void Start()
     {
@@ -166,7 +156,6 @@ public class FurnaceController : MonoBehaviour
     
     private void ConsumeItem(InventoryItem heldItem)
     {
-        // get the item which is in the inventory slot
         
         if (heldItem == null)
         {
