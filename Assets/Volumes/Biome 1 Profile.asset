@@ -110,7 +110,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 65472
   tint:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {r: 0.3207547, g: 0.06808473, b: 0.1355855, a: 1}
   highQualityFiltering:
     m_OverrideState: 1
@@ -669,7 +669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
     m_Value: 1

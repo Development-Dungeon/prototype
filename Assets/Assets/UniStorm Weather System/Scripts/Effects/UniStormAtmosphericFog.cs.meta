@@ -1,15 +1,5 @@
 fileFormatVersion: 2
 guid: ea349b21e4afe614abd54d41626ea980
-timeCreated: 1574739857
-licenseType: Store
-MonoImporter:
-  serializedVersion: 2
-  defaultReferences: []
-  executionOrder: 0
-  icon: {instanceID: 0}
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
   productId: 2714
@@ -17,3 +7,17 @@ AssetOrigin:
   packageVersion: 5.3.1
   assetPath: Assets/UniStorm Weather System/Scripts/Effects/UniStormAtmosphericFog.cs
   uploadId: 593414
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - NoiseTexture: {instanceID: 0}
+  - SunSource: {instanceID: 0}
+  - MoonSource: {instanceID: 0}
+  - fogShader: {fileID: 4800000, guid: 3d91dc914a900ed46a65afa6e7d4117b, type: 3}
+  - fogMaterial: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

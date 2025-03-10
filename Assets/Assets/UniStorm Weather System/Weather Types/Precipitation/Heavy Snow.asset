@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Heavy Snow
   m_EditorClassIdentifier: 
   WeatherTypeName: Heavy Snow
-  CloudProfileComponent: {fileID: 11400000, guid: 8af8e06821542df46bd3ee0b1093a6ff,
-    type: 2}
+  CloudProfileComponent: {fileID: 11400000, guid: 8af8e06821542df46bd3ee0b1093a6ff, type: 2}
   SunIntensity: 0.6
   CloudShadowIntensity: 0
   MoonIntensity: 0.5
@@ -57,17 +56,16 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
   WindSpeedLevel: 0.85
   WindBendingLevel: 0.2
   WindIntensity: 1
-  WeatherEffect: {fileID: 198957874608633202, guid: dbee897552d49b2419fbe8ea3ada9baa,
-    type: 3}
-  ParticleEffectAmount: 1000
+  WeatherEffect: {fileID: 198957874608633202, guid: dbee897552d49b2419fbe8ea3ada9baa, type: 3}
+  ParticleEffectAmount: 3000
   ParticleEffectVector: {x: 0, y: 6, z: 20}
-  AdditionalWeatherEffect: {fileID: 198814685187613174, guid: 872b852f5cbd3d54dbfd29aec77b4965,
-    type: 3}
+  AdditionalWeatherEffect: {fileID: 0}
   AdditionalParticleEffectAmount: 25
   AdditionalParticleEffectVector: {x: 0, y: 0, z: 3}
   WeatherVolume: 1
@@ -75,7 +73,7 @@ MonoBehaviour:
   PrecipitationWeatherType: 0
   UseWeatherSound: 0
   UseWeatherEffect: 0
-  UseAdditionalWeatherEffect: 0
+  UseAdditionalWeatherEffect: 1
   SpecialWeatherType: 1
   Season: 4
   CloudHeight: 650
@@ -110,6 +108,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
   UseLightning: 1

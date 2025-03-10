@@ -27,8 +27,8 @@ MonoBehaviour:
   FogLightFalloff: 0.408
   FogHeight: 1
   CameraFogHeight: 1
-  OverrideFogColor: 0
-  OverrideCameraFogHeight: 0
+  OverrideFogColor: 1
+  OverrideCameraFogHeight: 1
   FogColor:
     serializedVersion: 2
     key0: {r: 0.07542719, g: 0.119482026, b: 0.14150941, a: 1}
@@ -79,7 +79,7 @@ MonoBehaviour:
   CloudHeight: 150
   CloudLevel: 4
   TemperatureType: 2
-  ShaderControl: 2
+  ShaderControl: 0
   OverrideCloudColor: 1
   CloudColor:
     serializedVersion: 2
