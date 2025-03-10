@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Unity.VisualScripting;
+using UnityEngine.Serialization;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -108,6 +110,7 @@ public class FirstPersonController : MonoBehaviour
     public KeyCode jumpKey = KeyCode.Space;
     public float jumpPower = 5f;
     public float swimPower = 10f;
+    public float fallMultiplier = 2f;
 
     // Internal Variables
     private bool isGrounded = false;
@@ -319,7 +322,7 @@ public class FirstPersonController : MonoBehaviour
         }
         else
         {
-            rb.drag = 1;
+            // rb.drag = 0;
             isUnderWater = false;
             rb.useGravity = true;
             enableSprint = true;
@@ -473,14 +476,7 @@ public class FirstPersonController : MonoBehaviour
         {
             Jump();
         }
-
-        if (enableJump && Input.GetKeyDown(jumpKey) && isGrounded)
-        {
-            Jump();
-        }
-
-
-
+        
         #endregion
 
         #region Crouch
@@ -522,6 +518,10 @@ public class FirstPersonController : MonoBehaviour
             PlayerAttack.AttemptAttack(attackCooldownTimer, transform, playerCamera);
         }
 
+        if (!isGrounded && rb.velocity.y < 0)
+        {
+            rb.velocity += Vector3.up * (fallMultiplier* Physics.gravity.y * Time.deltaTime);
+        }
 
         #endregion
     }
@@ -907,7 +907,8 @@ public class FirstPersonController : MonoBehaviour
 
             GUI.enabled = fpc.enableJump;
             fpc.jumpKey = (KeyCode)EditorGUILayout.EnumPopup(new GUIContent("Jump Key", "Determines what key is used to jump."), fpc.jumpKey);
-            fpc.jumpPower = EditorGUILayout.Slider(new GUIContent("Jump Power", "Determines how high the player will jump."), fpc.jumpPower, .1f, 20f);
+            fpc.jumpPower = EditorGUILayout.Slider(new GUIContent("Jump Power", "Determines how high the player will jump."), fpc.jumpPower, .1f, 1000f);
+            fpc.fallMultiplier = EditorGUILayout.Slider(new GUIContent("Fall Multiplier", "Determines how fast player falls"), fpc.fallMultiplier, .1f, 100f);
             GUI.enabled = true;
 
             EditorGUILayout.Space();
