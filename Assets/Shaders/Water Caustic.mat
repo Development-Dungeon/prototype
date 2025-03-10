@@ -58,9 +58,9 @@ Material:
     - _DrawOrder: 0
     - _Offset: 1
     - _Power: 3.84
-    - _Speed: 1
+    - _Speed: 2
     m_Colors:
-    - _BaseColor: {r: 0.6084906, g: 1, b: 0.9296307, a: 0}
+    - _BaseColor: {r: 0.4764151, g: 1, b: 0.9057547, a: 0}
     - _Color: {r: 0.5990566, g: 1, b: 0.9823072, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

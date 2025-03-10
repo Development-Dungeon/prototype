@@ -20,7 +20,7 @@
     "_tempCollidersAction": 1,
     "_paletteManager": {
         "_selectedPaletteIdx": 0,
-        "_selectedBrushIdx": -1,
+        "_selectedBrushIdx": 22,
         "_showBrushName": false,
         "_viewList": false,
         "_showTabsInMultipleRows": false,
@@ -481,7 +481,7 @@
         ],
         "_selectedProfileName": "Default",
         "_unsavedProfile": {
-            "_radius": 10.699999809265137,
+            "_radius": 16.799999237060548,
             "_paintTool": {
                 "_parentGlobalId": "",
                 "_autoCreateParent": true,
@@ -602,7 +602,7 @@
                 }
             },
             "_brushShape": 1,
-            "_density": 7,
+            "_density": 45,
             "_orientAlongBrushstroke": false,
             "_additionalOrientationAngle": {
                 "x": 0.0,
@@ -809,7 +809,7 @@
         ],
         "_selectedProfileName": "Default",
         "_unsavedProfile": {
-            "_radius": 1.0,
+            "_radius": 20.0,
             "_paintTool": {
                 "_parentGlobalId": "",
                 "_autoCreateParent": true,
@@ -938,7 +938,7 @@
                 "z": 0.0
             },
             "_spacingType": 0,
-            "_minSpacing": 1.2003173828125,
+            "_minSpacing": 6.37225341796875,
             "_randomizePositions": true,
             "_randomness": 1.0,
             "_simData": {
@@ -2874,7 +2874,7 @@
             "_origin": {
                 "x": 0.0,
                 "y": 2.3436203002929689,
-                "z": 1511.055908203125
+                "z": 610.5440063476563
             },
             "_rotation": {
                 "x": 0.0,

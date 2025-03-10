@@ -239,7 +239,6 @@ MonoBehaviour:
   usedOxygenPerSecond: 5
   outOfOxygenDamage: 5
   outOfOxygenDamangePeriod: 5
-  refreshEquipmentTimerSeconds: 0.2
 --- !u!114 &7738802018494870715
 MonoBehaviour:
   m_ObjectHideFlags: 0

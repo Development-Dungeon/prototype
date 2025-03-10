@@ -10,12 +10,24 @@ public class DecalYPositionController : MonoBehaviour
     private float fadeTimer = 0f;
     private bool isFading = false;
     private bool isVisible = false;
-    
+
+    private void Awake()
+    {
+        // Get the Decal Projector component
+        decalProjector = GetComponent<DecalProjector>();
+
+        // Disable the decal in the editor
+        if (!Application.isPlaying)
+        {
+            decalProjector.enabled = false;
+            isVisible = false;
+        }
+    }
 
     private void Start()
     {
-        // Get the Decal Projector component from the GameObject
-        decalProjector = GetComponent<DecalProjector>();
+        // Enable the decal when the game starts
+        decalProjector.enabled = true;
 
         // Set the decal's position to always have the target Y value
         SetDecalYPosition();
@@ -32,14 +44,11 @@ public class DecalYPositionController : MonoBehaviour
         // Check if the decal is above the target Y value
         if (transform.position.y > targetYValue && isVisible)
         {
-            // Instantly hide the decal
             SetDecalAlpha(0f);
             isVisible = false;
         }
-        // If the decal is below or at the Y value and not yet visible, fade it in
         else if (transform.position.y <= targetYValue && !isVisible)
         {
-            // Start fading in
             isFading = true;
             fadeTimer = 0f;
             isVisible = true;
@@ -49,12 +58,9 @@ public class DecalYPositionController : MonoBehaviour
         if (isFading)
         {
             fadeTimer += Time.deltaTime;
-
-            // Fade in based on time progression
             float fadeValue = Mathf.Clamp01(fadeTimer / fadeDuration);
             SetDecalAlpha(fadeValue);
 
-            // Stop fading when fully visible
             if (fadeValue >= 1f)
             {
                 isFading = false;
@@ -62,17 +68,17 @@ public class DecalYPositionController : MonoBehaviour
         }
     }
 
-    // Function to ensure the decal's Y position stays at the target value
     private void SetDecalYPosition()
     {
         Vector3 currentPosition = transform.position;
         transform.position = new Vector3(currentPosition.x, targetYValue, currentPosition.z);
     }
 
-    // Helper function to set the alpha of the decal's material
     private void SetDecalAlpha(float alpha)
     {
-        // Assuming the shader has an "_Alpha" property for transparency control
-        decalProjector.material.SetFloat("_Alpha", alpha);
+        if (decalProjector.material.HasProperty("_Alpha"))
+        {
+            decalProjector.material.SetFloat("_Alpha", alpha);
+        }
     }
 }
