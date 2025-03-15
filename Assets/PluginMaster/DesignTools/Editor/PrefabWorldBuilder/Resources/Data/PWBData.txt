@@ -20,7 +20,7 @@
     "_tempCollidersAction": 1,
     "_paletteManager": {
         "_selectedPaletteIdx": 0,
-        "_selectedBrushIdx": 22,
+        "_selectedBrushIdx": 4,
         "_showBrushName": false,
         "_viewList": false,
         "_showTabsInMultipleRows": false,
@@ -601,7 +601,7 @@
                     }
                 }
             },
-            "_brushShape": 1,
+            "_brushShape": 2,
             "_density": 45,
             "_orientAlongBrushstroke": false,
             "_additionalOrientationAngle": {
@@ -610,7 +610,7 @@
                 "z": 0.0
             },
             "_spacingType": 1,
-            "_minSpacing": 5.0,
+            "_minSpacing": 10.0,
             "_randomizePositions": true,
             "_randomness": 1.0,
             "_paintOnSurfaceToolSettings": {
@@ -622,7 +622,7 @@
             },
             "_maxHeightFromCenter": 10.699999809265137,
             "_heightType": 1,
-            "_avoidOverlapping": 4,
+            "_avoidOverlapping": 0,
             "_layerFilter": {
                 "serializedVersion": "2",
                 "m_Bits": 4294967295
@@ -2874,7 +2874,7 @@
             "_origin": {
                 "x": 0.0,
                 "y": 2.3436203002929689,
-                "z": 610.5440063476563
+                "z": 661.0584716796875
             },
             "_rotation": {
                 "x": 0.0,
