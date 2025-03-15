@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // this script is in charge of keeping track of all the heat objects inside the scene
@@ -10,11 +11,13 @@ public class HeatSourceManagerScript : MonoBehaviour
     public float baseTemperature = 0.0f; 
 
     public static HeatSourceManagerScript Instance;
+    public List<TemperatureZoneScript> zones;
 
     private void Awake()
     {
         Instance = this;
         heatSources = new(); 
+        zones = new();
     }
 
     void Start()
@@ -55,15 +58,11 @@ public class HeatSourceManagerScript : MonoBehaviour
             // get the power of this heat source
             var power = hSource.heatPower; // this is measured in meters or the same metric as distance
             
-            
-            
             if (power >= distance)
                 return targetWithinDistance;
         }
 
-
         return targetNotWithinDistance;
-
     }
 
     private void RemoveNullsFromHeatSource()
@@ -72,7 +71,13 @@ public class HeatSourceManagerScript : MonoBehaviour
             return;
 
         heatSources.RemoveAll(source => source == null || source.gameObject == null);
+    }
 
+    private float getBaseTemperature()
+    {
+        if (Instance.zones.Count > 0)
+            return Instance.zones.Last().baseTemperature;
+        return baseTemperature;
     }
 
     public float GetCurrentTemperature(Transform target)
@@ -82,7 +87,7 @@ public class HeatSourceManagerScript : MonoBehaviour
 
         RemoveNullsFromHeatSource();
 
-        var maxTemperature = baseTemperature;
+        var maxTemperature = getBaseTemperature();
         
         foreach (var hSource in heatSources)
         {
@@ -94,7 +99,7 @@ public class HeatSourceManagerScript : MonoBehaviour
             var power = hSource.heatPower; // this is measured in meters or the same metric as distance
             var heatDissipationRate = hSource.heatDissipationRate;
 
-            var heatAtPlayerLocation =  baseTemperature + (power - (distance * heatDissipationRate));
+            var heatAtPlayerLocation =  getBaseTemperature() + (power - (distance * heatDissipationRate));
             
             maxTemperature = Mathf.Max(maxTemperature, heatAtPlayerLocation);
         }
@@ -103,5 +108,21 @@ public class HeatSourceManagerScript : MonoBehaviour
 
         return roundedTemperature;
 
+    }
+
+    public static void AddTemperatureZone(TemperatureZoneScript temperatureZoneScript)
+    {
+        if (Instance.zones.Contains(temperatureZoneScript))
+        {
+            Instance.zones.Remove(temperatureZoneScript);
+        }
+        
+        Instance.zones.Add(temperatureZoneScript);
+        
+    }
+
+    public static void RemoveTemperatureZone(TemperatureZoneScript temperatureZoneScript)
+    {
+        Instance.zones.Remove(temperatureZoneScript);
     }
 }
