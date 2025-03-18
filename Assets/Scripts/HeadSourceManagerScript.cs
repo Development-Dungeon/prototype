@@ -97,7 +97,7 @@ public class HeatSourceManagerScript : MonoBehaviour
             var distance = Vector3.Distance(hSource.transform.position, target.position);
             // get the power of this heat source
             var power = hSource.heatPower; // this is measured in meters or the same metric as distance
-            var heatDissipationRate = hSource.heatDissipationRate;
+            var heatDissipationRate = hSource.dissipationRateByDistance;
 
             var heatAtPlayerLocation =  getBaseTemperature() + (power - (distance * heatDissipationRate));
             
