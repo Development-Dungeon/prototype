@@ -3,34 +3,70 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Utilities;
 
 public class PlayerTemperature : MonoBehaviour
 {
-    public float DamageFromLowTemperature = 5;
-    public float DamageTimerLength = 5;
+    [Header("Player Damage Settings")]
+    public float damageFromLowTemperature = 5;
+    public float damageTimerLength = 5;
     public float minPlayerTemperatureThreshold = 32.0f; 
     public float maxPlayerTemperatureThreshold = 150.0f; 
     public float currentTemperatureAtPlayer;
     
+    [Header("Player Healing Settings")]
+    public float minPlayerTemperatureThresholdForHealing = 80.0f;
+    public float maxPlayerTemperatureThresholdForHealing = 90.0f;
+    public float healingTimerPeriodInSeconds = 10.0f;
+    public float healingFromTemperature = 1.0f;
+    private CountdownTimer _healingTimer;
+    
     public event Action<float> TemperatureChangedEvent;
     
-    private GameObject Player;
-    private Health PlayerHealth;
-    private Utilities.CountdownTimer DamageTimer;
+    private GameObject _player;
+    private Health _playerHealth;
+    private CountdownTimer _damageTimer;
 
     private void Awake()
     {
-	    Player = GameObject.FindGameObjectWithTag("Player");
-        PlayerHealth = Player.GetComponent<Health>();
-        DamageTimer = new Utilities.CountdownTimer(DamageTimerLength);
-        DamageTimer.OnTimerStop += PlayerTakeDamage;
+	    _player = GameObject.FindGameObjectWithTag("Player");
+        _playerHealth = _player.GetComponent<Health>();
+        _damageTimer = new CountdownTimer(damageTimerLength);
+        _damageTimer.OnTimerStop += PlayerTakeDamage;
+        
+        _healingTimer = new CountdownTimer(healingTimerPeriodInSeconds);
+        _healingTimer.OnTimerStop += HealPlayer;
+    }
+
+    private void CalculateHealingTemperatureEffect()
+    {
+        var playerWithinHealingTemperatureRange = currentTemperatureAtPlayer >= minPlayerTemperatureThresholdForHealing && currentTemperatureAtPlayer <= maxPlayerTemperatureThresholdForHealing;
+        
+        if (_healingTimer.IsRunning && playerWithinHealingTemperatureRange) return;
+        
+        if (_healingTimer.IsRunning && !playerWithinHealingTemperatureRange)
+        {
+            _healingTimer.Pause();
+        }
+        else if (!_healingTimer.IsRunning && playerWithinHealingTemperatureRange)
+        {
+            _healingTimer.Start();
+        }
+
+    }
+
+    private void HealPlayer()
+    {
+        _playerHealth.IncreaseCurrentHealth(healingFromTemperature);
+        _healingTimer.Start();
     }
 
     private void PlayerTakeDamage()
     {
-        PlayerHealth.TakeDamage(DamageFromLowTemperature);
-        DamageTimer.Reset(DamageTimerLength);
-        DamageTimer.Start();
+        _playerHealth.TakeDamage(damageFromLowTemperature);
+        _damageTimer.Reset(damageTimerLength);
+        _damageTimer.Start();
     }
 
 	// Start is called before the first frame update
@@ -42,34 +78,37 @@ public class PlayerTemperature : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        DamageTimer.Tick(Time.deltaTime);
+        _damageTimer.Tick(Time.deltaTime);
+        _healingTimer.Tick(Time.deltaTime);
 
         // need to calculate the heat that the player feels
         SetCurrentTemperatureAtPlayer(HeatSourceManagerScript.Instance.GetCurrentTemperature(transform));
         
-        CalculateTemperatureEffect();
+        CalculateColdTemperatureEffect();
+        CalculateHealingTemperatureEffect();
     }
 
-    private void CalculateTemperatureEffect()
+
+    private void CalculateColdTemperatureEffect()
     {
         if(currentTemperatureAtPlayer >= minPlayerTemperatureThreshold 
            && currentTemperatureAtPlayer <= maxPlayerTemperatureThreshold)
         {
             // if the timer is running then stop it because i'm within warmth
-            if (DamageTimer.IsRunning)
-                DamageTimer.Pause();
+            if (_damageTimer.IsRunning)
+                _damageTimer.Pause();
         }
         else 
         { 
-            if(DamageTimer.IsRunning)
+            if(_damageTimer.IsRunning)
             { 
                 // do nothing
             }
             // if the timer is not running then start it
             else
             {
-                DamageTimer.Reset(DamageTimerLength);
-                DamageTimer.Start();
+                _damageTimer.Reset(damageTimerLength);
+                _damageTimer.Start();
             }
         }
     }
