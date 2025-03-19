@@ -16,6 +16,7 @@ public class PlayerTemperature : MonoBehaviour
     public float currentTemperatureAtPlayer;
     
     [Header("Player Healing Settings")]
+    public bool enablePlayerHealing = true;
     public float minPlayerTemperatureThresholdForHealing = 80.0f;
     public float maxPlayerTemperatureThresholdForHealing = 90.0f;
     public float healingTimerPeriodInSeconds = 10.0f;
@@ -41,6 +42,13 @@ public class PlayerTemperature : MonoBehaviour
 
     private void CalculateHealingTemperatureEffect()
     {
+        if (!enablePlayerHealing)
+        {
+            if(_healingTimer.IsRunning)
+                _healingTimer.Pause();
+            return;
+        }
+        
         var playerWithinHealingTemperatureRange = currentTemperatureAtPlayer >= minPlayerTemperatureThresholdForHealing && currentTemperatureAtPlayer <= maxPlayerTemperatureThresholdForHealing;
         
         if (_healingTimer.IsRunning && playerWithinHealingTemperatureRange) return;
@@ -51,6 +59,7 @@ public class PlayerTemperature : MonoBehaviour
         }
         else if (!_healingTimer.IsRunning && playerWithinHealingTemperatureRange)
         {
+            _healingTimer.Reset(healingTimerPeriodInSeconds);
             _healingTimer.Start();
         }
 
@@ -59,6 +68,7 @@ public class PlayerTemperature : MonoBehaviour
     private void HealPlayer()
     {
         _playerHealth.IncreaseCurrentHealth(healingFromTemperature);
+        _healingTimer.Reset(healingTimerPeriodInSeconds);
         _healingTimer.Start();
     }
 
