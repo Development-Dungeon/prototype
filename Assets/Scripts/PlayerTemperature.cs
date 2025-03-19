@@ -8,7 +8,8 @@ using Utilities;
 
 public class PlayerTemperature : MonoBehaviour
 {
-    [Header("Player Damage Settings")]
+    [Header("Player Damage Settings")] 
+    public bool enablePlayerDamage = true;
     public float damageFromLowTemperature = 5;
     public float damageTimerLength = 5;
     public float minPlayerTemperatureThreshold = 32.0f; 
@@ -101,6 +102,14 @@ public class PlayerTemperature : MonoBehaviour
 
     private void CalculateColdTemperatureEffect()
     {
+
+        if (!enablePlayerDamage)
+        {
+            if(_damageTimer.IsRunning)
+                _damageTimer.Pause();
+            return;
+        }
+        
         if(currentTemperatureAtPlayer >= minPlayerTemperatureThreshold 
            && currentTemperatureAtPlayer <= maxPlayerTemperatureThreshold)
         {
