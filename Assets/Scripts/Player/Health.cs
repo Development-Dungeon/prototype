@@ -34,6 +34,11 @@ public class Health : MonoBehaviour
         TriggerEvent();
     }
 
+    public void IncreaseCurrentHealth(float amount)
+    {
+        SetCurrentHealth(amount + _currentHealth);
+    }
+
     public bool IsDead() => _currentHealth <= 0;
 
     private void TriggerEvent()
