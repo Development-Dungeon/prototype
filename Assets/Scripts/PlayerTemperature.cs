@@ -61,7 +61,7 @@ public class PlayerTemperature : MonoBehaviour
         var currentTemperatureAroundPlayer = HeatSourceManagerScript.Instance.GetCurrentTemperature(transform);
 
         var colder = currentTemperatureAroundPlayer - currentTemperatureAtPlayer < 0;
-        var warmer = currentTemperatureAroundPlayer - currentTemperatureAroundPlayer > 0;
+        var warmer = currentTemperatureAroundPlayer - currentTemperatureAtPlayer > 0;
         
         var delta = Mathf.Min(Mathf.Abs(currentTemperatureAroundPlayer - currentTemperatureAtPlayer), maxPlayerTemperatureChange);
         
