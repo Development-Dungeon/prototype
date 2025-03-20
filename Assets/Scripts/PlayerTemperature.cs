@@ -8,13 +8,23 @@ using Utilities;
 
 public class PlayerTemperature : MonoBehaviour
 {
+    
+    [Header("Player Temperature Settings")] 
+    public float currentTemperatureAtPlayer;
+
+    [Header("Player Temperature Check Settings")] 
+    public bool enablePlayerTemperatureUpdate = true; 
+    public float temperatureCheckPeriodInSeconds = 10.0f;
+    public float maxPlayerTemperatureChange = 1.0f;
+    private CountdownTimer _temperatureCheckTimer;
+    
     [Header("Player Damage Settings")] 
     public bool enablePlayerDamage = true;
     public float damageFromLowTemperature = 5;
     public float damageTimerLength = 5;
     public float minPlayerTemperatureThreshold = 32.0f; 
     public float maxPlayerTemperatureThreshold = 150.0f; 
-    public float currentTemperatureAtPlayer;
+    private CountdownTimer _damageTimer;
     
     [Header("Player Healing Settings")]
     public bool enablePlayerHealing = true;
@@ -28,7 +38,6 @@ public class PlayerTemperature : MonoBehaviour
     
     private GameObject _player;
     private Health _playerHealth;
-    private CountdownTimer _damageTimer;
 
     private void Awake()
     {
@@ -39,9 +48,38 @@ public class PlayerTemperature : MonoBehaviour
         
         _healingTimer = new CountdownTimer(healingTimerPeriodInSeconds);
         _healingTimer.OnTimerStop += HealPlayer;
+        
+        _temperatureCheckTimer = new CountdownTimer(temperatureCheckPeriodInSeconds);
+        _temperatureCheckTimer.OnTimerStop += UpdatePlayerTemperature;
     }
 
-    private void CalculateHealingTemperatureEffect()
+    private void UpdatePlayerTemperature()
+    {
+        if (!enablePlayerTemperatureUpdate)
+            return;
+            
+        var currentTemperatureAroundPlayer = HeatSourceManagerScript.Instance.GetCurrentTemperature(transform);
+
+        var colder = currentTemperatureAroundPlayer - currentTemperatureAtPlayer < 0;
+        var warmer = currentTemperatureAroundPlayer - currentTemperatureAroundPlayer > 0;
+        
+        var delta = Mathf.Min(Mathf.Abs(currentTemperatureAroundPlayer - currentTemperatureAtPlayer), maxPlayerTemperatureChange);
+        
+        if (colder)
+        {
+            SetCurrentTemperatureAtPlayer(currentTemperatureAtPlayer - delta);
+        }
+        else if (warmer)
+        {
+            SetCurrentTemperatureAtPlayer(currentTemperatureAtPlayer + delta);
+        }
+        
+        _temperatureCheckTimer.Reset(temperatureCheckPeriodInSeconds);
+        _temperatureCheckTimer.Start();
+        
+    }
+
+    private void EnableHealingTimer()
     {
         if (!enablePlayerHealing)
         {
@@ -80,27 +118,35 @@ public class PlayerTemperature : MonoBehaviour
         _damageTimer.Start();
     }
 
-	// Start is called before the first frame update
-	void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void FixedUpdate()
     {
         _damageTimer.Tick(Time.deltaTime);
         _healingTimer.Tick(Time.deltaTime);
+        _temperatureCheckTimer.Tick(Time.deltaTime);
 
-        // need to calculate the heat that the player feels
-        SetCurrentTemperatureAtPlayer(HeatSourceManagerScript.Instance.GetCurrentTemperature(transform));
-        
-        CalculateColdTemperatureEffect();
-        CalculateHealingTemperatureEffect();
+        EnableTemperatureCheckTimer();
+        EnableColdDamageTimer();
+        EnableHealingTimer();
     }
 
+    private void EnableTemperatureCheckTimer()
+    {
+        if (!enablePlayerTemperatureUpdate)
+        {
+            if(_temperatureCheckTimer.IsRunning)
+                _temperatureCheckTimer.Pause();
+            return;
+        }
 
-    private void CalculateColdTemperatureEffect()
+        if (_temperatureCheckTimer.IsRunning) return;
+        
+        _temperatureCheckTimer.Reset(temperatureCheckPeriodInSeconds);
+        _temperatureCheckTimer.Start();
+
+    }
+
+    private void EnableColdDamageTimer()
     {
 
         if (!enablePlayerDamage)
