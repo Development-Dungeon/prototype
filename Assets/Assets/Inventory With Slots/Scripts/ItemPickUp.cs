@@ -6,6 +6,8 @@ using UnityEngine;
 public class ItemPickUp : MonoBehaviour
 {
     public Item item;
+    public KeyCode pickUpKey;
+    
     public int additionalRange = 0;
 
     void Pickup()

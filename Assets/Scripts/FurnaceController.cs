@@ -12,6 +12,8 @@ public class FurnaceController : MonoBehaviour
     public GameObject furnaceUI;
     public GameObject furnaceUIParent; // This object will contain all the furnace UI's when they are created
     public float baseFurnaceItemConsumptionRateInSeconds;
+
+    public string openFurnaceButton = "E";
     
     private Utilities.CountdownTimer consumeItemCountdownTimer;
     private InventorySlot inventorySlot;
@@ -22,7 +24,7 @@ public class FurnaceController : MonoBehaviour
     private HeatSourceScript targetHeatSource;
     private float lastConsumedItemBurnRateInSeconds;
     
-    void OnTriggerEnter(Collider otherObject)
+    public void TriggerUIEvent()
     {
         InitFurnacePrefab();
         InitHeatSource();
@@ -30,6 +32,14 @@ public class FurnaceController : MonoBehaviour
         PopulateFurnaceUI();
         UnlockCursor();
     }
+    
+    
+    
+    // create a method for displaying text on the screen that says what button to select
+    // if the player reach is looking at something that has a certain script on it, then grab the attribute and populate
+    //      the text value
+    //      if this is the case then I think the player script should have the implementation and this script can have the 
+    //      field (or another script actually that could contain it)
 
     private void InitHeatSource()
     {
