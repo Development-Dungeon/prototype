@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour
 {
     public KeyCode interactKey;
+    public UnityEvent OnInteract;
 
     public void Interact()
     {
-        Debug.Log("Interact");
+        OnInteract?.Invoke();
     }
-    
+
 }
