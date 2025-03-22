@@ -12,8 +12,6 @@ public class FurnaceController : MonoBehaviour
     public GameObject furnaceUI;
     public GameObject furnaceUIParent; // This object will contain all the furnace UI's when they are created
     public float baseFurnaceItemConsumptionRateInSeconds;
-
-    public string openFurnaceButton = "E";
     
     private Utilities.CountdownTimer consumeItemCountdownTimer;
     private InventorySlot inventorySlot;
