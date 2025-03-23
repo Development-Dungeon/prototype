@@ -8,7 +8,8 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class FurnaceController : MonoBehaviour
-{ public GameObject furnaceUIPrefab;
+{ 
+    public GameObject furnaceUIPrefab;
     public GameObject furnaceUI;
     public GameObject furnaceUIParent; // This object will contain all the furnace UI's when they are created
     public float baseFurnaceItemConsumptionRateInSeconds;
@@ -21,8 +22,16 @@ public class FurnaceController : MonoBehaviour
     private TMP_Text progressText;
     private HeatSourceScript targetHeatSource;
     private float lastConsumedItemBurnRateInSeconds;
+
+    public void ToggleUI()
+    {
+        if(furnaceUI == null || furnaceUI.activeSelf == false)
+            OnTriggerEnterUI();
+        else 
+            OnTriggerExitUI();
+    }
     
-    void OnTriggerEnter(Collider otherObject)
+    private void OnTriggerEnterUI()
     {
         InitFurnacePrefab();
         InitHeatSource();
@@ -30,6 +39,9 @@ public class FurnaceController : MonoBehaviour
         PopulateFurnaceUI();
         UnlockCursor();
     }
+    
+    
+    
 
     private void InitHeatSource()
     {
@@ -86,7 +98,7 @@ public class FurnaceController : MonoBehaviour
         Cursor.visible = false;    
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExitUI()
     {
         CloseFurnaceUI();
         LockCursor();
