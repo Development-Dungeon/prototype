@@ -42,11 +42,6 @@ public class FurnaceController : MonoBehaviour
     
     
     
-    // create a method for displaying text on the screen that says what button to select
-    // if the player reach is looking at something that has a certain script on it, then grab the attribute and populate
-    //      the text value
-    //      if this is the case then I think the player script should have the implementation and this script can have the 
-    //      field (or another script actually that could contain it)
 
     private void InitHeatSource()
     {
