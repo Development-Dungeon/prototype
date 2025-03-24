@@ -2,16 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UniStorm;
 using UnityEngine;
 
 // this script is in charge of keeping track of all the heat objects inside the scene
 public class HeatSourceManagerScript : MonoBehaviour
 {
     public List<HeatSourceScript> heatSources;
-    public float baseTemperature = 0.0f; 
+    public float baseTemperature = 0.0f;
+    public float nightTemperatureNegativeAffect = -10.0f;
 
     public static HeatSourceManagerScript Instance;
     public List<TemperatureZoneScript> zones;
+    
+    public UniStormSystem.CurrentTimeOfDayEnum _currentTimeOfDay;
 
     private void Awake()
     {
@@ -22,12 +26,17 @@ public class HeatSourceManagerScript : MonoBehaviour
 
     void Start()
     {
+        UniStormCustomEvents.OnTimeOfDayChanged += OnTimeChange;
+    }
+
+    private void OnTimeChange(UniStormSystem.CurrentTimeOfDayEnum currentTimeOfDay)
+    {
+        _currentTimeOfDay = currentTimeOfDay;
     }
 
     public void RegisterHeatSource(HeatSourceScript heatSource)
     {
-        if (heatSources == null)
-            heatSources = new List<HeatSourceScript>();
+        heatSources ??= new List<HeatSourceScript>();
 
         heatSources.Add(heatSource);
     }
@@ -75,9 +84,15 @@ public class HeatSourceManagerScript : MonoBehaviour
 
     private float getBaseTemperature()
     {
+        var result = baseTemperature;
+        
         if (Instance.zones.Count > 0)
-            return Instance.zones.Last().baseTemperature;
-        return baseTemperature;
+            result = Instance.zones.Last().baseTemperature;
+        
+        if(_currentTimeOfDay == UniStormSystem.CurrentTimeOfDayEnum.Night)
+            result -= nightTemperatureNegativeAffect;
+        
+        return result;
     }
 
     public float GetCurrentTemperature(Transform target)
@@ -98,8 +113,10 @@ public class HeatSourceManagerScript : MonoBehaviour
             // get the power of this heat source
             var power = hSource.heatPower; // this is measured in meters or the same metric as distance
             var heatDissipationRate = hSource.dissipationRateByDistance;
-
+            
             var heatAtPlayerLocation =  getBaseTemperature() + (power - (distance * heatDissipationRate));
+
+                
             
             maxTemperature = Mathf.Max(maxTemperature, heatAtPlayerLocation);
         }
