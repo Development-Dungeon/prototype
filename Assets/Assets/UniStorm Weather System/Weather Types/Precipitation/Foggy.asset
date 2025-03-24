@@ -23,20 +23,20 @@ MonoBehaviour:
   AuroraInnerColor: {r: 0, g: 1, b: 0, a: 1}
   MinimumFogLevel: 300
   MaximumFogLevel: 600
-  FogDensity: 0.04
+  FogDensity: 0.0002
   FogLightFalloff: 0.408
   FogHeight: 1
   CameraFogHeight: 1
-  OverrideFogColor: 1
+  OverrideFogColor: 0
   OverrideCameraFogHeight: 1
   FogColor:
     serializedVersion: 2
     key0: {r: 0.07542719, g: 0.119482026, b: 0.14150941, a: 1}
     key1: {r: 0.07542719, g: 0.119482026, b: 0.14150941, a: 1}
-    key2: {r: 0.30882353, g: 0.30882353, b: 0.30882353, a: 0}
-    key3: {r: 0.44852942, g: 0.44852942, b: 0.44852942, a: 0}
-    key4: {r: 0.44852942, g: 0.44852942, b: 0.44852942, a: 0}
-    key5: {r: 0.30882353, g: 0.30882353, b: 0.30882353, a: 0}
+    key2: {r: 0.1525899, g: 0.22088051, b: 0.254717, a: 0}
+    key3: {r: 0.32293522, g: 0.35695276, b: 0.38679248, a: 0}
+    key4: {r: 0.3270737, g: 0.37763605, b: 0.4716981, a: 0}
+    key5: {r: 0.19824672, g: 0.25639886, b: 0.31132078, a: 0}
     key6: {r: 0.07542719, g: 0.119482026, b: 0.14150941, a: 0}
     key7: {r: 0.07542719, g: 0.119482026, b: 0.14150941, a: 0}
     ctime0: 0
@@ -56,7 +56,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: -1
+    m_ColorSpace: 0
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
   WindSpeedLevel: 0.85
@@ -70,7 +70,7 @@ MonoBehaviour:
   AdditionalParticleEffectVector: {x: 0, y: 28, z: 0}
   WeatherVolume: 1
   WeatherSound: {fileID: 0}
-  PrecipitationWeatherType: 0
+  PrecipitationWeatherType: 1
   UseWeatherSound: 1
   UseWeatherEffect: 1
   UseAdditionalWeatherEffect: 1
@@ -79,7 +79,7 @@ MonoBehaviour:
   CloudHeight: 150
   CloudLevel: 4
   TemperatureType: 2
-  ShaderControl: 0
+  ShaderControl: 1
   OverrideCloudColor: 1
   CloudColor:
     serializedVersion: 2

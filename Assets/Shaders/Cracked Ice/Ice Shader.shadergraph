@@ -342,6 +342,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "119fe578b64543cfa744e96ebef7c7c6"
+                },
+                "m_SlotId": 1
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "0522432e9f844541b4244efcac5d0f32"
+                },
+                "m_SlotId": 1
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "126a1fe8665b4563a5331f6f1dbd67b4"
                 },
                 "m_SlotId": 2
@@ -5276,7 +5290,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Opacity",
     "m_StageCapability": 3,
-    "m_Value": 0.05000000074505806,
+    "m_Value": -2.8399999141693117,
     "m_DefaultValue": 1.0,
     "m_Labels": []
 }
@@ -6551,7 +6565,7 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_BlendMode": 15
+    "m_BlendMode": 13
 }
 
 {
