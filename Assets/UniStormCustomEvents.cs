@@ -13,9 +13,6 @@ public class UniStormCustomEvents : MonoBehaviour
     
     private UniStormSystem.CurrentTimeOfDayEnum _currentTimeOfDay;
     
-    void Start()
-    {
-    }
 
     void Update()
     {
