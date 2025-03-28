@@ -14,8 +14,8 @@ public class FullScreenTestController : MonoBehaviour
     [SerializeField] private ScriptableRendererFeature fullScreanHeat;
     [SerializeField] private Material material;
 
-    [SerializeField] private Color hotColor;
-    [SerializeField] private Color coldColor; 
+    [SerializeField] private Color32 hotColor;
+    [SerializeField] private Color32 coldColor; 
     
     [SerializeField] private float _vinIntensity;
     [SerializeField] private float _vorIntensity;
@@ -30,7 +30,12 @@ public class FullScreenTestController : MonoBehaviour
     private float _minPlayerTemperature;
     private float _maxPlayerTemperature;
     private float _currentPlayerTemperature;
-    
+
+    private void Awake()
+    {
+        fullScreanHeat?.SetActive(false);
+    }
+
     private void Start()
     {
         fullScreanHeat.SetActive(false);
@@ -52,7 +57,7 @@ public class FullScreenTestController : MonoBehaviour
         if (_currentPlayerTemperature > _maxPlayerTemperature)
         {
             fullScreanHeat.SetActive(true);
-            material.SetColor("_Vin_Color", new Color(191, 46, 17));
+            material.SetColor("_Vin_Color", hotColor);
             var vinIndex = GetIndex(material.shader, _vinIntensityId);
             var minValueVin = ShaderUtil.GetRangeLimits(material.shader, vinIndex, 1);
             var maxValueVin = ShaderUtil.GetRangeLimits(material.shader, vinIndex, 2);
@@ -67,7 +72,7 @@ public class FullScreenTestController : MonoBehaviour
         else if (_currentPlayerTemperature < _minPlayerTemperature)
         {
             fullScreanHeat.SetActive(true);
-            material.SetColor("_Vin_Color", new Color(17, 174, 199));
+            material.SetColor("_Vin_Color", coldColor);
             var vinIndex = GetIndex(material.shader, _vinIntensityId);
             var minValueVin = ShaderUtil.GetRangeLimits(material.shader, vinIndex, 1);
             var maxValueVin = ShaderUtil.GetRangeLimits(material.shader, vinIndex, 2);
