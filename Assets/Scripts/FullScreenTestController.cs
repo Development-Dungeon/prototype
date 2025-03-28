@@ -44,8 +44,8 @@ public class FullScreenTestController : MonoBehaviour
         fullScreanHeat.SetActive(false);
         _playerTemperature = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<PlayerTemperature>();
 
-        _playerTemperature.OnMinPlayerTemperatureChangeEvent += onMinPlayerChangeEvent;
-        _playerTemperature.OnMaxPlayerTemperatureChangeEvent += onMaxPlayerChangeEvent;
+        _playerTemperature.OnMinPlayerTemperatureChangeEvent += OnMinPlayerChangeEvent;
+        _playerTemperature.OnMaxPlayerTemperatureChangeEvent += OnMaxPlayerChangeEvent;
         _playerTemperature.OnTemperatureChangedEvent += OnTemperatureChangeEvent;
 
     }
@@ -54,7 +54,18 @@ public class FullScreenTestController : MonoBehaviour
         _currentPlayerTemperature = newTemp;
         CheckTemperature();
     }
+    private void OnMinPlayerChangeEvent(float newTemp)
+    {
+        _minPlayerTemperature = newTemp;
+        CheckTemperature();
+    }
 
+    private void OnMaxPlayerChangeEvent(float newTemp)
+    {
+        _maxPlayerTemperature = newTemp; 
+        CheckTemperature();
+    }
+    
     private void CheckTemperature()
     {
         fullScreanHeat.SetActive(false);
@@ -115,15 +126,4 @@ public class FullScreenTestController : MonoBehaviour
         throw new Exception("property id " + propertyID + " not found in shader");
     }
 
-    private void onMinPlayerChangeEvent(float newTemp)
-    {
-        _minPlayerTemperature = newTemp;
-        CheckTemperature();
-    }
-
-    private void onMaxPlayerChangeEvent(float newTemp)
-    {
-        _maxPlayerTemperature = newTemp; 
-        CheckTemperature();
-    }
 }
