@@ -34,7 +34,10 @@ public class PlayerTemperature : MonoBehaviour
     public float healingFromTemperature = 1.0f;
     private CountdownTimer _healingTimer;
     
-    public event Action<float> TemperatureChangedEvent;
+    // Events
+    public event Action<float> OnTemperatureChangedEvent;
+    public event Action<float> OnMinPlayerTemperatureChangeEvent;
+    public event Action<float> OnMaxPlayerTemperatureChangeEvent;
     
     private GameObject _player;
     private Health _playerHealth;
@@ -51,6 +54,13 @@ public class PlayerTemperature : MonoBehaviour
         
         _temperatureCheckTimer = new CountdownTimer(temperatureCheckPeriodInSeconds);
         _temperatureCheckTimer.OnTimerStop += UpdatePlayerTemperature;
+    }
+
+    private void Start()
+    {
+        OnTemperatureChangedEvent?.Invoke(currentTemperatureAtPlayer);
+        OnMaxPlayerTemperatureChangeEvent?.Invoke(maxPlayerTemperatureThreshold);
+        OnMinPlayerTemperatureChangeEvent?.Invoke(minPlayerTemperatureThreshold);
     }
 
     private void UpdatePlayerTemperature()
@@ -185,8 +195,8 @@ public class PlayerTemperature : MonoBehaviour
         
         currentTemperatureAtPlayer = newTemperature;
         
-        if(TemperatureChangedEvent != null)
-            TemperatureChangedEvent.Invoke(currentTemperatureAtPlayer);
+        if(OnTemperatureChangedEvent != null)
+            OnTemperatureChangedEvent.Invoke(currentTemperatureAtPlayer);
         
     }
 }

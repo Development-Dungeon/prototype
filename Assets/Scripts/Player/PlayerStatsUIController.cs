@@ -46,7 +46,7 @@ public class PlayerStatsUIController : MonoBehaviour
 	    playerReach.ReachUpdateEvent += ReachUpdateEvent;
         
         playerTemperature = player.GetComponentInChildren<PlayerTemperature>();
-        playerTemperature.TemperatureChangedEvent += PlayerTemperatureChangedEvent;
+        playerTemperature.OnTemperatureChangedEvent += PlayerOnTemperatureChangedEvent;
 
         InventoryManagerNew.SelectedItemChanged += SelectedItemChangedEvent;
 
@@ -55,10 +55,10 @@ public class PlayerStatsUIController : MonoBehaviour
         ReachUpdateEvent(playerReach);
         HealthUpdatedEvent(playerHealth);
         OxygenUpdateEvent(playerOxygen);
-        PlayerTemperatureChangedEvent(playerTemperature.currentTemperatureAtPlayer);
+        PlayerOnTemperatureChangedEvent(playerTemperature.currentTemperatureAtPlayer);
     }
 
-    private void PlayerTemperatureChangedEvent(float currentPlayerTemperature)
+    private void PlayerOnTemperatureChangedEvent(float currentPlayerTemperature)
     {
         if(playerTemperatureText != null)
             playerTemperatureText.text = $"P. Cur Temp : {currentPlayerTemperature}F";
