@@ -69,13 +69,13 @@ public class FullScreenTestController : MonoBehaviour
     {
         fullScreanHeat.SetActive(true);
         material.SetColor("_Vin_Color", coldColor);
-        var vinIndex = GetIndex(material.shader, _vinIntensityId);
+        var vinIndex = GetPropertyIndexByPropertyId(material.shader, _vinIntensityId);
         var minValueVin = ShaderUtil.GetRangeLimits(material.shader, vinIndex, 1);
         var maxValueVin = ShaderUtil.GetRangeLimits(material.shader, vinIndex, 2);
         var percentage = Mathf.InverseLerp(_minPlayerTemperature, _minPlayerTemperature + belowThreshold, _currentPlayerTemperature);
         material.SetFloat(_vinIntensityId, Mathf.Lerp(minValueVin,maxValueVin,percentage));
             
-        var vorIndex = GetIndex(material.shader, _vorIntensityId);
+        var vorIndex = GetPropertyIndexByPropertyId(material.shader, _vorIntensityId);
         var minValueVor = ShaderUtil.GetRangeLimits(material.shader, vorIndex, 1);
         var maxValueVor = ShaderUtil.GetRangeLimits(material.shader, vorIndex, 2);
         material.SetFloat(_vinIntensityId, Mathf.Lerp(minValueVor,maxValueVor,percentage));
@@ -85,34 +85,34 @@ public class FullScreenTestController : MonoBehaviour
     {
         fullScreanHeat.SetActive(true);
         material.SetColor("_Vin_Color", hotColor);
-        var vinIndex = GetIndex(material.shader, _vinIntensityId);
+        var vinIndex = GetPropertyIndexByPropertyId(material.shader, _vinIntensityId);
         var minValueVin = ShaderUtil.GetRangeLimits(material.shader, vinIndex, 1);
         var maxValueVin = ShaderUtil.GetRangeLimits(material.shader, vinIndex, 2);
         var percentage = Mathf.InverseLerp(_maxPlayerTemperature, _maxPlayerTemperature + aboveThreshold, _currentPlayerTemperature);
         material.SetFloat(_vinIntensityId, Mathf.Lerp(minValueVin,maxValueVin,percentage));
             
-        var vorIndex = GetIndex(material.shader, _vorIntensityId);
+        var vorIndex = GetPropertyIndexByPropertyId(material.shader, _vorIntensityId);
         var minValueVor = ShaderUtil.GetRangeLimits(material.shader, vorIndex, 1);
         var maxValueVor = ShaderUtil.GetRangeLimits(material.shader, vorIndex, 2);
         material.SetFloat(_vinIntensityId, Mathf.Lerp(minValueVor,maxValueVor,percentage));
     }
 
-    private int GetIndex(Shader shader, int propertyID)
+    private static int GetPropertyIndexByPropertyId(Shader shader, int propertyID)
     {
-        if (shader == null)
-            return -1;
+        if (!shader)
+            throw new Exception("Shader is null");
 
-        int propertyCount = ShaderUtil.GetPropertyCount(shader);
-        for (int i = 0; i < propertyCount; i++)
+        var propertyCount = ShaderUtil.GetPropertyCount(shader);
+        for (var i = 0; i < propertyCount; i++)
         {
-            string propName = ShaderUtil.GetPropertyName(shader, i);
-            int propID = Shader.PropertyToID(propName);
+            var propName = ShaderUtil.GetPropertyName(shader, i);
+            var propID = Shader.PropertyToID(propName);
 
             if (propID == propertyID)
                 return i;
         }
 
-        return -1; // Not found
+        throw new Exception("property id " + propertyID + " not found in shader");
     }
 
     private void onMinPlayerChangeEvent(float newTemp)
