@@ -72,7 +72,8 @@ MonoBehaviour:
   - {fileID: -4835897571839738064}
   - {fileID: 5474850326521543146}
   - {fileID: -726102153220087140}
-  m_RendererFeatureMap: 307f51b4c770e3bcea79bf6e5d93fa4b9ca2ab4ef05decf5
+  - {fileID: 3385802619577029287}
+  m_RendererFeatureMap: 307f51b4c770e3bcea79bf6e5d93fa4b9ca2ab4ef05decf5a7d279338bc9fc2e
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -111,6 +112,23 @@ MonoBehaviour:
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &3385802619577029287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
+  m_Name: FullScreen Overlay
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  passMaterial: {fileID: -876546973899608171, guid: 5b647851900f73047858a536b073cfdf, type: 3}
+  injectionPoint: 600
+  requirements: 4
+  passIndex: 0
 --- !u!114 &5474850326521543146
 MonoBehaviour:
   m_ObjectHideFlags: 0
