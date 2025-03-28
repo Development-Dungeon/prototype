@@ -14,17 +14,20 @@ public class FullScreenTestController : MonoBehaviour
     [SerializeField] private ScriptableRendererFeature fullScreanHeat;
     [SerializeField] private Material material;
 
+    [Header("Colors")] 
     [SerializeField] private Color32 hotColor;
     [SerializeField] private Color32 coldColor; 
     
-    [SerializeField] private float _vinIntensity;
-    [SerializeField] private float _vorIntensity;
-    
+    [Header("Temperature Thresholds")] 
     public float belowThreshold = -20f;
     public float aboveThreshold = 20f;
     
-    private int _vinIntensityId = Shader.PropertyToID("_Vin_Intensity"); // can be between 0 and 2
-    private int _vorIntensityId = Shader.PropertyToID("_Vor_Intensity"); // can be between 0 and 2
+    private float _vinIntensity;
+    private float _vorIntensity;
+    
+    
+    private int _vinIntensityId = Shader.PropertyToID("_Vin_Intensity"); 
+    private int _vorIntensityId = Shader.PropertyToID("_Vor_Intensity");
     
     private PlayerTemperature _playerTemperature;
     private float _minPlayerTemperature;
