@@ -21,6 +21,7 @@ public class FullScreenTestController : MonoBehaviour
     [Header("Temperature Thresholds")] 
     public float belowThreshold = -20f;
     public float aboveThreshold = 20f;
+    public AnimationCurve animationCurve;
     
     private float _vinIntensity;
     private float _vorIntensity;
@@ -89,12 +90,12 @@ public class FullScreenTestController : MonoBehaviour
         var minValueVin = ShaderUtil.GetRangeLimits(material.shader, vinIndex, 1);
         var maxValueVin = ShaderUtil.GetRangeLimits(material.shader, vinIndex, 2);
         var percentage = Mathf.InverseLerp(_minPlayerTemperature, _minPlayerTemperature + belowThreshold, _currentPlayerTemperature);
-        material.SetFloat(_vinIntensityId, Mathf.Lerp(minValueVin,maxValueVin,percentage));
+        material.SetFloat(_vinIntensityId, Mathf.Lerp(minValueVin,maxValueVin,animationCurve.Evaluate(percentage)));
             
         var vorIndex = GetPropertyIndexByPropertyId(material.shader, _vorIntensityId);
         var minValueVor = ShaderUtil.GetRangeLimits(material.shader, vorIndex, 1);
         var maxValueVor = ShaderUtil.GetRangeLimits(material.shader, vorIndex, 2);
-        material.SetFloat(_vinIntensityId, Mathf.Lerp(minValueVor,maxValueVor,percentage));
+        material.SetFloat(_vinIntensityId, Mathf.Lerp(minValueVor,maxValueVor,animationCurve.Evaluate(percentage)));
     }
 
     private void HandleHotOverlay()
@@ -105,12 +106,12 @@ public class FullScreenTestController : MonoBehaviour
         var minValueVin = ShaderUtil.GetRangeLimits(material.shader, vinIndex, 1);
         var maxValueVin = ShaderUtil.GetRangeLimits(material.shader, vinIndex, 2);
         var percentage = Mathf.InverseLerp(_maxPlayerTemperature, _maxPlayerTemperature + aboveThreshold, _currentPlayerTemperature);
-        material.SetFloat(_vinIntensityId, Mathf.Lerp(minValueVin,maxValueVin,percentage));
+        material.SetFloat(_vinIntensityId, Mathf.Lerp(minValueVin,maxValueVin,animationCurve.Evaluate(percentage)));
             
         var vorIndex = GetPropertyIndexByPropertyId(material.shader, _vorIntensityId);
         var minValueVor = ShaderUtil.GetRangeLimits(material.shader, vorIndex, 1);
         var maxValueVor = ShaderUtil.GetRangeLimits(material.shader, vorIndex, 2);
-        material.SetFloat(_vinIntensityId, Mathf.Lerp(minValueVor,maxValueVor,percentage));
+        material.SetFloat(_vinIntensityId, Mathf.Lerp(minValueVor,maxValueVor,animationCurve.Evaluate(percentage)));
     }
 
     private static int GetPropertyIndexByPropertyId(Shader shader, int propertyID)
