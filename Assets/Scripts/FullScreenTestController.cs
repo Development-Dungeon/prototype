@@ -34,6 +34,11 @@ public class FullScreenTestController : MonoBehaviour
     private float _maxPlayerTemperature;
     private float _currentPlayerTemperature;
 
+    private void OnDestroy()
+    {
+        fullScreanHeat?.SetActive(false);
+    }
+
     private void Awake()
     {
         fullScreanHeat?.SetActive(false);

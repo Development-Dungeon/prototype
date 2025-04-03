@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -66,6 +67,12 @@ public class DecalYPositionController : MonoBehaviour
                 isFading = false;
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+            SetDecalAlpha(0f);
+            isVisible = false;
     }
 
     private void SetDecalYPosition()
